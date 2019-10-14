@@ -1,0 +1,79 @@
+% template.tex, dated April 5 2013
+% This is a template file for Annual Reviews 1 column Journals
+%
+% Compilation using ar-1col.cls' - version 1.0, Aptara Inc.
+% (c) 2013 AR
+%
+% Steps to compile: latex latex latex
+%
+% For tracking purposes => this is v1.0 - Apr. 2013
+
+\documentclass{style/ar-1col}
+\usepackage{url}
+\usepackage[numbers]{natbib}
+\bibliographystyle{plain}
+
+\setcounter{secnumdepth}{4}
+
+% Metadata Information
+\jname{Xxxx. Xxx. Xxx. Xxx.}
+\jvol{AA}
+\jyear{YYYY}
+\doi{10.1146/((please add article doi))}
+
+
+% Document starts
+\begin{document}
+
+% Page header
+\markboth{Author et al.}{Short title}
+
+% Title
+\title{Title: Subtitle}
+
+
+%Authors, affiliations address.
+\author{Author B. Authorone,$^1$ Firstname C. Authortwo,$^2$ and D. Name Authorthree$^3$
+\affil{$^1$Department/Institute, University, City, Country, Postal code; email: author@email.edu}
+\affil{$^2$Department/Institute, University, City, Country, Postal code}
+\affil{$^3$Department/Institute, University, City, Country, Postal code}}
+
+%Abstract
+\begin{abstract}
+Abstract text, approximately 150 words. 
+\end{abstract}
+
+%Keywords, etc.
+\begin{keywords}
+keywords, separated by comma, no full stop, lowercase
+\end{keywords}
+\maketitle
+
+%Table of Contents
+\tableofcontents
+
+\input{sections/intro}
+\input{sections/models}
+\input{sections/relating}
+\input{sections/applications}
+\input{sections/discussion}
+\input{sections/endmatter}
+
+
+% References
+%
+% Margin notes within bibliography
+
+%\noindent
+\bibliography{bib/references.bib}
+
+%To download the appropriate bibliography style file, please see \url{http://www.annualreviews.org/page/authors/author-instructions/preparing/latex}. 
+
+
+%Please see the Style Guide document for instructions on preparing your Literature Cited.
+
+%The citations should be numbered in alphabetical order, with titles. For example:
+
+
+
+\end{document}

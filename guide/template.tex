@@ -1,0 +1,304 @@
+% template.tex, dated April 5 2013
+% This is a template file for Annual Reviews 1 column Journals
+%
+% Compilation using ar-1col.cls' - version 1.0, Aptara Inc.
+% (c) 2013 AR
+%
+% Steps to compile: latex latex latex
+%
+% For tracking purposes => this is v1.0 - Apr. 2013
+
+\documentclass{style/ar-1col}
+\usepackage{url}
+\usepackage[numbers]{natbib}
+
+\setcounter{secnumdepth}{4}
+
+% Metadata Information
+\jname{Xxxx. Xxx. Xxx. Xxx.}
+\jvol{AA}
+\jyear{YYYY}
+\doi{10.1146/((please add article doi))}
+
+
+% Document starts
+\begin{document}
+
+% Page header
+\markboth{Author et al.}{Short title}
+
+% Title
+\title{Title: Subtitle}
+
+
+%Authors, affiliations address.
+\author{Author B. Authorone,$^1$ Firstname C. Authortwo,$^2$ and D. Name Authorthree$^3$
+\affil{$^1$Department/Institute, University, City, Country, Postal code; email: author@email.edu}
+\affil{$^2$Department/Institute, University, City, Country, Postal code}
+\affil{$^3$Department/Institute, University, City, Country, Postal code}}
+
+%Abstract
+\begin{abstract}
+Abstract text, approximately 150 words. 
+\end{abstract}
+
+%Keywords, etc.
+\begin{keywords}
+keywords, separated by comma, no full stop, lowercase
+\end{keywords}
+\maketitle
+
+%Table of Contents
+\tableofcontents
+
+
+% Heading 1
+\section{INTRODUCTION}
+Please begin the main text of your article here. 
+
+
+
+%Heading 1
+\section{FIRST-LEVEL HEADING}
+This is dummy text. 
+% Heading 2
+\subsection{Second-Level Heading}
+This is dummy text. This is dummy text. This is dummy text. This is dummy text.
+
+% Heading 3
+\subsubsection{Third-Level Heading}
+This is dummy text. This is dummy text. This is dummy text. This is dummy text. 
+
+% Heading 4
+\paragraph{Fourth-Level Heading} Fourth-level headings are placed as part of the paragraph.
+
+%Example of a Figure
+\section{ELEMENTS\ OF\ THE\ MANUSCRIPT} 
+\subsection{Figures}Figures should be cited in the main text in chronological order. This is dummy text with a citation to the first figure (\textbf{Figure \ref{fig1}}). Citations to \textbf{Figure \ref{fig1}} (and other figures) will be bold. 
+
+\begin{figure}[h]
+\includegraphics[width=3in]{SampleFigure}
+\caption{Figure caption with descriptions of parts a and b}
+\label{fig1}
+\end{figure}
+
+% Example of a Table
+\subsection{Tables} Tables should also be cited in the main text in chronological order (\textbf {Table \ref{tab1}}).
+
+\begin{table}[h]
+\tabcolsep7.5pt
+\caption{Table caption}
+\label{tab1}
+\begin{center}
+\begin{tabular}{@{}l|c|c|c|c@{}}
+\hline
+Head 1 &&&&Head 5\\
+{(}units)$^{\rm a}$ &Head 2 &Head 3 &Head 4 &{(}units)\\
+\hline
+Column 1 &Column 2 &Column3$^{\rm b}$ &Column4 &Column\\
+Column 1 &Column 2 &Column3 &Column4 &Column\\
+Column 1 &Column 2 &Column3 &Column4 &Column\\
+Column 1 &Column 2 &Column3 &Column4 &Column\\
+\hline
+\end{tabular}
+\end{center}
+\begin{tabnote}
+$^{\rm a}$Table footnote; $^{\rm b}$second table footnote.
+\end{tabnote}
+\end{table}
+
+% Example of lists
+\subsection{Lists and Extracts} Here is an example of a numbered list:
+\begin{enumerate}
+\item List entry number 1,
+\item List entry number 2,
+\item List entry number 3,\item List entry number 4, and
+\item List entry number 5.
+\end{enumerate}
+
+Here is an example of a extract.
+\begin{extract}
+This is an example text of quote or extract.
+This is an example text of quote or extract.
+\end{extract}
+
+\subsection{Sidebars and Margin Notes}
+% Margin Note
+\begin{marginnote}[]
+\entry{Term A}{definition}
+\entry{Term B}{definition}
+\entry{Term C}{defintion}
+\end{marginnote}
+
+\begin{textbox}[h]\section{SIDEBARS}
+Sidebar text goes here.
+\subsection{Sidebar Second-Level Heading}
+More text goes here.\subsubsection{Sidebar third-level heading}
+Text goes here.\end{textbox}
+
+
+
+\subsection{Equations}
+% Example of a single-line equation
+\begin{equation}
+a = b \ {\rm ((Single\ Equation\ Numbered))}
+\end{equation}
+%Example of multiple-line equation
+Equations can also be multiple lines as shown in Equations 2 and 3.
+\begin{eqnarray}
+c = 0 \ {\rm ((Multiple\  Lines, \ Numbered))}\\
+ac = 0 \ {\rm ((Multiple \ Lines, \ Numbered))}
+\end{eqnarray}
+
+% Summary Points
+\begin{summary}[SUMMARY POINTS]
+\begin{enumerate}
+\item Summary point 1. These should be full sentences.
+\item Summary point 2. These should be full sentences.
+\item Summary point 3. These should be full sentences.
+\item Summary point 4. These should be full sentences.
+\end{enumerate}
+\end{summary}
+
+% Future Issues
+\begin{issues}[FUTURE ISSUES]
+\begin{enumerate}
+\item Future issue 1. These should be full sentences.
+\item Future issue 2. These should be full sentences.
+\item Future issue 3. These should be full sentences.
+\item Future issue 4. These should be full sentences.
+\end{enumerate}
+\end{issues}
+
+%Disclosure
+\section*{DISCLOSURE STATEMENT}
+If the authors have noting to disclose, the following statement will be used: The authors are not aware of any affiliations, memberships, funding, or financial holdings that
+might be perceived as affecting the objectivity of this review. 
+
+% Acknowledgements
+\section*{ACKNOWLEDGMENTS}
+Acknowledgements, general annotations, funding.
+
+% References
+%
+% Margin notes within bibliography
+\section*{LITERATURE\ CITED}
+
+To download the appropriate bibliography style file, please see \url{http://www.annualreviews.org/page/authors/author-instructions/preparing/latex}. 
+
+\noindent
+Please see the Style Guide document for instructions on preparing your Literature Cited.
+
+The citations should be numbered in alphabetical order, with titles. For example:
+
+
+
+
+
+
+\begin{verbatim}
+\begin{thebibliography}{00}
+\bibitem[Acevedo \& Fitzjarrald(2001)]{Acevedo:01}
+Acevedo O, Fitzjarrald D. 2001.
+The early evening surface-layer transition: temporal and spatial variability.
+\textit{J. Atmos. Sci.} 58:2650--67
+
+\bibitem[Acevedo et~al.(2009)Acevedo, Moraes, Degrazia, Fitzjarrald, Manzi \&
+  Campos]{Acevedo:09}
+Acevedo O, Moraes O, Degrazia G, Fitzjarrald D, Manzi A, Campos J. 2009.
+Is friction velocity the most appropriate scale for correcting nocturnal carbon
+  dioxide fluxes?
+\textit{Agric. For. Meteorol.} 149:1--10
+
+\bibitem[Baas et~al.(2006)Baas, Steeneveld, {van de Weil} \& Holtslag]{Baas:09}
+Baas P, Steeneveld G, {van de Weil} B, Holtslag A. 2006.
+Exploring self-correlation in the flux-gradient relationships for stably
+  stratified conditions.
+\textit{J. Atmos. Sci.} 63:3045--54
+
+\bibitem[Badran, Thiria \& Crepon(1991)]{Badran:91}
+Badran F, Thiria S, Crepon M. 1991.
+Wind ambiguity removal by the use of neural network techniques.
+\textit{J. Geophys. Res.} 96:20,521--29
+
+\bibitem[Bakas \& Ioannou(2007)]{Bakas:07}
+Bakas NA, Ioannou PJ. 2007.
+Momentum and energy transport by gravity waves in stochastically driven
+  stratified flows. {Part I}: radiation of gravity waves from a shear layer.
+\textit{J. Atmos. Sci.} 64:1509--29
+
+\bibitem[Calanca, Forrer \& Rotach(1998)]{Calanca:98}
+Calanca P, Forrer J, Rotach M. 1998.
+Toward an integral formulation of the turbulent transfer in a stably stratified
+  boundary layer over an ice sheet.
+\textit{Q. J. R. Meteorol. Soc.} 124:1--18
+
+\bibitem[D'Asaro \& Lien(2000)]{DAsaro:00}
+D'Asaro EA, Lien RC. 2000.
+The wave-turbulence transition for stratified flows.
+\textit{J. Phys. Oceanog.} 30:123--45
+
+\bibitem[de~Silva et~al.(1996)de~Silva, Fernando, Eaton \& Hebert]{deSilva:96}
+de~Silva I, Fernando H, Eaton F, Hebert D. 1996.
+Evolution of kelvin-helmholtz billows in nature and laboratory.
+\textit{Earth Planetary Sci. Let.} 143:217--31
+
+
+
+\end{thebibliography}
+\end{verbatim}
+
+
+
+
+\begin{thebibliography}{00}
+
+\bibitem[Acevedo \& Fitzjarrald(2001)]{Acevedo:01}
+Acevedo O, Fitzjarrald D. 2001.
+The early evening surface-layer transition: temporal and spatial variability.
+\textit{J. Atmos. Sci.} 58:2650--67
+
+\bibitem[Acevedo et~al.(2009)Acevedo, Moraes, Degrazia, Fitzjarrald, Manzi \&
+  Campos]{Acevedo:09}
+Acevedo O, Moraes O, Degrazia G, Fitzjarrald D, Manzi A, Campos J. 2009.
+Is friction velocity the most appropriate scale for correcting nocturnal carbon
+  dioxide fluxes?
+\textit{Agric. For. Meteorol.} 149:1--10
+
+\bibitem[Baas et~al.(2006)Baas, Steeneveld, {van de Weil} \& Holtslag]{Baas:09}
+Baas P, Steeneveld G, {van de Weil} B, Holtslag A. 2006.
+Exploring self-correlation in the flux-gradient relationships for stably
+  stratified conditions.
+\textit{J. Atmos. Sci.} 63:3045--54
+
+\bibitem[Badran, Thiria \& Crepon(1991)]{Badran:91}
+Badran F, Thiria S, Crepon M. 1991.
+Wind ambiguity removal by the use of neural network techniques.
+\textit{J. Geophys. Res.} 96:20,521--29
+
+\bibitem[Bakas \& Ioannou(2007)]{Bakas:07}
+Bakas NA, Ioannou PJ. 2007.
+Momentum and energy transport by gravity waves in stochastically driven
+  stratified flows. {Part I}: radiation of gravity waves from a shear layer.
+\textit{J. Atmos. Sci.} 64:1509--29
+
+\bibitem[Calanca, Forrer \& Rotach(1998)]{Calanca:98}
+Calanca P, Forrer J, Rotach M. 1998.
+Toward an integral formulation of the turbulent transfer in a stably stratified
+  boundary layer over an ice sheet.
+\textit{Q. J. R. Meteorol. Soc.} 124:1--18
+
+\bibitem[D'Asaro \& Lien(2000)]{DAsaro:00}
+D'Asaro EA, Lien RC. 2000.
+The wave-turbulence transition for stratified flows.
+\textit{J. Phys. Oceanog.} 30:123--45
+
+\bibitem[de~Silva et~al.(1996)de~Silva, Fernando, Eaton \& Hebert]{deSilva:96}
+de~Silva I, Fernando H, Eaton F, Hebert D. 1996.
+Evolution of kelvin-helmholtz billows in nature and laboratory.
+\textit{Earth Planetary Sci. Let.} 143:217--31 
+
+\end{thebibliography}
+
+
+\end{document}
