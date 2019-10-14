@@ -12,33 +12,33 @@ Work on github (Erik to make structure), use .bib for citations, use one line pe
 
 + Introduction - __Erik__
 + Why we need pangenomic models
-++ What is our motivation for thinking about pangenomic approaches?
-+++ Bias
-+++ Populations
-+++ Precision medicine
-++ Perspective of interfaces (inputs and outputs)
-++ Past reviews
+  + What is our motivation for thinking about pangenomic approaches?
+    + Bias
+    + Populations
+    + Precision medicine
+  + Perspective of interfaces (inputs and outputs)
+  + Past reviews
 + Building pangenomic models
-++ Constructing graphs - __Robin__
-++ Indexing and succinct genome graph models - __Jouni / Erik?__
-++ Other population-ish succinct data structures - __Erik / Jouni?__
-+++ De bruijn
-+++ VCFs / genotype calls / haplotypes / binary matrices
-+++ Alignments / collections of strings
+  + Constructing graphs - __Robin__
+  + Indexing and succinct genome graph models - __Jouni / Erik?__
+  + Other population-ish succinct data structures - __Erik / Jouni?__
+    + De bruijn
+    + VCFs / genotype calls / haplotypes / binary matrices
+    + Alignments / collections of strings
 + Finding structure in the model
-++ Visualization - __Adam__
-++ Finding structures in pan-genome graphs - __Jordan__
+  + Visualization - __Adam__
+  + Finding structures in pan-genome graphs - __Jordan__
 + Relating new information to the model (alignment)
-++ Graph alignment algorithms - __Jordan__
-++ Variation graph mappers - __Xian__
-++ De Bruijn graph mappers - __Robin__
-++ Non-graph population mapping tools - __Erik__
+  + Graph alignment algorithms - __Jordan__
+  + Variation graph mappers - __Xian__
+  + De Bruijn graph mappers - __Robin__
+  + Non-graph population mapping tools - __Erik__
 + Applications of pangenomic models
-++ Error correction - __Robin__
-++ Variant calling / Genotyping - __Glenn__
-++ Assembly/Metagenomics - __Erik__
-++ Epigenomics - __Glenn__
-++ Transcriptomics - __Jonas__
+  + Error correction - __Robin__
+  + Variant calling / Genotyping - __Glenn__
+  + Assembly/Metagenomics - __Erik__
+  + Epigenomics - __Glenn__
+  + Transcriptomics - __Jonas__
 + Discussion - __Benedict__
 
 # Potential citations
