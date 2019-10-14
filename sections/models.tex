@@ -21,9 +21,46 @@
 \subsection{Visualization}
 % Adam
 
+Once one has constructed a graph pangenomic model, one might want to look at it.
 
-\cite{Wick_2015}
-\cite{Beyer_2019}
+A number of tools have been developed for this purpose.
+Bandage (\textbf{B}ioinformatics \textbf{A}pplication for \textbf{N}avigating \textit{\textbf{D}e novo} \textbf{A}ssembly \textbf{G}raphs \textbf{E}asily) \citep{Wick_2015} is one of the most popular \citep{Mikheenko_2019}.
+Originally designed for working with bacterial assembly and meta-assembly graphs \citep{Wick_2015}, it supports a wide range of formats and graph  paradigms. It can be effectively used for interactively visualizing and exploring subregions of human-scale pangenome graphs \citep{Garrison_2019}, but its shortcomings become apparent at larger scales or with higher degrees of connectivity between graph regions \citep{Mikheenko_2019}.
+The tool does have support for restricting the portion of the graph displayed to a particular ``scope'', but the tool is fundamentally built around laying out the graph under study in two dimensions, with all nodes represented, and panning and zooming around it.
+Moreover, while the tool includes the ability to search for sequences in the graph, it does not have any ability to structure graph display using known linearization information.
+Additionally, Bandage is implemented as a cross-platform native C++/Qt application \citep{Wick_2015}, which allows the tool to be self-contained but precludes the use of cloud resources for dealing with larger graphs; all graph data must be stored and processed on the user's machine at visualization time.
+
+% Bandage: cross-platform native application
+    % Versatile and popular
+    % Client-only
+    % Could look up a reference but not view vs. it
+% Go back and talk about ABySS-Explorer (2009) and its "polar" graphs and wiggly sequence edges?
+% SGTK
+    % build-view model
+    % Cytoscape.js or genome browser linear-structured
+    % designed for scaffold graphs (more processed?)
+    % Not proven on large graphs; only shown going up to 100s of nodes
+% AGB: auto-subgraphs (to 100 nodes) and simplifies assembly graphs
+    % js GraphViz based
+    % Still uses a build-web-page model
+    % Kind of tied to assemblies (notion of repetitive vs non-repetitive edges)
+    % Can view vs. a reference
+    % Scales to C. elegans at least
+        % O(300 * 100 = 30000) nodes
+    % Appears to be structured around megabyte-scale GraphViz graphs https://github.com/almiheenko/almiheenko.github.io/tree/master/AGB
+        % No LOD-ing on the backend for efficient download, but not a problem at the scale of 10s of thousands.
+% GfaViz: C++/Qt tool with full GFA1/2 support
+    % Has a GUI but no screenshots or binaries
+    % Can show cool stuff like reads connected to their assembly contigs
+
+
+
+%\citep{Wick_2015}
+%\citep{Gonnella_2018}
+%\citep{Kunyavskaya_2018}
+%\citep{Mikheenko_2019}
+%\citep{Beyer_2019}
+%\citep{Garrison_2019}
 
 \subsection{Finding structures in pan-genome graphs}
 % Jordan
