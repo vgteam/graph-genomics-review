@@ -10,38 +10,42 @@ Work on github (Erik to make structure), use .bib for citations, use one line pe
 
 ## Outline and division of effort
 
-+ Introduction - __Erik__
-+ Why we need pangenomic models
++ Introduction - __Erik__ (sections/intro.tex)
+  + Why we need pangenomic models
   + What is our motivation for thinking about pangenomic approaches?
     + Bias
     + Populations
     + Precision medicine
   + Perspective of interfaces (inputs and outputs)
   + Past reviews
-+ Building pangenomic models
++ Building pangenomic models (sections/models.tex)
   + Constructing graphs - __Robin__
   + Indexing and succinct genome graph models - __Jouni / Erik?__
   + Other population-ish succinct data structures - __Erik / Jouni?__
     + De bruijn
     + VCFs / genotype calls / haplotypes / binary matrices
     + Alignments / collections of strings
-+ Finding structure in the model
-  + Visualization - __Adam__
-  + Finding structures in pan-genome graphs - __Jordan__
-+ Relating new information to the model (alignment)
+  + Finding structure in the model
+    + Visualization - __Adam__
+    + Finding structures in pan-genome graphs - __Jordan__
++ Relating new information to the model (sections/relating.tex)
   + Graph alignment algorithms - __Jordan__
   + Variation graph mappers - __Xian__
   + De Bruijn graph mappers - __Robin__
   + Non-graph population mapping tools - __Erik__
-+ Applications of pangenomic models
++ Applications of pangenomic models (sections/applications.tex)
   + Error correction - __Robin__
   + Variant calling / Genotyping - __Glenn__
   + Assembly/Metagenomics - __Erik__
   + Epigenomics - __Glenn__
   + Transcriptomics - __Jonas__
-+ Discussion - __Benedict__
++ Discussion - __Benedict__ (sections/discussion.tex)
 
-# Potential citations
+# References
+
+See bib/references.bib for a subset of the citations below in bibtex format.
+These were auto-generated.
+The rest may need to be manually introduced (e.g. from google scholar citations).
 
 ## Introduction
 
