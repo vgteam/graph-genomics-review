@@ -1,6 +1,6 @@
 all: main.pdf
 
-main.pdf: main.tex bib/references.bib # sections/*tex
+main.pdf: main.tex bib/references.bib  sections/*.tex figures/*
 	pdflatex main.tex
 	bibtex main
 	pdflatex main.tex
