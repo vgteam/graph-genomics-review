@@ -25,10 +25,9 @@ Work on github (Erik to make structure), use .bib for citations, use one line pe
     + De bruijn
     + VCFs / genotype calls / haplotypes / binary matrices
     + Alignments / collections of strings
-  + Finding structure in the model
-    + Visualization - __Adam__
-    + Finding structures in pan-genome graphs - __Jordan__
 + Relating new information to the model (sections/relating.tex)
+  + Visualization - __Adam__
+  + Finding structures in pangenome graphs - __Jordan__
   + Graph alignment algorithms - __Jordan__
   + Variation graph mappers - __Xian__
   + De Bruijn graph mappers - __Robin__
