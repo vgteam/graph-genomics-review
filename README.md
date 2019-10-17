@@ -50,12 +50,17 @@ The rest may need to be manually introduced (e.g. from google scholar citations)
 
 ...
 
-### Past reviews
+### Past reviews / Opinion pieces
 
 Computational pan genomics (2016)
 https://doi.org/10.1093/bib/bbw089
+
 Genome graphs and genome inference (2017)
 10.1101/gr.214155.116
+
+Is it time to change the reference genome? (2019)
+https://doi.org/10.1186/s13059-019-1774-4
+
 
 ## Constructing graphs
 
@@ -381,17 +386,32 @@ http://dx.doi.org/10.1101/457101
 
 ## Transcriptomics
 
+Quantifies RNA-seq reference-bias (2009)
+https://doi.org/10.1093/bioinformatics/btp579
+
 GSNAP: SNP-aware mapper (2010)
 https://www.doi.org/10.1093/bioinformatics/btq057
 
 AlleleSeq: Diploid personal genome mapping (2011)
 https://doi.org/10.1038/msb.2011.54
 
+Quantifies RNA-seq reference-bias (2014)
+https://doi.org/10.1186/s13059-014-0467-2
+
+Describes reference-bias in relation to ASE (2015)
+https://doi.org/10.1186/s13059-015-0762-6
+
+WASP: reference-bias correction (2015)
+https://doi.org/10.1038/nmeth.3582
+
 rPGA: Personal genome mapping (2015)
 https://doi.org/10.1093/nar/gkv1099
 
 Kallisto: de Bruijn graph pseudo-alignment (2015)
 https://doi.org/10.1038/nbt.3519
+
+ASElux: SNP-aware alignment (2017)
+https://doi.org/10.1093/bioinformatics/btx762
 
 ASGAL: Splice-graph mapper (2018)
 https://link.springer.com/chapter/10.1007/978-3-319-58163-7_3
