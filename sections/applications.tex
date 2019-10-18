@@ -6,6 +6,47 @@
 \subsection{Variant calling and genotyping}
 % Glenn
 
+Genome graphs can leverage known sequence variation, available in increasingly large public databases, to improve variant identification in new samples.
+In general, variants are determined by finding paths through the graph that are best supported by reads.
+Projecting the paths back to the reference yields the variants, typically in VCF format.
+When only paths from graph are considered, this process is considered \it{genotyping}.
+Novel variants can be \it{called} by augmenting the paths with edits from the reads.
+
+Graphtyper \cite{eggertsson2017graphtyper} begins with a pan-genome graph created from variants in dbSNP, and iteratively updates it with variants discovered in input reads.
+Its authors showed it to be more accurate on benchmarks than top linear reference-based approaches such as GATK.
+It was applied to WGS data from 28,075 samples from an Icelandic population study.
+Another approach used a graph derived from the 1000 Genomes Project \cite{Rakocevic_2019} to improve calling accuracy, as well as find variants absent from common benchmarks such as GIAB.
+
+Difficult and diverse genomic regions stand to gain the most by moving from avlinear reference to genome graphs.
+To this end, much work has been done exploring the application of graphs to HLA typing.
+MHC/HLA bla bla bla.
+The Population Reference Graph (PRG) \cite{dilthey2015improved} is created from a multiple sequence alignment (MSA) of know haplotypes and variants spanning the MHC region.
+Reads are mapped to to the graph, then used to extract a pair of ``chromotype'' paths that best represent them.
+The chromotypes are then used as linear references for standard mapping and calling tools, and the results projected back to the linear reference.
+PRG*HLA \cite{dilthey2018hla} explicitly models the HLA genes, rather than the whole MHC region.
+HLA types are imputed directly from the graph, rather than intermediate chromotypes, providing faster performance and  HLA*LA \cite{dilthey2019hla} further improves runtime and adds support for long read and assembly inputs.
+Kourami \cite{lee2018kourami} is another method for HLA typing that assembles haplotypes using a graph genome as a guide, and is able to incorporate novel variation from the reads. 
+
+ExpansionHunter \cite{dolzhenko2019expansionhunter} uses genome graphs to model low complexity regions in the genome.
+To this end, regular expressions are used to define variable sites of tandem repeats, which come out as self-loops in the graph.
+The authors show that short read data can be used to more accurately type clinically relevant sites of such varaition using this approach than standard variant calling pipelines.
+
+Structural variants (SVs) are mutational events of at least 50bp in length.
+SVs can be increasingly well characterized by long read sequencing, but this technology remains prohibitively expensive for population scale studies.
+Known SVs can be naturally represented as genome graphs, and genotyped using WGS short read data.
+Paragraph \cite{chen2019paragraph} is a SV genotyper that operates on a genome graphs constructed from each variant in a VCF of SV calls.
+For each variant, it remaps nearby reads as retrieved from a linear alignment, to the graph.
+It then computes a genotype from the support of each allele's breakpoints in the graph alignment.
+Paragraph was shown to outperform similar methods that rely on linear references by a wide margin.
+vg's SV \cite{hickey2019genotyping} genotyper can be run on any genome graph, provided it contains embedded paths that can be used for coordinates.
+Unlike all other methods mentioned above, which remap a subset of relevant reads to the graph, vg operates directly on a graph alignment of the entire read set.
+It uses the snarl decomposition \cite{paten2018superbubbles} to identify sites of variation in the graph, and derives haplotypes using read support.
+It was shown to be much more accurate than linear reference-based approaches, and was also evaluated on graphs derived from alignments of assemblies.
+
+
+oops need to add Bayestyper \cite{sibbesen2018accurate}
+
+
 \subsection{Assembly and metagenomics}
 % Erik
 
