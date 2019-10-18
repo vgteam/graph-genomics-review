@@ -60,9 +60,9 @@ These methods use graph genomes to reduce reference bias and improve peak callin
 Using genome graphs for the analyses of transcriptomic sequencing data have generally received less attention compared to its whole genome sequencing counterpart.
 However, for estimating allele-specific expression (ASE), reference-bias is an important issue that needs to be considered in order to get reliable results \cite{Degner2009-vw,Castel2015-ef}.
 Here the expression levels of genes or transcripts are estimated on each allele separately by counting the difference in number of mapped RNA sequencing (RNA-seq) reads across heterozygous variants.
-A bias towards one of the alleles can therefore result in an false-positive difference in epxression between the alleles.
+A bias towards one of the alleles can therefore result in an false-positive difference in expression between the alleles.
 
-Filtering strategies based on simulations that remove variant sites or reads with likely bias have been proposed as a way to mitigate this, but these approaches can result in less detectable allele-specific expressed genes or lower expression values [\cite{Castel2015-ef,Van_de_Geijn2015-dz}.
+Filtering strategies based on simulations that remove variant sites or reads with likely bias have been proposed as a way to mitigate this, but these approaches can result in less detectable allele-specific expressed genes or lower expression values \cite{Castel2015-ef,Van_de_Geijn2015-dz}.
 Variant-aware methods, such as genome graphs, provides a means that does not rely on filtering and instead takes the sequence difference between the two alleles into account during mapping.
 The simplest of these involves creating a personalized diploid genome or transcriptome and using standard linear mapping method.
 This approach has shown to reduce reference-bias and improve estimate of ASE \cite{Rozowsky_2011,Raghupathy2018-sd,Lee2018-mm}.
@@ -71,31 +71,33 @@ Variant-aware mapping methods on the other hand allow for using unphased variati
 GSNAP ... \cite{Wu2010-hv}. 
 ASElux ... \cite{Miao2018-ps}.
 HISAT2 was the first genome graph based method capable of splice-aware mapping of RNA-seq data \cite{Kim_2019}. 
-Using a combination of a hierarchical graph FM index and a repeat region index (see ? section for more details) HISAT2 is able to map reads at a impressive speed to a genome graph containing 14.5M variations without sacrificing accurary. 
+Using a combination of a hierarchical graph FM index and a repeat region index (see ? section for more details) HISAT2 is able to map RNA-seq reads at an impressive speed to a genome graph containing 14.5M variations without sacrificing accuracy. 
 Furthermore, the method is able to use known splice-junctions and discover novel junctions using splice-site information.
 Their benchmark, however, only shows results for DNA sequencing data and therefore it is unknown how well this variant-aware version performs for RNA-seq data.
 Recently, the ability to create spliced variation graphs was added to the vg toolkit \cite{Garrison_2018}. 
-In these graphs splice-junctions are added as edges to a variation graph similar to a deletion event would be encoded. 
-This allows for the vg toolkit to also map RNA-seq data, however the approach is limited to only known junctions and is therefore not able to discover any new.
+In these graphs splice-junctions are added as edges to a variation graph similar to the addition of a deletion event. 
+This allows for the vg toolkit to also map RNA-seq data, however the approach is limited to only known junctions.
 
-Similar to WGS, variation-aware analysis of RNA-seq data is important for estimating expression of genes in highly polymorphic regions, such as HLA genes in the human major histocompatibility complex region. 
-It has been shown that by comparing the reads against a set of known HLA haplotypes results in improved estimation of expression of HLA genes compared to when using the linear reference \cite{Lee2018-mm,Aguiar2019-fy}.
-AltHapAlignR is one such method. It first maps the reads to the linear reference. Unmapped reads and reads that map to the HLA region are then collected and mapped to 7 alternative haplotypes followed by expression estimation in a haplotype-specific manner \cite{Lee2018-mm}. 
-This approach improves estimation of ASE, however, it is unclear whether the method can scale to the thousands of haplotypes known in the HLA region.
-HLApers on the other hand first alings the reads against an index containing thousands of known HLA haplotypes \cite{Aguiar2019-fy}. 
-This is used to predict the most likely haplotype pair for each gene to which the reads are aligned against a second time and expression is estimated. 
-By only aligning to known haplotypes in the HLA region and not the whole genome as AltHapAlignR the method could be biased towards the HLA region by not accounting for pseudogenes.
-Both of these methods does not use a genome graph representation, however, the input data used could easily be represented using one.
-Known haplotypes could be encoded using the GBWT index allowing it to scale to potentially hundreds of thousands of haplotypes. 
+Similar to WGS, variation-aware analysis of RNA-seq data is important for estimating expression of genes and transcripts in highly polymorphic regions, such as HLA genes in the human major histocompatibility complex region. 
+It has been shown that estimation of expression can be improved by comparing the reads against a collection of known HLA haplotypes instead of the linear reference \cite{Lee2018-mm,Aguiar2019-fy}.
+AltHapAlignR is one such method \cite{Lee2018-mm}. It first maps the RNA-seq reads to the linear reference. Unmapped reads and reads that map to the HLA region are then collected and mapped to 7 alternative haplotypes followed by expression estimation in a haplotype-specific manner. 
+While this approach improves estimation of ASE it is unclear whether the method can scale to the thousands of haplotypes known in the HLA region.
+HLApers on the other hand first alings the RNA-seq reads against an index containing thousands of known HLA haplotypes using either a regular mapper or pseudo-alignment \cite{Aguiar2019-fy}.
+These aligned are then used predicts the most likely haplotype pair for each gene to which the reads are aligned against a second time and from which expression is estimated.  
+Using this approach they were able to align more reads, especially for genes with high sequence divergence from the reference. 
+One limitation of this approach is that it only aligns to known haplotypes in the HLA region and not the whole genome as AltHapAlignR thereby not accounting for HLA pseudogenes.
+Both of these methods does not use a genome graph representation, however, the collection of haplotypes could easily be represented using a graph.
+Known haplotypes could then be encoded using the GBWT index allowing it to scale to whole genome and potentially hundreds of thousands of haplotypes \cite{Siren_2019}. 
 
-Even using variation in the intronic regions can be beneficial when analysing RNA-seq data. 
-Variation in these regions can either disrupt or create new splice-site motifs resulting in novel splicing. 
-This can affect mapping across splice-junctions, since the absence or presence of canonical splice-site motifs are used to score alignments by most mappers. 
+Even being aware of variation in the intronic regions can be beneficial when analysing RNA-seq data. 
+Variation in these regions can either disrupt or create new splice-site motifs resulting in intron retention or novel splicing, respectively. 
+This can affect mapping algorithms, since the absence or presence of canonical splice-site motifs are often used to score alignments across splice-junctions. 
 Indeed, by using a personalized genome approach Stein \textit{et al.} was able to identify 506 individual-specific splice-junctions in 75 individuals of which 437 was novel \cite{Stein_2015}. 
-Later, Lui \textit{et al.} more than tripled this number in the same individuals by detecting many more novel canonical personal splice-junctions using iMapSplice a SNV-aware k-mer based method, further showing the importance of variant-aware analysis for sensitive splice-junction detection \cite{Liu_2018}. 
+Later, Lui \textit{et al.} more than tripled this number in the same individuals by detecting many more novel canonical personal splice-junctions using iMapSplice a SNV-aware k-mer based method, thereby further showing the importance of variant-aware analysis for sensitive splice-junction detection \cite{Liu_2018}. 
 
 
 % Papers that maybe needs to be added:
 % Beretta \textit{et al.}
 % Denti \textit{et al.}
 % Bray \textit{et al.}
+
