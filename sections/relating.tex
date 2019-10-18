@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 % Heading 3
 \section{Relating new information to the model}
 This is dummy text. This is dummy text. This is dummy text. This is dummy text. 
@@ -92,7 +91,27 @@ Figure~\ref{fig:visualization} provides a visual overview of the visualization m
 % Jordan
 
 \subsection{Graph alignment algorithms}
-% Jordan
+Often, genomic sequence data can only be interpreted in the context of other sequences. 
+For this reason, sequence comparison is at the core of many genomic analyses, and sequence alignment is the essential method for doing so. 
+However, classic alignment algorithms like Smith-Waterman\cite{Smith_1981} do not directly apply to sequence graphs. 
+Accordingly, the increasing prominence of variation graph methods has been fueled by fundamental algorithmic research in graph alignment, and it has also spurred further research.
+
+The trend in the graph alignment research is toward greater generality and faster run time. 
+The generality comes in two main forms. 
+First, algorithms apply to increasingly general classes of graphs. 
+The foundational genomic sequence graph alignment algorithms applied only to graphs without cycles\cite{Lee_2002, Grasso_2004}. 
+More recent research has discovered algorithms that align to graphs with any shape\cite{Antipov_2015,Rautiainen_2017,Jain_2019a}. 
+Second, graph alignment researchers have developed algorithms that use increasingly general scoring functions. 
+Some earlier algorithms require restricted scoring functions to achieve efficiency\cite{Rautiainen_2017}, but recent contributions have used the less restricted scoring functions that are required to produce biologically meaningful alignments in many contexts\cite{Jain_2019a}.
+
+Graph alignment research also has improved the algorithms' run time. 
+The first algorithms only required restricted graphs in order to run at comparable speed to non-graph sequence alignment algorithms, or else simply ran slower on general graphs\cite{Lee_2002, Kavya_2019}. 
+It has now been shown that graph alignment can run at the same speed as non-graph alignment (in the computer scientist's sense of ``Big-O'' asymptotics), which is believed to be essentially optimal\cite{Jain_2019a,Equi_2019}. 
+Many of the advances in this space came from rediscovering analogs to the graph alignment problem in the related areas of regular expressions and hypertext\cite{Myers_1989,Amir_1997}. 
+In addition to these theoretical results, researchers have also developed modified algorithms that run quickly the practical context of real-world computer architectures\cite{Suzuki_2018,Rautiainen_2019,Jain_2019b}.
+
+From a practical standpoint, the primary benefit of this research in alignment algorithms has been in aiding the design of mapping tools. 
+Graph alignment algorithms are a central component of the graph mapping tools described below.
 
 \subsection{Variation graph mappers}
 There are several mapping algorithms for variation graphs which extend concepts from linear mapping algorithms into a graph space.
