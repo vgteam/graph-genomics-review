@@ -9,8 +9,8 @@
 Genome graphs can leverage known sequence variation, available in increasingly large public databases, to improve variant identification in new samples.
 In general, variants are determined by finding paths through the graph that are best supported by reads.
 Projecting the paths back to the reference yields the variants, typically in VCF format.
-When only paths from graph are considered, this process is considered \it{genotyping}.
-Novel variants can be \it{called} by augmenting the paths with edits from the reads.
+When only paths from graph are considered, this process is considered \emph{genotyping}.
+Novel variants can be \emph{called} by augmenting the paths with edits from the reads.
 
 Graphtyper \cite{eggertsson2017graphtyper} begins with a pan-genome graph created from variants in dbSNP, and iteratively updates it with variants discovered in input reads.
 Its authors showed it to be more accurate on benchmarks than top linear reference-based approaches such as GATK.
