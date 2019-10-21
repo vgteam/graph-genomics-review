@@ -1,5 +1,92 @@
 % Heading 1
-\section{INTRODUCTION}
+\section{Introduction}
 
-Please begin the main text of your article here. This was a cool paper \cite{computational2016computational}.
+Our understanding of the structure and function of genomes depends on our ability to relate them to each other and to prior biological information.
+In the early days of genomics, when the cost of sequencing was high, expensive algorithms would be applied to relate all sequences in a given experiment to all others, typically yielding multiple sequence alignments.
+These analyses were thus effectively \emph{pangenomic}, in their unified representation of all the genomic information in the analysis \cite{computational2016computational}.
+Each sequence was related to all others, and optimization procedures applied to the entire collection were used to obtain the most-parsimonious set of relationships between them.
 
+Increasing data scales have made such approaches prohibitively costly.
+The arrival of high-quality reference genomes and low-cost short read sequencing has encouraged the use of \emph{resequencing}, wherein reads from each sample are aligned to a single common reference genome.
+State of the art implementations of this process scale to support the combined analysis of tens of thousands of genomes \cite{Poplin_2017}, but they can only do so by relating each genome to a single common reference sequence.
+
+\subsection{Reference bias}
+
+Although efficient and conceptually simple, resequencing has a significant limitation.
+The relationships between genomes are only visible for those sequences that are already close enough to those in the reference genome to be alignable.
+The extent that sequence information from a given sample cannot be aligned to the reference causes \emph{reference bias}.
+Given that this bias shapes the very genomic inference methods that we use to establish models of the truth \cite{zook2014integrating}, it is pervasive and will be difficult to evaluate without paradigmatic change in our sequencing and analysis techniques.
+
+\subsection{Populations}
+
+Recent studies based on new graph-based sequence alignment methods have shown that this bias affects even the detection of small variation \cite{eggertsson2017graphtyper,Garrison_2018}, and that these methods can be used to mitigate its effect on the study of ancient DNA \cite{martiniano2019removing} and RNA sequencing data \cite{Kim_2019}.
+Others have demonstrated several Mbp of sequence are present in each new individual and not in the reference \cite{li2010building,Steinberg_2016,Audano_2019}.
+% ... and this may include genes of some importance (TODO / cite)
+Estimates based on short read sequencing data have placed the human pangenome at between 1\% \cite{li2010building} and 10\% \cite{sherman2019assembly} larger than the the GRCh38 human reference assembly.
+We should expect this estimate to rise as we consider larger cohorts of humans, and to gain greater insight into the placement and significance of these novel sequences when they are discovered in whole genome teleomere-to-telomere assemblies constructed from long single-molecule sequencing data \cite{miga2019telomere,Langley_2019}.
+
+Efficiently relating new sequences to such rich data resources will require the application of new kinds of resequencing and new models for bioinformatic analysis that support the inference of sensitive all-to-all relationships between large collections of large genomes.
+The genomics community is today working to determine what kinds of data models will allow researchers to fully exploit pangenomic data from humans and other species.
+%Much attention has been given to the type of data structure which
+
+In addition to allowing the use of pangenomes in genome inference, the decreasing cost of whole genome assembly suggests that a new problem will arise in comparing whole genomes to each other.
+This issue of whole genome alignment or comparison suggests an end to the dominance of resequencing based tools, and implies the need for greater focus on methods that can efficiently process and report on whole assemblies.
+
+%In precision medicine, we seek accurate inference of a given patient genome.
+%Improving our prior model for what sequences we might see in any genome will reduce the time and cost required to infer a patient genome.
+%Provided that With most of the alleles in a given individual in the reference, 
+
+\subsection{Pangenomic models}
+
+A \emph{pangenome model} is a data structure that represents the genomic sequences of a population, a species, a clade, or even a metagenome \cite{computational2016computational}.
+The model serves as a central coordinating entity to describe the collection of sequences and genomes in the pangenome.
+It may be indexed to allow for fast access to attributes of interest, such as to enable the matching of new sequences into it, or the extraction of genomes that that it was built from.
+Pangenomes models have many shapes.
+
+These models can take linear forms.
+They can be represented as collections of linear sequences, such as in the FASTA format, with smaller variation represented in auxiliary VCF files.
+A similar pangenomic model is the multiple sequence alignment, which can be built for any syntenic region of a collection of genomes.
+However, both approaches have difficulty when representing complex and structural variation, such as copy number changes or translocations, and they must be augmented with \emph{ad hoc} information to do so.
+
+Graphical pangenome representations naturally handle all kinds of variation, both small and large.
+These embed the pangenome in a graph where nodes are labeled with DNA sequences and edges represent linkages between successive nodes that occur in some set of the genomes.
+They may represent both strands of DNA (bidirected), allow inversions (bi-edged), allow cyclic representations of copy number variations (cyclic).
+
+An efficient and popular approach is to break the input genomes into sequences of a fixed length $k$, yielding $k$-mers that together imply a regular and efficient graphical structure known as the De Bruijn Graph (DBG).
+This graph may be annotated, or colored, with information of the presence or absence of particular sequences in different individuals or biosamples, forming the \emph{colored} DBG.
+DBGs have the advantage of representing the graph structure implicitly.
+The DBG contains an edge for each pair of $k$-mers where the last $k-1$ bp of the first $k$-mer matches the first $k-1$ bp of the second.
+They also greatly simplify the process of pangenome construction, which can be built from any kind of input data that, and typically require only the specification of a length $k$ and an abundance threshold required to retain a particular $k$-mer.
+However, they are lossy models that cannot reproduce their input, within which all repeated sequences shorter than $k$ are likely to collapse.
+
+%In contrast to $k$-mer based models, which represent links implicitly,
+\emph{Genome graphs} explicitly extend collections of linear sequences of arbitrary length with links that describe possible connections between sequences \cite{Paten_2017}.
+These graphs can be seen as a kind of language model, in which each genome or sequence in the pangenome is a valid expression.
+However, they also admit many sequences which are highly unlikely combinations of actual genomes.
+To provide further structure to genome graphs, \emph{variation graphs} embed the observed linear sequences of the pangenome in the graph as paths, or walks through the sequences of the graph \cite{Garrison_2018}.
+Variation graphs are thus fully lossless pangenomic models that represent both a collection of sequences and their mutual alignment.
+They are capable of representing all other kinds of pangenomic models, and provide stable coordinate systems based on the genomic sequences embedded within them.
+%The set of sequences embedded within these graphs may be compressed into data structures that  \cite{Siren_2019}.
+
+%The disadvantage of variation graphs is that their implementation has been difficult due to their generality.
+
+
+%Such a data structure may be compressed
+%Such sequence data can be represented in \emph{linear reference models}, like FASTA sequences, with variation represented in external files, but these approaches lack coherent representation of the relationship between sequences.
+%Supporting 
+%\footnote{\url{http://fastg.sourceforge.net/}}
+%\footnote{\url{https://github.com/GFA-spec/GFA-spec}}
+%In contrast to \emph{linear reference models}, like FASTA sequences, which require external information such as data in the variant call format (VCF)
+%Pangenomic models encode both variation and sequence in a single model.
+
+
+\subsection{Interfacing with the pangenome}
+
+Each class of pangenomic model can be used as a basis to drive biological analyses.
+And implementations of particular analytical processes may produce or consume different types of pangenomic models.
+Methods to do so are not fully equivalent.
+%To provide perspective on the scope of these approaches, we consider their
+
+%\subsection{Past reviews}
+
+%\cite{computational2016computational}.

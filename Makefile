@@ -1,10 +1,12 @@
 all: main.pdf
 
-main.pdf: main.tex bib/references.bib  sections/*.tex figures/*
-	pdflatex main.tex
-	bibtex main
+main.pdf: main.tex main.bbl sections/*.tex figures/*
 	pdflatex main.tex
 	pdflatex main.tex
 
+main.bbl: bib/references.bib
+	pdflatex main
+	bibtex main
+
 clean:
-	rm -f main.aux main.toc main.pdf main.log
+	rm -f main.aux main.toc main.pdf main.log main.bbl

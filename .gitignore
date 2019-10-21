@@ -1,3 +1,5 @@
+\#*
+.\#*
 *~
 *.aux
 *.toc
@@ -5,4 +7,4 @@
 *.blg
 *.swp
 *.log
-*.pdf
+main.pdf
