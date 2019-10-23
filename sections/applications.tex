@@ -66,7 +66,6 @@ Filtering strategies based on simulations that remove variant sites or reads wit
 Variant-aware methods, such as genome graphs, provides a means that does not rely on filtering and instead takes the sequence difference between the two alleles into account during mapping.
 The simplest approach involves creating a personalized diploid genome or transcriptome followed by the use of standard linear mapping method \cite{Turro2011-op,Rozowsky_2011,Bray_2016,Raghupathy2018-sd}.
 Methods using this approach have shown to reduce reference-bias and improve estimation of ASE, but one limitation is that they require that phased haplotypes are available for the samples investigated.
-
 Variant-aware mapping methods on the other hand does not require that the variants are phased.
 GSNAP was the first variation- and splicing-aware mapping method developed for RNA-seq data \cite{Wu2010-hv}.
 It uses a kmer-based approach where both the genome and a set of SNVs are indexed using hash tables. % We might want to add GSNAP introduction to the model section since it also works on WGS.
@@ -92,13 +91,12 @@ This allows for the current algorithms in vg to also be used for mapping of RNA-
 vg supports any type of variation, but it is limited to only known splice-junctions and thus reads that span a novel junction will only map partially. \\
 
 Similar to WGS, variation-aware analysis of RNA-seq data is important for estimating expression of genes and transcripts in highly polymorphic regions, such as HLA genes in the human major histocompatibility complex region. 
-It has been shown that estimation of expression can be improved by comparing the reads against a collection of known HLA haplotypes instead of the linear reference.
-
+It has been shown that estimation of expression can be improved by comparing the reads against a collection of known HLA haplotypes instead of the linear reference. 
 AltHapAlignR is one such method \cite{Lee2018-mm}. It first maps the RNA-seq reads to the linear reference. Unmapped reads and reads that map to the HLA region are then collected and mapped to 7 alternative haplotypes followed by expression estimation in a haplotype-specific manner. 
 While this approach improves estimation of ASE it is unclear whether the method can scale to the thousands of haplotypes known in the HLA region.
 HLApers on the other hand first aligns the RNA-seq reads against an index containing thousands of known HLA haplotypes using either a regular mapper or pseudoaligner \cite{Aguiar2019-fy}.
 The aligned reads are then used to predict the most likely haplotype pair for each gene to which the reads are aligned against a second time and from which expression is estimated.  
-Using this approach they were able to align more reads compared to using the linear reference, especially for genes with high sequence divergence from the reference, but only aligning to the HLA haplotypes might bias their results toward these. 
+Using this approach they were able to align more reads compared to using the linear reference, especially for genes with high sequence divergence from the reference, but only aligning to the HLA haplotypes might bias their results toward these. \\
 
 Using variation in the intronic regions can also be beneficial when analysing RNA-seq data. 
 Variation in these regions can either disrupt or create new splice-site motifs resulting in intron retention or novel splicing, respectively. 
