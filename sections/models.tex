@@ -6,42 +6,86 @@
 
 \subsection{Indexing genome graphs}
 
-A text index maps query strings to their occurrences in the indexed text. The occurrences are typically reported as a list of starting positions, from which one can easily determine the substrings matching the query.
+A \emph{text index} maps query strings to their occurrences in the indexed text.
+The occurrences are typically reported as a list of starting positions, from which one can easily determine the substrings matching the query.
 
-Indexing the sequences encoded in a graph is more involved. The number of $k$~bp paths often grows exponentially in $k$, and the number of distinct $k$-mers encoded as path labels may also grow exponentially. Indexing or even enumerating all $k$-mers in the graph may be infeasible for reasonable values of $k$. And if the starting position of the occurrence reported by the index is in a complex region of the graph, there may be an exponential number of $k$~bp paths to investigate.
+Indexing the sequences encoded in a graph is more involved.
+The number of $k$~bp paths often grows exponentially in $k$, and the number of distinct $k$-mers encoded as path labels may also grow exponentially.
+Indexing or even enumerating all $k$-mers in the graph may be infeasible for reasonable values of $k$, and if the starting position of the occurrence reported by the index is in a complex region of the graph, there may be an exponential number of $k$~bp paths to investigate.
 
-In practice, indexes for genome graphs must make trade-offs not encountered in text indexes. In order to limit the exponential growth, the index may only support relatively short query strings. Some indexes support longer queries by doing extensive preprocessing. In other indexes, queries mapping to complex graph regions can be slow. Instead of indexing the entire graph, the index may only contain $k$-mers from a simplified graph, or from specific paths of the graph. And while finding the path matching the query may be expensive in some cases, indexes typically save space by only reporting the starting position of the match.
+In practice, indexes for genome graphs must make trade-offs not encountered in text indexes.
+In order to limit the exponential growth, the index may only support relatively short query strings.
+Some indexes support longer queries by doing extensive preprocessing.
+In other indexes, queries mapping to complex graph regions can be slow.
+Instead of indexing the entire graph, the index may only contain $k$-mers from a simplified graph, or from specific paths of the graph.
+While finding the path matching the query may be expensive in some cases, indexes typically save space by only reporting the starting position of the match.
 
 \subsubsection{Indexing sequences using a graph}
 
-The FM-index \cite{Ferragina_2005} is a text index based on the Burrows--Wheeler transform (BWT) \cite{Burrows_1994} that is frequently used with DNA sequences. A variant of the FM-index, the RLCSA \cite{Maekinen_2010}, run-length encodes the BWT, allowing it to store and index a collection of similar sequences space-efficiently. Huang et~al.\ \cite{Huang_2010} observed that if we know a good global alignment of the sequences, we can use that information to make the index both smaller and faster. Na et~al.\ \cite{Na_2016,Na_2018} developed this approach further in their FM-index of alignment. While the articles do not mention it, both Huang et~al.\ and Na et~al.\ use the graph induced by the alignment as a space-efficient representation of the sequences.
+The FM-index \cite{Ferragina_2005} is a text index, based on the Burrows--Wheeler transform (BWT) \cite{Burrows_1994}, that is frequently used with DNA sequences.
+A variant of the FM-index, the RLCSA \cite{Maekinen_2010}, run-length encodes the BWT, allowing it to store and index a collection of similar sequences space-efficiently.
+\citeauthor{Huang_2010}\ \cite{Huang_2010} observed that if we know a good global alignment of the sequences, we can use that information to make the index both smaller and faster.
+\citeauthor{Na_2016}\ \cite{Na_2016,Na_2018} developed this approach further in their FM-index of alignment.
+While the articles do not mention it, both \citeauthor{Huang_2010}\ and \citeauthor{Na_2016}\ use the graph induced by the alignment as a space-efficient representation of the sequences.
 
 \subsubsection{Acyclic graphs}
 
 % TODO "VCF graph" is a placeholder
-GenomeMapper \cite{Schneeberger_2009} was the first graph-based read aligner. It builds a directed acyclic graph from a reference sequence and a set of variants (VCF graph). To index the graph, GenomeMapper uses a simple hash-based $k$-mer index, with $k \le 13$ to limit memory usage.
+GenomeMapper \cite{Schneeberger_2009} was the first graph-based read aligner.
+It builds a directed acyclic graph from a reference sequence and a set of variants (VCF graph).
+To index the graph, GenomeMapper uses a simple hash-based $k$-mer index, with $k \le 13$ to limit memory usage.
 
-GCSA \cite{Siren_2014} was the first attempt to use the BWT with graphs. It takes either a prebuilt DAG or generated one from a multiple alignment of sequences. GCSA then applies a number of graph transformations that preserve the path labels in the graph, until the nodes can be unambiguously sorted by the labels of the paths starting from the node. This process balances on the fine line between linear and exponential. If the complexity of the graph is above a critical threshold, the transformed graph quickly becomes too large to handle.
+GCSA \cite{Siren_2014} was the first attempt to use the BWT with graphs.
+It takes either a prebuilt DAG or generated one from a multiple alignment of sequences.
+GCSA then applies a number of graph transformations that preserve the path labels in the graph, until the nodes can be unambiguously sorted by the labels of the paths starting from the node.
+This process balances on the fine line between linear and exponential.
+If the complexity of the graph is above a critical threshold, the transformed graph quickly becomes too large to handle.
 
-BWBBLE \cite{Huang_2013} is a BWT-based representation for VCF graphs. Simple substitutions are encoded in the sequence using IUPAC codes, and the sequence is indexed using a normal FM-index. Because each base can be encoded using 8 different characters, the search branches after every base. Most branches can be quickly eliminated, however. Insertions and deletions produce separate sequences, with selected amount of context around the variant. The length of this context is an effective upper bound for query length.
+BWBBLE \cite{Huang_2013} is a BWT-based representation for VCF graphs.
+Simple substitutions are encoded in the sequence using IUPAC codes, and the sequence is indexed using a normal FM-index.
+Because each base can be encoded using 8 different characters, the search branches after every base.
+Most branches can be quickly eliminated, however.
+Insertions and deletions produce separate sequences, with selected amount of context around the variant.
+The length of this context is an effective upper bound for query length.
 
-The vBWT \cite{Maciuca_2016} took another approach to using the BWT for indexing VCF graphs. It encodes variants as \texttt{(ref|alt1|\dots)} in the sequence. When the search encounters a variant, it must branch to handle each allele separately. While both BWBBLE and vBWT trade faster index construction for slower queries, a combination of the ideas can be quite practical \cite{Buechler_2019}.
+The vBWT \cite{Maciuca_2016} took another approach to using the BWT for indexing VCF graphs.
+It encodes variants as \texttt{(ref|alt1|\dots)} in the sequence.
+When the search encounters a variant, it must branch to handle each allele separately.
+While both BWBBLE and vBWT trade faster index construction for slower queries, a combination of the ideas can be quite practical \cite{Buechler_2019}.
 
 \subsubsection{General graphs}
 
-Some text indexes are based on Lempel--Ziv parsing or context-free grammars. These indexes first find partial matches between the query string and the indexed phrases and then combine the partial matches into full matches using two-dimensional range queries. In the hypertext index \cite{Thachuk_2013}, each node is a separate phrase. Queries mapping to a single node or crossing a single edge can be matched efficiently, while finding mappings to complex graph regions can be slow.
+Some text indexes are based on Lempel--Ziv parsing or context-free grammars.
+These indexes first find partial matches between the query string and the indexed phrases and then combine the partial matches into full matches using two-dimensional range queries.
+In the hypertext index \cite{Thachuk_2013}, each node is a separate phrase.
+Queries mapping to a single node or crossing a single edge can be matched efficiently, while finding mappings to complex graph regions can be slow.
 
-Bowe et~al.\ \cite{Bowe_2012} used techniques similar to GCSA for representing de Bruijn graphs. If the graph transformations used in GCSA construction are stopped after $i$ steps, the resulting graph is equivalent to an order-$2^{i}$ de~Bruijn graph. This de~Bruijn graph can be used to approximate the original graph. There are no false negatives, but matches longer than $2^{i}$ may be false positives. By using this approach, GCSA2 \cite{Siren_2017} attempts to support fast queries in arbitrary graphs.
+Bowe et~al.\ \cite{Bowe_2012} used techniques similar to GCSA for representing de Bruijn graphs.
+If the graph transformations used in GCSA construction are stopped after $i$ steps, the resulting graph is equivalent to an order-$2^{i}$ de~Bruijn graph.
+This de~Bruijn graph can be used to approximate the original graph.
+There are no false negatives, but matches longer than $2^{i}$ may be false positives.
+By using this approach, GCSA2 \cite{Siren_2017} attempts to support fast queries in arbitrary graphs.
 
-While stopping the construction early allows GCSA2 to handle more complex graphs than GCSA, most graphs must be simplified before they can be indexed. Typical simplifications include removing high-degree nodes and complex regions from the graph and replacing them with the reference sequence. If a collection of haplotypes is available, the removed regions can be replaced with new subgraphs that contain separate paths for each distinct local haplotype \cite{Siren_2019}. This way, the index will contain all $k$-mers from the haplotypes, while usually missing $k$-mers from their recombinations.
+While stopping the construction early allows GCSA2 to handle more complex graphs than GCSA, most graphs must be simplified before they can be indexed.
+Typical simplifications include removing high-degree nodes and complex regions from the graph and replacing them with the reference sequence.
+If a collection of haplotypes is available, the removed regions can be replaced with new subgraphs that contain separate paths for each distinct local haplotype \cite{Siren_2019}.
+This way, the index will contain all $k$-mers from the haplotypes, while usually missing $k$-mers from their recombinations.
 
 \subsubsection{Indexing graphs using sequences}
 
-Instead of attempting to index the entire graph, it is often sufficient to index only selected paths in it. CHOP \cite{Mokveld_2018} takes the paths corresponding to haplotypes and breaks them into smaller pieces. The distinct pieces form an artificial linear reference, which can be used with any read aligner. The process guarantees that any substring of the haplotypes of length $k$ is also a substring of one of the pieces. As with BWBBLE, $k$ represents an effective upper bound for query length.
+Instead of attempting to index the entire graph, it is often sufficient to index only selected paths in it.
+CHOP \cite{Mokveld_2018} takes the paths corresponding to haplotypes and breaks them into smaller pieces.
+The distinct pieces form an artificial linear reference, which can be used with any read aligner.
+The process guarantees that any substring of the haplotypes of length $k$ is also a substring of one of the pieces.
+As with BWBBLE, $k$ represents an effective upper bound for query length.
 
-The Pan-genome Seed Index (PSI) \cite{Ghaffaari_2019} follows a similar approach with artificial paths. Instead of using haplotypes, PSI uses a greedy algorithm to find a set of paths that covers as many $k$~bp windows in the graph as possible. An index using these paths alone already works well in practice.
+The Pan-genome Seed Index (PSI) \cite{Ghaffaari_2019} follows a similar approach with artificial paths.
+Instead of using haplotypes, PSI uses a greedy algorithm to find a set of paths that covers as many $k$~bp windows in the graph as possible.
+An index using these paths alone already works well in practice.
 
-When a fully sensitive index is needed, PSI can reverse the role of the query strings and the graph. While complex graph regions may contain an excessive number of $k$-mers, the reads mapping to them only contain a limited number of $k$-mers. By indexing a batch of reads and searching for the complex regions in that index, all mappings of the query strings to the graph can be found with reasonable resources.
+When a fully sensitive index is needed, PSI can reverse the role of the query strings and the graph.
+While complex graph regions may contain an excessive number of $k$-mers, the reads mapping to them only contain a limited number of $k$-mers.
+By indexing a batch of reads and searching for the complex regions in that index, all mappings of the query strings to the graph can be found with reasonable resources.
 
 
 \subsection{Other population-ish succinct data structures}
