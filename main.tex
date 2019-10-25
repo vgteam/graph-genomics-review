@@ -26,18 +26,22 @@
 % Document starts
 \begin{document}
 
+\newcommand{\shorttitle}{Graph Genomics}
+\newcommand{\firstauthorlastname}{Paten}
+
 % Page header
-\markboth{Author et al.}{Short title}
+\markboth{\firstauthorlastname\ et al.}{\shorttitle}
 
 % Title
-\title{Title: Subtitle}
+\title{\shorttitle}
 
 
 %Authors, affiliations address.
-\author{Author B. Authorone,$^1$ Firstname C. Authortwo,$^2$ and D. Name Authorthree$^3$
-\affil{$^1$Department/Institute, University, City, Country, Postal code; email: author@email.edu}
-\affil{$^2$Department/Institute, University, City, Country, Postal code}
-\affil{$^3$Department/Institute, University, City, Country, Postal code}}
+\author{%
+Benedict \firstauthorlastname,$^1$ Xian Chang,$^2$ Jordan Eizenga,$^2$ Erik Garrison,$^2$ Glenn Hickey,$^2$ Jean Monlong,$^2$ Adam Novak,$^2$ Robin Rounthwaite,$^2$ Jonas Sibbesen,$^2$ and Jouni Sir\'{e}n$^2$
+\affil{$^1$Genomics Institute, University of California Santa Cruz, Santa Cruz, CA, USA, 95064; email: bpaten@ucsc.edu}
+\affil{$^2$Genomics Institute, University of California Santa Cruz, Santa Cruz, CA, USA, 95064}
+}
 
 %Abstract
 \begin{abstract}
@@ -46,7 +50,7 @@ Abstract text, approximately 150 words.
 
 %Keywords, etc.
 \begin{keywords}
-keywords, separated by comma, no full stop, lowercase
+genome graph, variation graph, graph, pangenome, reference
 \end{keywords}
 \maketitle
 

@@ -395,6 +395,9 @@ https://www.doi.org/10.1093/bioinformatics/btq057
 AlleleSeq: Diploid personal genome mapping (2011)
 https://doi.org/10.1038/msb.2011.54
 
+MMSEQ: Diploid transcriptome (2011)
+https://doi.org/10.1186/gb-2011-12-2-r13
+
 Quantifies RNA-seq reference-bias (2014)
 https://doi.org/10.1186/s13059-014-0467-2
 
