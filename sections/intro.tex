@@ -16,6 +16,7 @@ Although efficient and conceptually simple, resequencing has a significant limit
 The relationships between genomes are only visible for those sequences that are already close enough to those in the reference genome to be alignable.
 The extent that sequence information from a given sample cannot be aligned to the reference causes \emph{reference bias}.
 Given that this bias shapes the very genomic inference methods that we use to establish models of the truth \cite{zook2014integrating}, it is pervasive and will be difficult to evaluate without paradigmatic change in our sequencing and analysis techniques.
+\todo{Is anyone working on reference bias measurement specifically? Cite them here.}
 
 \subsection{Populations}
 
@@ -45,25 +46,28 @@ Pangenomes models have many shapes.
 
 These models can take linear forms.
 They can be represented as collections of linear sequences, such as in the FASTA format, with smaller variation represented in auxiliary VCF files.
+\todo{Does the collection of linear sequences and the VCF \textit{represent} the model, or \textit{is} it the model?}
 A similar pangenomic model is the multiple sequence alignment, which can be built for any syntenic region of a collection of genomes.
-However, both approaches have difficulty when representing complex and structural variation, such as copy number changes or translocations, and they must be augmented with \emph{ad hoc} information to do so.
+However, both approaches have difficulty when representing complex and structural variation, such as copy number changes or translocations, and they must be augmented with \textit{ad hoc} information to do so.
 
 Graphical pangenome representations naturally handle all kinds of variation, both small and large.
-These embed the pangenome in a graph where nodes are labeled with DNA sequences and edges represent linkages between successive nodes that occur in some set of the genomes.
+These models embed the pangenome in a graph where nodes are labeled with DNA sequences and edges represent linkages between successive nodes that occur in some set of the genomes.
 They may represent both strands of DNA (bidirected), allow inversions (bi-edged), allow cyclic representations of copy number variations (cyclic).
+\todo{This list has no conjunction, and bidirected and bi-edged aren't really the things this sentence seems to suggest.}
 
-An efficient and popular approach is to break the input genomes into sequences of a fixed length $k$, yielding $k$-mers that together imply a regular and efficient graphical structure known as the De Bruijn Graph (DBG).
-This graph may be annotated, or colored, with information of the presence or absence of particular sequences in different individuals or biosamples, forming the \emph{colored} DBG.
+An efficient and popular approach is to break the input genomes into sequences of a fixed length $k$, yielding $k$-mers that together imply a regular and efficient graphical structure known as a \emph{De Bruijn Graph} (DBG).
+\todo{``de Bruijn'' and ``De Bruijn'' are in free variation, and the only reasoning I can find to support one (``De Bruijn'') is from Wikipedia.}
+This graph may be annotated, or colored, with information of the presence or absence of particular sequences in different individuals or biosamples, forming a \emph{colored} DBG.
 DBGs have the advantage of representing the graph structure implicitly.
-The DBG contains an edge for each pair of $k$-mers where the last $k-1$ bp of the first $k$-mer matches the first $k-1$ bp of the second.
-They also greatly simplify the process of pangenome construction, which can be built from any kind of input data that, and typically require only the specification of a length $k$ and an abundance threshold required to retain a particular $k$-mer.
+A DBG contains an edge for each pair of $k$-mers where the last $k-1$ bp of the first $k$-mer matches the first $k-1$ bp of the second.
+They greatly simplify the process of pangenome construction, which can be built from any kind of input data that, and typically require only the specification of a length $k$ and an abundance threshold required to retain a particular $k$-mer.
 However, they are lossy models that cannot reproduce their input, within which all repeated sequences shorter than $k$ are likely to collapse.
 
 %In contrast to $k$-mer based models, which represent links implicitly,
 \emph{Genome graphs} explicitly extend collections of linear sequences of arbitrary length with links that describe possible connections between sequences \cite{Paten_2017}.
 These graphs can be seen as a kind of language model, in which each genome or sequence in the pangenome is a valid expression.
 However, they also admit many sequences which are highly unlikely combinations of actual genomes.
-To provide further structure to genome graphs, \emph{variation graphs} embed the observed linear sequences of the pangenome in the graph as paths, or walks through the sequences of the graph \cite{Garrison_2018}.
+To provide further structure to genome graphs, \emph{variation graphs} embed the observed linear sequences of the pangenome in the graph as \emph{paths}, or walks through the sequences of the graph \cite{Garrison_2018}.
 Variation graphs are thus fully lossless pangenomic models that represent both a collection of sequences and their mutual alignment.
 They are capable of representing all other kinds of pangenomic models, and provide stable coordinate systems based on the genomic sequences embedded within them.
 %The set of sequences embedded within these graphs may be compressed into data structures that  \cite{Siren_2019}.
@@ -83,8 +87,8 @@ They are capable of representing all other kinds of pangenomic models, and provi
 \subsection{Interfacing with the pangenome}
 
 Each class of pangenomic model can be used as a basis to drive biological analyses.
-And implementations of particular analytical processes may produce or consume different types of pangenomic models.
-Methods to do so are not fully equivalent.
+Implementations of particular analytical processes may produce or consume different types of pangenomic models.
+Methods to do so \todo{To do what?} are not fully equivalent.
 %To provide perspective on the scope of these approaches, we consider their
 
 %\subsection{Past reviews}
