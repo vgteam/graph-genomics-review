@@ -118,7 +118,7 @@ Kmers from the read are looked up in the index and the hits, matches between the
 Once the read has been mapped to one or more subgraph or regions on the graph, an alignment algorithm is used to get the final alignment to a sequence in the graph.
 
 kmer-based graph mapping algorithms diverge in how kmers are indexed, how seeds are defined, how a subgraph is chosen to align to, and which alignment algorithm is used.
-(Indexing is maybe talked about in a different section?)
+\todo{Indexing is maybe talked about in a different section?}
 Once hits have been found in the kmer index, overlapping and adjacent hits can be merged and/or extended to produce seed alignments.
 Different types of seeds (NIMSs, MEMs, SMEMs, MUMs, minimizers) are each defined by a different set of properties such as the number of gaps and mismatches allowed and how often they occur in the reference.
 Seeds can be clustered by their proximity on the graph and clusters with that are less likely to produce a good alignment can be filtered out at this step.
@@ -141,7 +141,28 @@ HISAT2 and vg can align both RNA and DNA.
 
 
 \subsection{De Bruijn graph mappers}
-% Robin
+% Adam
+
+% Useful to map to DBGs
+
+% BlastGraph
+    % Works on DBGs and other SGs
+    % Find paths within edit distance of query
+    % Hash table index of all seeds of a certain length
+        % Stores only start positions
+    % Compute edit distances and alignments out in both directions from each seed
+        % Deduplicate when multiple seed ssuggest the same alignment
+    % Wrote a Java Cytoscape plugin and a C implementation
+    
+
+% BlastGraph (2012) \citep{Holley_2012}
+% BGREAT (2016) \citep{Limasset_2016}
+% deBGA (2016) \citep{Liu_2016}
+% hybridSPAdes (2016) \citep{Antipov_2015}
+% BrownieAligner (2018) \citep{Heydari_2018}
+
+% See also: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1103-9
+
 
 \subsection{Non-graph population mapping tools}
 % Erik
