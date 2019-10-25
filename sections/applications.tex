@@ -51,7 +51,7 @@ It was shown to be much more accurate than linear reference-based approaches, an
 % Glenn
 
 CHiP-seq data, reads that bind to specific transcription factors, are mapped back to the reference genome in order to locate binding sites.  
-Graph Peak Caller is based on vg and is the first tool to use a genome graph for this process \cite{grytten2019graph}.
+Graph Peak Caller is based on vg and is the first tool to use a genome graph for this process \cite{Grytten_2019}.
 It was shown to find binding sites more enriched for known DNA binding motifs than linear methods on \emph{A. thaliana}.
 It was also applied to human data to discover novel sites for enhancers in the human genome \cite{groza2019personalized}. 
 
@@ -92,7 +92,7 @@ vg supports any type of variation, but it is limited to only known splice-juncti
 
 Similar to WGS, variation-aware analysis of RNA-seq data is important for estimating expression of genes and transcripts in highly polymorphic regions, such as HLA genes in the human major histocompatibility complex region. 
 It has been shown that estimation of expression can be improved by comparing the reads against a collection of known HLA haplotypes instead of the linear reference. 
-AltHapAlignR is one such method \cite{Lee2018-mm}. It first maps the RNA-seq reads to the linear reference. Unmapped reads and reads that map to the HLA region are then collected and mapped to 7 alternative haplotypes followed by expression estimation in a haplotype-specific manner. 
+AltHapAlignR is one such method \cite{Lee_2018}. It first maps the RNA-seq reads to the linear reference. Unmapped reads and reads that map to the HLA region are then collected and mapped to 7 alternative haplotypes followed by expression estimation in a haplotype-specific manner. 
 While this approach improves estimation of ASE it is unclear whether the method can scale to the thousands of haplotypes known in the HLA region.
 HLApers on the other hand first aligns the RNA-seq reads against an index containing thousands of known HLA haplotypes using either a regular mapper or pseudoaligner \cite{Aguiar2019-fy}.
 The aligned reads are then used to predict the most likely haplotype pair for each gene to which the reads are aligned against a second time and from which expression is estimated.  
