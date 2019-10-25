@@ -26,7 +26,7 @@ It is relatively tightly tied to the assembly graph use case, requiring each (se
 Where SGTK used Cytoscape.js, AGB relies on the venerable \texttt{graphviz} tool itself, compiled for execution in the browser \citep{Mikheenko_2019, Ellson_2001}.
 This lets it lay out graphs in a more flow-guided way, using graphviz's rank-based algorithms, as compared to Cytoscape.js's more force-directed-looking layouts \citep{Mikheenko_2019, Kunyavskaya_2018}.
 AGB is built around the idea of splitting up an assembly graph and visualizing portions of it, and features many ways to do this, including linear-reference-based and minimum-edge-cut-based approaches \citep{Mikheenko_2019}.
-On the backend, the tool is built around potentially megabyte-scale JSON files \footnote{\url{https://github.com/almiheenko/almiheenko.github.io/blob/8f4b2f8c7c498f04fa32f53f69b4bc59888a14f0/AGB/Flye_Human/data/repeat_graph.json}}, with no apparent provision for region-specific download, but the tool is still demonstrated to be scalable enough to handle human and other eukaryotic assembly graphs \citep{Mikheenko_2019}.
+On the backend, the tool is built around potentially megabyte-scale JSON files\footnote{\url{https://github.com/almiheenko/almiheenko.github.io/blob/8f4b2f8c7c498f04fa32f53f69b4bc59888a14f0/AGB/Flye_Human/data/repeat_graph.json}}, with no apparent provision for region-specific download, but the tool is still demonstrated to be scalable enough to handle human and other eukaryotic assembly graphs \citep{Mikheenko_2019}.
 
 There is a difference in scale when moving from an assembly or scaffold graph to a comprehensive pangenome graph for even a species with as little diversity as humans.
 While tools like SGTK and AGB have been demonstrated on graphs with tens of thousands of entities, the 1000 Genomes Project dataset contains 88 million known human variants \citep{1000_2015}, which gives a density over the 3 billion base human genome of about 34 bases per variant, and a comprehensive pangenome graph with tens to hundreds of millions of elements---a much larger graph than those that SGTK and AGB have been shown to work with.
@@ -118,7 +118,7 @@ Kmers from the read are looked up in the index and the hits, matches between the
 Once the read has been mapped to one or more subgraph or regions on the graph, an alignment algorithm is used to get the final alignment to a sequence in the graph.
 
 kmer-based graph mapping algorithms diverge in how kmers are indexed, how seeds are defined, how a subgraph is chosen to align to, and which alignment algorithm is used.
-(Indexing is maybe talked about in a different section?)
+\todo{Indexing is maybe talked about in a different section?}
 Once hits have been found in the kmer index, overlapping and adjacent hits can be merged and/or extended to produce seed alignments.
 Different types of seeds (NIMSs, MEMs, SMEMs, MUMs, minimizers) are each defined by a different set of properties such as the number of gaps and mismatches allowed and how often they occur in the reference.
 Seeds can be clustered by their proximity on the graph and clusters with that are less likely to produce a good alignment can be filtered out at this step.
@@ -141,7 +141,28 @@ HISAT2 and vg can align both RNA and DNA.
 
 
 \subsection{De Bruijn graph mappers}
-% Robin
+% Adam
+
+% Useful to map to DBGs
+
+% BlastGraph
+    % Works on DBGs and other SGs
+    % Find paths within edit distance of query
+    % Hash table index of all seeds of a certain length
+        % Stores only start positions
+    % Compute edit distances and alignments out in both directions from each seed
+        % Deduplicate when multiple seed ssuggest the same alignment
+    % Wrote a Java Cytoscape plugin and a C implementation
+    
+
+% BlastGraph (2012) \citep{Holley_2012}
+% BGREAT (2016) \citep{Limasset_2016}
+% deBGA (2016) \citep{Liu_2016}
+% hybridSPAdes (2016) \citep{Antipov_2015}
+% BrownieAligner (2018) \citep{Heydari_2018}
+
+% See also: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1103-9
+
 
 \subsection{Non-graph population mapping tools}
 % Erik
