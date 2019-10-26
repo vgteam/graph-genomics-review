@@ -5,20 +5,24 @@
 
 Once one has constructed a graph pangenomic model, one might want to look at it.
 A number of tools have been developed for this purpose.
+\todo[inline]{JME: i think this section would benefit from a more inspirational lead-in. we want people to think that graph visualization is important, not just a thing that exists}
 
-Bandage (\textbf{B}ioinformatics \textbf{A}pplication for \textbf{N}avigating \textit{\textbf{D}e novo} \textbf{A}ssembly \textbf{G}raphs \textbf{E}asily) \citep{Wick_2015} is one of the most popular \citep{Mikheenko_2019}.
+Bandage (\textbf{B}ioinformatics \textbf{A}pplication for \textbf{N}avigating \textit{\textbf{D}e novo} \textbf{A}ssembly \textbf{G}raphs \textbf{E}asily) \citep{Wick_2015} is one of the most popular \citep{Mikheenko_2019}.\todo{JME: IMO, spelling out these acronyms breaks up the flow and is not very important. bioinformatics acryonyms are shit, we don't need to elevate them in the text.}
 Originally designed for working with bacterial assembly and meta-assembly graphs \citep{Wick_2015}, it supports a wide range of formats and graph  paradigms.
 It can be effectively used for interactively visualizing and exploring subregions of human-scale pangenome graphs \citep{Garrison_2019}, but its shortcomings become apparent at larger scales or with higher degrees of connectivity between graph regions \citep{Mikheenko_2019}.
 The tool does have support for restricting the portion of the graph displayed to a particular ``scope'', but the tool is fundamentally built around laying out the graph under study in two dimensions, with all nodes represented, and panning and zooming around it.
 Moreover, while the tool includes the ability to search for sequences in the graph, it does not have any ability to structure graph display using known linearization information.
 Additionally, Bandage is implemented as a cross-platform native C++/Qt application \citep{Wick_2015}, which allows the tool to be self-contained but precludes the use of cloud resources for dealing with larger graphs; all graph data must be stored and processed on the user's machine at visualization time.
+\todo[inline]{JME: i'm worried some of these implementation details might be too in-the-weeds. they have important implications, but i think this discussion would be more accessible to a general audience if we refocus it on the effects that these implementation decisions have on the user }
 
 GfaViz is another C++/Qt application for visualizing genome graphs which claims full support for newer GFA2 features, such as the gaps which allow GFA2 to represent scaffold graphs in addition to assembly graphs; these features are not available in Bandage, which supports only GFA1 \citep{Gonnella_2018}.
 However, unlike Bandage, the GfaViz project has not released any binary builds or user interface screenshots of their application, so Bandage remains the more accessible tool.
+\todo{JME: we should probably introduce the GFA format before mentioning it. i wonder where we should do that...}
 
 Departing from the desktop application model, two recent graph visualization tools, \textbf{S}caffold \textbf{G}raph \textbf{T}ool\textbf{K}it (SGTK) and \textbf{A}ssembly \textbf{G}raph \textbf{B}rowser (AGB), adopt a build-a-web-page model, in which a web-based visualization is prepared that does not rely on further server support, lowering end-user system requirements \citep{Kunyavskaya_2018,Mikheenko_2019}.
 SGTK is designed for visualizing scaffold graphs, which can have negative-overlap gaps between sequenced segments, and is based around the in-browser Cytoscape.js graph layout and rendering library \citep{Kunyavskaya_2018}.
 It includes a potentially highly interpretable, reference-sequence-structured ``browser'' layout, but its use of Cytoscape.js appears to push it towards a generic circular node representation, rather than the noodles of Bandage \citep{Kunyavskaya_2018}.
+\todo{JME: i love `noodles', but i don't know if it's a science word}
 Moreover, its authors do not demonstrate its usability on large graphs, with the largest graph evaluated having only 923 nodes and 60,679 edges \citep{Kunyavskaya_2018}.
 
 AGB has a similar overall design to SGTK, but makes different implementation choices.
@@ -36,10 +40,15 @@ To deal with comprehensive pangenome graphs with sequence data, one design appro
 This is the avenue taken by the Sequence Tube Map, which renders regions of pangenome graphs using a visual language inspired by transit system maps \citep{Beyer_2019}.
 This tool operates at a much more magnified zoom level than tools designed to work with assembly graphs, and is useful for visualizing base-scale variation and short read mapping locations in human-chromosome-scale graphs \citep{Beyer_2019}.
 However, its imposition of a local linear ordering and its limited graph simplification tools make it difficult to use on larger regions \citep{Beyer_2019}.
-Additionally, its architectural decision to load the graph from disk for every request makes latency prohibitively high when working with combiend graphs above the scale of a single chromosome, so the tool is not suitable for graphs which cannot be broken up into chromosome-scale connected components.
+Additionally, its architectural decision to load the graph from disk for every request makes latency prohibitively high when working with combined graphs above the scale of a single chromosome, so the tool is not suitable for graphs which cannot be broken up into chromosome-scale connected components.
 
 Other approaches to visualizing comprehensive pangenome graphs rely on restricting the problem in order to improve efficiency.
-For example, by forcing the sequence-bearing nodes of the graph into a one-dimensional layout, and producing vector rather than raster output, the \texttt{vg viz} tool promises to render graphs of arbitrary size and complexity in linear time \citep{Garrison_2019}. The intended use case seems to be to use a single global linearization, and to interactively render regions of it for display, but it is also possible to non-interactively render an entire graph to a very large image \citep{Garrison_2019}. The tool is designed around a base-level visual representation of the graph, and optimized for comparing long embedded paths in the graph, on the basis of which nodes they do or do not visit \citep{Garrison_2019}. However, as with the Sequence Tube Map, it can be difficult to understand high-level or nonlinear structures in such a linearized layout \citep{Garrison_2019}. In contrast to the Sequence Tube Map no provision is made for visualizing short read alignments \citep{Garrison_2019}.
+For example, by forcing the sequence-bearing nodes of the graph into a one-dimensional layout, and producing vector rather than raster output, the \texttt{vg viz} tool promises to render graphs of arbitrary size and complexity in linear time \citep{Garrison_2019}. 
+\todo{JME: i don't know if our audience will understand the distinction between raster and vector}
+The intended use case seems to be to use a single global linearization, and to interactively render regions of it for display, but it is also possible to non-interactively render an entire graph to a very large image \citep{Garrison_2019}. 
+The tool is designed around a base-level visual representation of the graph, and optimized for comparing long embedded paths in the graph, on the basis of which nodes they do or do not visit \citep{Garrison_2019}. 
+However, as with the Sequence Tube Map, it can be difficult to understand high-level or nonlinear structures in such a linearized layout \citep{Garrison_2019}. 
+In contrast to the Sequence Tube Map no provision is made for visualizing short read alignments \citep{Garrison_2019}.
 
 Figure~\ref{fig:visualization} provides a visual overview of the visualization methods surveyed here. It remains an open problem to interactively visualize a comprehensive human pangenome graph, potentially including interchromosomal connections, at a variety of zoom levels, with modestly provisioned end-user hardware.
 
@@ -86,11 +95,15 @@ Figure~\ref{fig:visualization} provides a visual overview of the visualization m
 \subsection{Finding structures in pangenome graphs}
 % Jordan
 
+\todo[inline]{JME: We need to decide whether to do this section}
+
 \subsection{Graph alignment algorithms}
+
 Often, genomic sequence data can only be interpreted in the context of other sequences. 
 For this reason, sequence comparison is at the core of many genomic analyses, and sequence alignment is the essential method for doing so. 
 However, classic alignment algorithms like Smith-Waterman\cite{Smith_1981} do not directly apply to sequence graphs. 
 Accordingly, the increasing prominence of variation graph methods has been fueled by fundamental algorithmic research in graph alignment, and it has also spurred further research.
+\todo{JME: this lead-in is redundant with the introduction, but it could be rewritten to tie into that content. i'll do that later.}
 
 The trend in the graph alignment research is toward greater generality and faster run time. 
 The generality comes in two main forms. 
@@ -102,7 +115,7 @@ Some earlier algorithms require restricted scoring functions to achieve efficien
 
 Graph alignment research also has improved the algorithms' run time. 
 The first algorithms only required restricted graphs in order to run at comparable speed to non-graph sequence alignment algorithms, or else simply ran slower on general graphs\cite{Lee_2002, Kavya_2019}. 
-It has now been shown that graph alignment can run at the same speed as non-graph alignment (in the computer scientist's sense of ``Big-O'' asymptotics), which is believed to be essentially optimal\cite{Jain_2019a,Equi_2019}. 
+It has now been shown that graph alignment can run at the same speed as non-graph alignment (in the computer scientist's sense of ``Big-O'' asymptotics). This is believed to be essentially optimal\cite{Jain_2019a,Equi_2019}. 
 Many of the advances in this space came from rediscovering analogs to the graph alignment problem in the related areas of regular expressions and hypertext\cite{Myers_1989,Amir_1997}. 
 In addition to these theoretical results, researchers have also developed modified algorithms that run quickly the practical context of real-world computer architectures\cite{Suzuki_2018,Rautiainen_2019,Jain_2019b}.
 
@@ -110,23 +123,30 @@ From a practical standpoint, the primary benefit of this research in alignment a
 Graph alignment algorithms are a central component of the graph mapping tools described below.
 
 \subsection{Variation graph mappers}
+
+\todo[inline]{JME: I think this section is missing a brief introduction to the seed and extend paradigm. that's probably where the discussion should start.}
 There are several mapping algorithms for variation graphs which extend concepts from linear mapping algorithms into a graph space.
 Variation graph mapping algorithms generally fall into one of two categories: kmer-based and Burrows-Wheeler Transform-based.
+\todo{JME: we need to harmonize the formatting of `k-mer' across the sections}
 Kmer-based approaches for mapping to variation graph use an index that maps kmers in the graph to their location.
 These algorithms generally follow the same structure.
 Kmers from the read are looked up in the index and the hits, matches between the read and the graph, are turned into seed alignments which may be clustered by their position on the graph to get a subgraph to align against.
+\todo{JME: why only discussing k-mers here when you also brought up BWT?}
 Once the read has been mapped to one or more subgraph or regions on the graph, an alignment algorithm is used to get the final alignment to a sequence in the graph.
 
 kmer-based graph mapping algorithms diverge in how kmers are indexed, how seeds are defined, how a subgraph is chosen to align to, and which alignment algorithm is used.
 \todo{Indexing is maybe talked about in a different section?}
 Once hits have been found in the kmer index, overlapping and adjacent hits can be merged and/or extended to produce seed alignments.
 Different types of seeds (NIMSs, MEMs, SMEMs, MUMs, minimizers) are each defined by a different set of properties such as the number of gaps and mismatches allowed and how often they occur in the reference.
+\todo{JME: these are technical abbreviations that we can't assume the readers will know. really i think the commonality is that they're exact matches.}
 Seeds can be clustered by their proximity on the graph and clusters with that are less likely to produce a good alignment can be filtered out at this step.
 Clusters can define a subgraph that the read gets aligned to.
 Clustering and the repeated distance calculations it involves can be a prohibitively slow process and it is omitted in some algorithms.
 Alignment, either to the graph itself or to a subgraph, can be done using the algorithms described above.
+\todo[inline]{JME: despite how it's introduced a lot of this content applies to non-k-mer seeds as well. some of this content could be reworked into a good introductory paragraph for this section}
 
-HISAT2 is a BWT-based mapping algorithm that uses an adaptation of the Ferragina Manzini (FM) index, a hierarchical graph FM index (HGFM).
+HISAT2 is a BWT-based mapping algorithm that uses an adaptation of the Ferragina-Manzini (FM) index, a hierarchical graph FM index (HGFM).
+\todo{JME: it actually uses a GCSA, not a standard FM index}
 An FM index is a compressed representation of the graph that is optimized for substring searching.
 The HGFM is comprised of two FM indexes: a global index of the entire genome and local indexes of smaller portions of the genome and their variants.
 Repeat sequences are combined into a separate index, keeping only one copy of each repeat so sequences in repetitive regions are only aligned once.
@@ -135,6 +155,7 @@ Alignment is done by searching the FM indexes, starting with the global index.
 
 Each of these graph alignment tools has demonstrated an increase in sensitivity over mapping to a standard linear reference.
 GenomeMapper, vg map, Seven Bridges' mapping algorithm, and HISAT2 are primarily short read mappers.
+\todo{JME: i think 7bg's tool is called Graph Genome Aligner}
 GraphAligner is a long read mapper and V-MAP is used for both.
 V-MAP doesn't align reads itself but finds a small subgraph that a read can be aligned to using existing mappers. 
 HISAT2 and vg can align both RNA and DNA.

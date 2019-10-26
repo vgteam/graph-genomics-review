@@ -20,7 +20,7 @@ Another approach used a graph derived from the 1000 Genomes Project \cite{Rakoce
 Difficult and diverse genomic regions stand to gain the most by moving from a linear reference to genome graph.
 To this end, much work has been done exploring the application of graphs to the major histocompatibility complex (MHC) region on chromosome 6, which contains the human leukocyte antigen (HLA) genes.
 Determining the HLA alleles in a sample, or HLA typing, is often of great importance, but due to high polymorphism within the MHC region, WGS mapped to the linear reference cannot be effectively used and more costly Sanger sequencing is required.
-The Population Reference Graph (PRG) \cite{dilthey2015improved} is created from a multiple sequence alignment (MSA) of know haplotypes and variants spanning the MHC region.
+The Population Reference Graph (PRG) \cite{dilthey2015improved} is created from a multiple sequence alignment (MSA) of known haplotypes and variants spanning the MHC region.
 Reads are mapped to to the graph then used to extract a pair of ``chromotype'' paths that best represent them, which are then used linear references for standard mapping and calling tools.
 PRG*HLA \cite{dilthey2018hla} explicitly models the HLA genes, rather than the whole MHC region.
 HLA types are imputed directly from the graph, rather than intermediate chromotypes, providing faster performance and  HLA*LA \cite{dilthey2019hla} further improves runtime and adds support for long read and assembly inputs.

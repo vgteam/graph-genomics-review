@@ -26,7 +26,7 @@ By first implementing a disk-backed sort of the alignment and sequence inputs, t
 In a comparison of seqwish to MSGA on the challenging-to-sequence region Major Histocompatibility Complex (~5Mb), seqwish used several times less RAM than MSGA, but had to save 12 GB of intermediate files during construction.
 
 
-Novograph's algorithm also constructs graphs directly from assembly contigs without the need to integrate sequence information from a linear genome, although it requires a linear reference to determine the relative location of the contigs before integrating them into a graph. \cite{Biederstedt_2018} 
+Novograph's algorithm also constructs graphs directly from assembly contigs without the need to integrate sequence information from a linear genome, although it requires a linear reference to determine the relative location of the contigs before integrating them into a graph. \cite{Biederstedt2018} 
 The algorithm first computes a global pairwise alignment to determine the approximate placement of each input contig, which it uses to perform an approximate global multiple sequence alignment between all input contigs and the reference genome.
 This identifies homology relationships between the input sequences and the reference genome.
 The contigs are then merged at positions that are both homologous and sequence-identical to create a directed acyclic graph.
@@ -165,6 +165,7 @@ While stopping the construction early allows GCSA2 to handle more complex graphs
 Typical simplifications include removing high-degree nodes and complex regions from the graph and replacing them with the reference sequence.
 If a collection of haplotypes is available, the removed regions can be replaced with new subgraphs that contain separate paths for each distinct local haplotype \cite{Siren_2019}.
 This way, the index will contain all $k$-mers from the haplotypes, while usually missing $k$-mers from their recombinations.
+\todo{JME: this paragraph feels a bit in-the-weeds to me. i think it could probably be cut}
 
 \subsubsection{Indexing graphs using sequences}
 

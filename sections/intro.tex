@@ -5,6 +5,7 @@ Our understanding of the structure and function of genomes depends on our abilit
 In the early days of genomics, when the cost of sequencing was high, expensive algorithms would be applied to relate all sequences in a given experiment to all others, typically yielding multiple sequence alignments.
 These analyses were thus effectively \emph{pangenomic}, in their unified representation of all the genomic information in the analysis \cite{computational2016computational}.
 Each sequence was related to all others, and optimization procedures applied to the entire collection were used to obtain the most-parsimonious set of relationships between them.
+\todo{JME: we should make sure that we tie back to this section when we discuss constructing pan genome graphs from alignments}
 
 Increasing data scales have made such approaches prohibitively costly.
 The arrival of high-quality reference genomes and low-cost short read sequencing has encouraged the use of \emph{resequencing}, wherein reads from each sample are aligned to a single common reference genome.
@@ -22,8 +23,10 @@ Given that this bias shapes the very genomic inference methods that we use to es
 
 Recent studies based on new graph-based sequence alignment methods have shown that this bias affects even the detection of small variation \cite{eggertsson2017graphtyper,Garrison_2018}, and that these methods can be used to mitigate its effect on the study of ancient DNA \cite{martiniano2019removing} and RNA sequencing data \cite{Kim_2019}.
 Others have demonstrated several Mbp of sequence are present in each new individual and not in the reference \cite{li2010building,Steinberg_2016,Audano_2019}.
+\todo[inline]{JME: it seems a bit strange to me that we're discussing specific tools/applications at this point in the introduction, especially since we haven't even mentioned graphs yet. maybe something like "methods based on pangenomic models are showing promise in reducing bias in areas like blah blah..."}
 % ... and this may include genes of some importance (TODO / cite)
 Estimates based on short read sequencing data have placed the human pangenome at between 1\% \cite{li2010building} and 10\% \cite{sherman2019assembly} larger than the the GRCh38 human reference assembly.
+\todo{JME: can we make it clearer how we're measuring the size of a pan-genome?}
 We should expect this estimate to rise as we consider larger cohorts of humans, and to gain greater insight into the placement and significance of these novel sequences when they are discovered in whole genome teleomere-to-telomere assemblies constructed from long single-molecule sequencing data \cite{miga2019telomere,Langley_2019}.
 
 Efficiently relating new sequences to such rich data resources will require the application of new kinds of resequencing and new models for bioinformatic analysis that support the inference of sensitive all-to-all relationships between large collections of large genomes.
@@ -89,6 +92,7 @@ They are capable of representing all other kinds of pangenomic models, and provi
 Each class of pangenomic model can be used as a basis to drive biological analyses.
 Implementations of particular analytical processes may produce or consume different types of pangenomic models.
 Methods to do so \todo{To do what?} are not fully equivalent.
+\todo[inline]{JME: I think this section should probably be expanded or cut}
 %To provide perspective on the scope of these approaches, we consider their
 
 %\subsection{Past reviews}
