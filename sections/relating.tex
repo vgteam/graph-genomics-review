@@ -164,21 +164,75 @@ HISAT2 and vg can align both RNA and DNA.
 \subsection{De Bruijn graph mappers}
 % Adam
 
-% Useful to map to DBGs
+% Style Note: apparently de Bruijn Graph should be lower case unless otherwise required to be capitalized.
+
+% Useful to map to dBGs
 
 % BlastGraph
-    % Works on DBGs and other SGs
+    % Works on dBGs and other SGs
     % Find paths within edit distance of query
     % Hash table index of all seeds of a certain length
         % Stores only start positions
     % Compute edit distances and alignments out in both directions from each seed
-        % Deduplicate when multiple seed ssuggest the same alignment
+        % Deduplicate when multiple seeds suggest the same alignment
     % Wrote a Java Cytoscape plugin and a C implementation
+
+% BGREAT
+    % Works on dBGs and actually maps
+    % Justified in terms of mapping to assemblies
+    % Mapping to dBGs is NP-complete even without gaps
+        % How does this square with the edit distance algorithm's algorithmics?
+            % Finding all the seed starts in the dBG for BlastGraph could be exponential for seeds longer than nodes
+            % Recursive DFS tail edit distance alignment could also be exponential
+            % But dBG overlap structure limits the density of braiding
+        % The proof is by reducing Hmailtonian Path (path that visits each node once) -> restricted Traveling Salesman -> general graph mapping -> mapping to dBG
+    % Actual tools: GGMAP (BGREAT + Bowtie2 for unitigs), and BGREAT for branching paths
+        % BGREAT uses the dBG overlap regons themselves as seeds
+        % They think they can get away with only mapping with Bowtie2 if they don't find a good mapping with BGREAT
+            % They might be right; the dBG structure kind of precludes any competitive mappings in the middle of unitigs when there's a good mapping that covers an overlap
+                % Because if there was another similar place in the genome it would have an overlap with the stuff it is similar to
+        % Uses a greedy threading approach starting from the outer overlap sequences that occur in the read
+            % Drop the whole read if it can't find a mapping for each end from the outermost overlap seeds.
+        % Get linear time mapping which is nice
+        % Not quite clear to me how they did the comparisons: are they just giving the time that their bowtie2 and blastgraph steps took on the reads that were fed to them?
+            % Maybe they didn't find other comparable tools to compare to.
+
+% deBGA
+    % Justified in terms of mapping to variation and MSAs
+    % "Putative Read Position" (PRP) (basically read start position/seed offset) 
+    % Uses MEM-based seeding
+    % Alignment is either exact match extension or aligning to "clustered" sequences, no string-to-graph
+    % Paired end support (which BGREAT and BlastGraph don't mention)
+    % Very fast, even on human
+    % Not clear how reads are surjected to linear space for comparison
+        % "Multiple equally best alignments"
+            % deBGA and BWA with 1000 max mappings
+        % If not surjected the problem is easier (no need to try to resolve repeats)
+
+% hybridSPAdes
+    % This is a short-and-long-read assembler, not a mapper
+    % Maps long reads into a short-read dBG-derived graph
+        % Just looks for 8 or more matching 13-mers to an "edge" for "support"
+        % Does exponential string to graph alignment for the hard parts
+        % Propose a polynomial algorithm for aligning between anchored ends for minimum edit distance
+
+% BrownieAligner
+    % Branch and bound approach to seed and extend
+    % "Higher order markov model" to mark paths in the graph that exist, like our GBWT
+        % Two pass approach where they train the markov model based on one batch of alignments and then realign
+        % I think this is what lets them learn novel paths not in the linear reference but still catch errors
+        % "Markov models offers a significant improvement for the alignment of these harder to align reads."
+    % Lets seeds be smaller then dBG kmer size
+    % "for each dataset the best accuracy for BrownieAligner is always higher than the best accuracy for other tools"
+
+% Really comparing and contrasting the empirical speed, accuracy, etc. claims of these tools would be hard and really requires independent experiments
+    % Although BrownieAligner compares against BGREAT and deBGA
     
 
 % BlastGraph (2012) \citep{Holley_2012}
 % BGREAT (2016) \citep{Limasset_2016}
 % deBGA (2016) \citep{Liu_2016}
+    % deBGA-VARA is a variation-aware extension but not published open-access
 % hybridSPAdes (2016) \citep{Antipov_2015}
 % BrownieAligner (2018) \citep{Heydari_2018}
 
