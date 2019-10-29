@@ -137,30 +137,20 @@ Graph alignment algorithms are a central component of the graph mapping tools de
 
 \subsection{Variation graph mappers}
 
-\todo[inline]{JME: I think this section is missing a brief introduction to the seed and extend paradigm.
-that's probably where the discussion should start.}
-There are several mapping algorithms for variation graphs which extend concepts from linear mapping algorithms into a graph space.
-Variation graph mapping algorithms generally fall into one of two categories: kmer-based and Burrows-Wheeler Transform-based.
-\todo{JME: we need to harmonize the formatting of `k-mer' across the sections}
-Kmer-based approaches for mapping to variation graph use an index that maps kmers in the graph to their location.
-These algorithms generally follow the same structure.
-Kmers from the read are looked up in the index and the hits, matches between the read and the graph, are turned into seed alignments which may be clustered by their position on the graph to get a subgraph to align against.
-\todo{JME: why only discussing k-mers here when you also brought up BWT?}
-Once the read has been mapped to one or more subgraph or regions on the graph, an alignment algorithm is used to get the final alignment to a sequence in the graph.
+Once a significant barrier to pangenomics research, the field now provides a array of well-performing, increasingly efficient read mapping tools for variation graphs. 
+These tools represent a menu of performance tradeoffs that researchers can choose among depending on their study's requirements.
 
-kmer-based graph mapping algorithms diverge in how kmers are indexed, how seeds are defined, how a subgraph is chosen to align to, and which alignment algorithm is used.
-\todo{Indexing is maybe talked about in a different section?}
-Once hits have been found in the kmer index, overlapping and adjacent hits can be merged and/or extended to produce seed alignments.
-Different types of seeds (NIMSs, MEMs, SMEMs, MUMs, minimizers) are each defined by a different set of properties such as the number of gaps and mismatches allowed and how often they occur in the reference.
-\todo{JME: these are technical abbreviations that we can't assume the readers will know.
-really i think the commonality is that they're exact matches.}
-Seeds can be clustered by their proximity on the graph and clusters with that are less likely to produce a good alignment can be filtered out at this step.
-Clusters can define a subgraph that the read gets aligned to.
-Clustering and the repeated distance calculations it involves can be a prohibitively slow process and it is omitted in some algorithms.
-Alignment, either to the graph itself or to a subgraph, can be done using the algorithms described above.
-\todo[inline]{JME: despite how it's introduced a lot of this content applies to non-k-mer seeds as well.
-some of this content could be reworked into a good introductory paragraph for this section}
 
+Invariably, variation graphs mappers make use of the seed-extend paradigm that has also been successful for conventional linear references.
+This methodology consists of indexing the reference for exact matches ``seeds''.
+Then, the index is queried for exact matches with a sequencing read, which are used to narrow in on small regions of the reference.
+Expensive approximate-match alignment algorithms can then be targeted at these smaller regions to ``extend'' the seeds. 
+As this description suggests, many of a variation graph mapping tool's features are determined by its choice of an indexing method and an alignment algorithm.
+Variation graph indexing and alignment have both been active areas of research, as discussed above.
+In addition, some tools employ an additional step to cluster seeds by their position on the graph before aligning.
+While common for conventional mappers, this step has proven challenging in variation graphs, and some tools neglect it entirely.
+
+\todo{JME: why are we going into so much detail about HISAT2 compred to the other tools?}
 HISAT2 is a BWT-based mapping algorithm that uses an adaptation of the Ferragina-Manzini (FM) index, a hierarchical graph FM index (HGFM).
 \todo{JME: it actually uses a GCSA, not a standard FM index}
 An FM index is a compressed representation of the graph that is optimized for substring searching.
@@ -170,12 +160,15 @@ Alignment is done by searching the FM indexes, starting with the global index.
 
 
 Each of these graph alignment tools has demonstrated an increase in sensitivity over mapping to a standard linear reference.
+\todo{JME: what tools are you referring to with "each"? you've only referred to one tool}
 GenomeMapper, vg map, Seven Bridges' mapping algorithm, and HISAT2 are primarily short read mappers.
 \todo{JME: i think 7bg's tool is called Graph Genome Aligner}
 GraphAligner is a long read mapper and V-MAP is used for both.
 V-MAP doesn't align reads itself but finds a small subgraph that a read can be aligned to using existing mappers. 
 HISAT2 and vg can align both RNA and DNA.
 
+
+\todo{JME: This section does not have citations} 
 
 \subsection{De Bruijn graph mappers}
 % Adam
