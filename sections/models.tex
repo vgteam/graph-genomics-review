@@ -9,7 +9,7 @@ As we'll see in the algorithms below, a graph's utility is frequently measured i
 
 \subsubsection{De novo graph construction}
 
-The VG library offers multiple graph construction algorithms, including the de novo assembly algorithm MSGA (Multiple Sequence to Graph Aligner). \cite{Garrison_2018,Novak_2017a} 
+The VG library offers multiple graph construction algorithms, including the de novo assembly algorithm MSGA (Multiple Sequence to Graph Aligner) \cite{Garrison_2018,Novak_2017a}. 
 MSGA implements a progressive alignment strategy.
 Initially, the graph is composed of any one sequence of the set of input sequences.
 Each subsequent sequence is inserted into the current iteration of the graph, until the graph contains all the sequences from the input.
@@ -26,13 +26,13 @@ By first implementing a disk-backed sort of the alignment and sequence inputs, t
 In a comparison of seqwish to MSGA on the challenging-to-sequence region Major Histocompatibility Complex (~5Mb), seqwish used several times less RAM than MSGA, but had to save 12 GB of intermediate files during construction.
 
 
-Novograph's algorithm also constructs graphs directly from assembly contigs without the need to integrate sequence information from a linear genome, although it requires a linear reference to determine the relative location of the contigs before integrating them into a graph. \cite{Biederstedt2018} 
+Novograph's algorithm also constructs graphs directly from assembly contigs without the need to integrate sequence information from a linear genome, although it requires a linear reference to determine the relative location of the contigs before integrating them into a graph \cite{Biederstedt2018}. 
 The algorithm first computes a global pairwise alignment to determine the approximate placement of each input contig, which it uses to perform an approximate global multiple sequence alignment between all input contigs and the reference genome.
 This identifies homology relationships between the input sequences and the reference genome.
 The contigs are then merged at positions that are both homologous and sequence-identical to create a directed acyclic graph.
 
  
-HUPAN, a pan-genome analysis pipeline for human genomes, is a recently developed tool for assembling pangenome graphs. \cite{Duan_2019} 
+HUPAN, a pan-genome analysis pipeline for human genomes, is a recently developed tool for assembling pangenome graphs \cite{Duan_2019}. 
 To demonstrate the application of their tool, \citep{Duan_2019} identified several novel genes from a population of Chinese.
 Pan-genomes are graph-like in that they consist of a ``core genome'' containing genes present in all individual genomes and the ``distributed genome,'' which contains genes existing only in a subset of individuals.
 That is, genes in the distributed genome must be absent or at least one individual.
@@ -45,14 +45,14 @@ Because some of the genetic sequence in the population isn't represented in refe
 These are pooled, and aligned all-to-all.
 After filtering to remove non-human sequences, the pan-genome can be constructed by merging the now-connected partially- and fully-unaligned sequences with the reference genome.
 
-VG also offers tools for constructing a genome graph using linear genomes, such as the cactus progressive aligner. \cite{Garrison_2018}
+VG also offers tools for constructing a genome graph using linear genomes, such as the cactus progressive aligner \cite{Garrison_2018}.
 
 MSGA can also be used for constructing a linear genome-based graph.
 Starting with a graph composed entirely from a linear genome, MSGA constructs a more complex genome by using progressive calls to VG edit, which aligns and inserts the sequence to the graph. \todo{citation needed} \todo{Do we have a good publication detailing how Cactus graphs are constructed? Are there other VG algorithms I'm missing?}
 
 \subsubsection{Graph Construction Based on Linear Graphs}
 
-GenomeMapper is the first major reference genome graph ever published. \cite{Schneeberger_2009}
+GenomeMapper is the first major reference genome graph ever published \cite{Schneeberger_2009}.
 Their genome graph was constructed by indexing, and then merging, a population of genomes. 
 The index, which is effectively a compilation of the locations of all sequence signatures of 5 to 13 bp in length, guides the alignment process by offering an easy-access tool for identifying sets of similar substrings that are close to one another between genomes. 
 The GenomeMapper graph demonstrated access to polymorphisms that were otherwise unavailable in a linear reference.
@@ -63,7 +63,7 @@ Offset coordinates make it easy to unambiguously refer to any position or interv
 Offset-based coordinate systems typically have two components: name of the chromosome, and distance in nt from the chromosome's start.
 For example, ``chr14: 100k'' would be on chromosome 14, 100,000 nt from the start.
 Because genome graphs can include multiple walks of varying length, however, offset coordinates in a graph would vary depending on which path was taken.
-To resolve this problem, one graph-based coordinate system uses a similar offset-based format, except that [name of the chromosome] is replaced with name of the \emph{DNA region}; and similarly distance in nt from the \emph{region's} start. \cite{Rand_2016} 
+To resolve this problem, one graph-based coordinate system uses a similar offset-based format, except that [name of the chromosome] is replaced with name of the \emph{DNA region}; and similarly distance in nt from the \emph{region's} start \cite{Rand_2016}. 
 DNA region can be the chromosome itself, if the coordinate is on the linear backbone of the graph.
 In regions with alternate paths, however, DNA region would be the alternative allele ID in the graph.
 For example, a coordinate for an alternate path in the IGH region could be 'IGH-alt1:350', which would be 350 bases from the designated starting point of the alt path.
@@ -75,7 +75,7 @@ And, it also sometimes satisfies spatiality – so that nearby bases frequently 
 
 \subsubsection{Measuring graph utility}
 
-Because VG provides an integrated toolkit for constructing, manipulating, and using genome graphs, it's a tool well-suited for comparing the efficacy of different genome graph construction techniques. \cite{Novak_2017, Garrison_2018} In the paper Genome Graphs, Novak et al. compared different graph constructions based on their utility in read mapping, variant calling, and general graph character.
+Because VG provides an integrated toolkit for constructing, manipulating, and using genome graphs, it's a tool well-suited for comparing the efficacy of different genome graph construction techniques \cite{Novak_2017, Garrison_2018}. In the paper Genome Graphs, Novak et al. compared different graph constructions based on their utility in read mapping, variant calling, and general graph character.
 They found that genome graphs in general provide superior read mapping and variant calling to their linear counterparts, and that different construction approaches varied greatly even within each region of the genome.
 To quantify this variability, they proposed three normalized graph metrics.
  \emph{Graph compression} is the length of primary reference sequence divided by the sum of the length of the nodes in the graph.
@@ -90,7 +90,7 @@ Instead, adding known variants helped the mapping algorithm distinguish their tr
 \subsubsection{Improving graph utility with FORGe: A tool for prioritizing variants for graph genomes}
 
 Adding more variants to the graph doesn't always improve mapping precision, however.
-FORGe is a tool for modeling the effects of adding a variant to the graph. \cite{Pritt_2018} 
+FORGe is a tool for modeling the effects of adding a variant to the graph \cite{Pritt_2018}. 
 The primary benefit of adding a variant to the graph is that it increases the graph's representation of sequence diversity.
 Without variance in the graph, reads with significant sequence dissimilarity from the linear genome won't be mapped to the correct region, or won't be mapped at all.
 Sometimes, however, adding a variant can reduce alignment accuracy by increasing the ambiguity of similar sequences already in the graph.
