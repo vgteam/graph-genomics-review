@@ -4,7 +4,7 @@
 
 A linear genome is essentially a simple genome graph without any integrated genetic variation. 
 More complex graphs can be constructed by inserting genetic variation as alternative paths in the linear genome, or can be constructed straight from de novo assemblies. 
-The primary advantage of including variation information in a genome graph--– either by modifying a linear genome or by assembling a graph de novo---is that the resulting genome graph conserves most or all of the sequence diversity present in the input assemblies. 
+The primary advantage of including variation information in a genome graph--- either by modifying a linear genome or by assembling a graph de novo---is that the resulting genome graph conserves most or all of the sequence diversity present in the input assemblies. 
 As we'll see in the algorithms below, a graph's utility is frequently measured in terms of its ability to use that diversity for effective sequence mapping, variant calling, and the improved representation of genes specific to individual populations.
 
 \subsubsection{De novo graph construction}
@@ -69,9 +69,9 @@ In regions with alternate paths, however, DNA region would be the alternative al
 For example, a coordinate for an alternate path in the IGH region could be 'IGH-alt1:350', which would be 350 bases from the designated starting point of the alt path.
 Intervals in a graph are defined by a list of the genomic regions the interval passes through, e.g. `chr14:100, IGH-alt1, SERPIN-alt1, chr14:150m'.
 This coordinate system was chosen because it somewhat satisfies four criteria for its readability.
-It's readable – relatively easy for humans to interpret.
-It's backward compatible – adding more variants to the graph doesn't invalidate previously established coordinate points in the graph.
-And, it also sometimes satisfies spatiality – so that nearby bases frequently have similar coordinates, and monotonicity – coordinates increase gradually the further they are from the start of the chromosome, provided the coordinates are on the same DNA region.
+It's readable - relatively easy for humans to interpret.
+It's backward compatible - adding more variants to the graph doesn't invalidate previously established coordinate points in the graph.
+And, it also sometimes satisfies spatiality - so that nearby bases frequently have similar coordinates, and monotonicity - coordinates increase gradually the further they are from the start of the chromosome, provided the coordinates are on the same DNA region.
 
 \subsubsection{Measuring graph utility}
 
