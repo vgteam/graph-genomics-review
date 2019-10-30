@@ -31,9 +31,9 @@ This identifies homology relationships between the input sequences and the refer
 The contigs are then merged at positions that are both homologous and sequence-identical to create a directed acyclic graph.
 
  
-HUPAN, a pan-genome analysis pipeline for human genomes, is a recently developed tool for assembling pangenome graphs \cite{Duan_2019}. 
+HUPAN, a pangenome analysis pipeline for human genomes, is a recently developed tool for assembling pangenome graphs \cite{Duan_2019}. 
 To demonstrate the application of their tool, \citep{Duan_2019} identified several novel genes from a population of Chinese.
-Pan-genomes are graph-like in that they consist of a ``core genome'' containing genes present in all individual genomes and the ``distributed genome,'' which contains genes existing only in a subset of individuals.
+Pangenomes are graph-like in that they consist of a ``core genome'' containing genes present in all individual genomes and the ``distributed genome,'' which contains genes existing only in a subset of individuals.
 That is, genes in the distributed genome must be absent or at least one individual.
 The combination of core genome and distributed genome constitutes a genome graph because the location of distributed genes are marked in relation to coordinates in the core genome.\todo{is this true? I'm unclear how HUPAN constitutes a graph genome.}
 
@@ -42,7 +42,7 @@ For each individual in the population of interest, sequenced reads are assembled
 These contigs are then aligned to the reference genome.
 Because some of the genetic sequence in the population isn't represented in reference, there are some reads that align only partially or not at all.
 These are pooled, and aligned all-to-all.
-After filtering to remove non-human sequences, the pan-genome can be constructed by merging the now-connected partially- and fully-unaligned sequences with the reference genome.
+After filtering to remove non-human sequences, the pangenome can be constructed by merging the now-connected partially- and fully-unaligned sequences with the reference genome.
 
 \texttt{vg} also offers tools for constructing a genome graph using linear genomes, such as the Cactus progressive aligner \cite{Garrison_2018}.
 
@@ -170,7 +170,7 @@ These indexes first find partial matches between the query string and the indexe
 In the hypertext index \cite{Thachuk_2013}, each node is a separate phrase.
 Queries mapping to a single node or crossing a single edge can be matched efficiently, while finding mappings to complex graph regions can be slow.
 
-\citeauthor{Bowe_2012}\ \cite{Bowe_2012} used techniques similar to GCSA for representing de Bruijn graphs.
+\citeauthor{Bowe_2012}\ \cite{Bowe_2012} used techniques similar to GCSA for representing de~Bruijn graphs.
 If the graph transformations used in GCSA construction are stopped after $i$ steps, the resulting graph is equivalent to an order-$2^{i}$ de~Bruijn graph.
 This de~Bruijn graph can be used to approximate the original graph.
 There are no false negatives, but matches longer than $2^{i}$ may be false positives.
@@ -190,7 +190,7 @@ The distinct pieces form an artificial linear reference, which can be used with 
 The process guarantees that any substring of the haplotypes of length $k$ is also a substring of one of the pieces.
 As with BWBBLE, $k$ represents an effective upper bound for query length.
 
-The Pan-genome Seed Index (PSI) \cite{Ghaffaari_2019} follows a similar approach with artificial paths.
+The ``Pan-genome [sic] Seed Index'' (PSI) \cite{Ghaffaari_2019} follows a similar approach with artificial paths.
 Instead of using haplotypes, PSI uses a greedy algorithm to find a set of paths that covers as many $k$~bp windows in the graph as possible.
 An index using these paths alone already works well in practice.
 
