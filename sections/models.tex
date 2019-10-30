@@ -121,8 +121,8 @@ Indexing or even enumerating all $k$-mers in the graph may be infeasible for rea
 
 In practice, indexes for genome graphs must make trade-offs not encountered in text indexes.
 In order to limit the exponential growth, the index may only support relatively short query strings.
-Some indexes \todo{Which?}\ support longer queries by doing extensive preprocessing.
-In other indexes,  \todo{Which?}\  queries mapping to complex graph regions can be slow.
+Some indexes (e.g.\ \cite{Siren_2014}) support longer queries by doing extensive preprocessing.
+In other indexes (e.g.\ \cite{Huang_2013,Maciuca_2016}), queries mapping to complex graph regions can be slow.
 Instead of indexing the entire graph, the index may only contain $k$-mers from a simplified graph, or from specific paths of the graph.
 While finding the path matching the query may be expensive in some cases, indexes typically save space by only reporting the starting position of the match.
 
@@ -147,9 +147,9 @@ To index the graph, GenomeMapper uses a simple hash-based $k$-mer index, with $k
 
 GCSA \cite{Siren_2014} was the first attempt to use the BWT with graphs.
 It either takes a prebuilt DAG or generates one from a multiple alignment of sequences.
-GCSA then applies a number of graph transformations that preserve the language, or set of admissable end-to-end sequences \todo{Is this correct?}, until the nodes can be unambiguously sorted by the labels of the paths starting from the node.
-This process balances on the fine line \todo{What does this mean, though? Is it linear in some graphs and exponential in others? Is it linear in practice and exponential in theory?}\ between linear and exponential.
-If the complexity of the graph is above a critical threshold, the transformed graph quickly becomes too large to handle.
+GCSA then applies a number of graph transformations that preserve the language, or set of end-to-end sequences, until the nodes can be unambiguously sorted by the labels of the paths starting from the node.
+When the complexity of the graph is sufficiently low, these transformations are reasonably fast and do not increase the size of the graph significantly.
+However, a phase transition happens at a certain threshold, and the transformed graph quickly becomes too large to handle above the threshold.
 
 BWBBLE \cite{Huang_2013} is a BWT-based representation for VCF graphs.
 Simple substitutions are encoded in the sequence using IUPAC codes, and the sequence is indexed using a normal FM-index.
@@ -160,8 +160,9 @@ The length of this context is an effective upper bound for query length.
 
 The vBWT \cite{Maciuca_2016} took another approach to using the BWT for indexing VCF graphs.
 It encodes variants as \texttt{(ref|alt1|alt2|\dots)} in the sequence.
-When the search encounters a variant, it must branch \todo{How must it branch? Or do we care?}\ to handle each allele separately.
-While both BWBBLE and vBWT trade faster index construction for slower queries, a combination of the ideas can be quite practical \todo{What combination? Practical in what way?}\ \cite{Buechler_2019}.
+When the search encounters a variant, it must branch to handle each allele separately.
+Both BWBBLE and vBWT trade faster index construction for slower queries.
+However, a combination of IUPAC codes for substitutions, the vBWT approach for other variants, and a $k$-mer index for matching the first 5--10 bases, is faster than either of the originals \cite{Buechler_2019}.
 
 \subsubsection{General graphs}
 
@@ -176,11 +177,11 @@ This de~Bruijn graph can be used to approximate the original graph.
 There are no false negatives, but matches longer than $2^{i}$ may be false positives.
 By using this approach, GCSA2 \cite{Siren_2017} attempts to support fast queries in arbitrary graphs.
 
-While stopping the construction early allows GCSA2 to handle more complex graphs than GCSA, most graphs must be simplified before they can be indexed.
+GCSA2 faces the same issues with complex graphs as GCSA.
+In practice, most graphs must be simplified before they can be indexed.
 Typical simplifications include removing high-degree nodes and complex regions from the graph and replacing them with the reference sequence.
 If a collection of haplotypes is available, the removed regions can be replaced with new subgraphs that contain separate paths for each distinct local haplotype \cite{Siren_2019}.
-This way, the index will contain all $k$-mers from the haplotypes, while usually missing $k$-mers from their recombinations.
-\todo{JME: this paragraph feels a bit in-the-weeds to me. i think it could probably be cut}
+This way, the index contains all $k$-mers from the haplotypes, while usually missing $k$-mers from their recombinations.
 
 \subsubsection{Indexing graphs using sequences}
 
