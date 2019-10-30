@@ -50,9 +50,9 @@ After filtering to remove non-human sequences, the pan-genome can be constructed
 
 \subsubsection{Graph construction based on existing linear genomes}
 
-GenomeMapper is the first major reference genome graph ever published \cite{Schneeberger_2009}.
-Their genome graph was constructed by indexing, and then merging, a population of genomes. 
-The index, which is effectively a compilation of the locations of all sequence signatures of 5 to 13 bp in length, guides the alignment process by offering an easy-access tool for identifying sets of similar substrings that are close to one another between genomes. 
+GenomeMapper was the first major tool to use a reference genome graph \cite{Schneeberger_2009}.
+The genome graph was constructed by indexing, and then merging, a population of genomes. 
+The index, which is effectively a compilation of the locations of all sequence signatures of 5 to 13 bp in length, guided the alignment process by offering an easy-access tool for identifying sets of similar substrings that are close to one another between genomes. 
 The GenomeMapper graph demonstrated access to polymorphisms that were otherwise unavailable in a linear reference.
 
 \texttt{vg}'s MSGA can also be used for constructing a graph based on linear input genomes, instead of assembly contigs.
@@ -69,7 +69,7 @@ The DNA region can be the chromosome itself, if the coordinate is on the linear 
 In regions with alternate paths, however, the DNA region would be the alternative allele ID in the graph.
 For example, a coordinate for an alternate path in the IGH region could be ``IGH-alt1:350'', which would be 350~nt from the designated starting point of the alt path.
 Intervals in a graph are defined by a list of the genomic regions the interval passes through, e.g. ``chr14:100, IGH-alt1, SERPIN-alt1, chr14:150m''.
-This coordinate system was chosen because it at least partially satisfies the four criteria of \citeauthor{Rand_2016}. It provides good:
+This coordinate system was chosen because it at least partially satisfies the four criteria of \citeauthor{Rand_2016} by providing good:
 \begin{itemize}
     \item \emph{Readability}: it is relatively easy for humans to interpret.
     \item \emph{Backward compatiblity}: adding more variants to the graph doesn't invalidate previously established coordinate points in the graph.
@@ -84,17 +84,18 @@ It also provides acceptable:
 
 \subsubsection{Measuring graph utility}
 
-Because \texttt{vg} provides an integrated toolkit for constructing, manipulating, and using genome graphs, it's a tool well-suited for comparing the efficacy of different genome graph construction techniques \cite{Novak_2017, Garrison_2018}. In the paper Genome Graphs, Novak et al. compared different graph constructions based on their utility in read mapping, variant calling, and general graph character.
+Because \texttt{vg} provides an integrated toolkit for constructing, manipulating, and using genome graphs, it's a tool well-suited for comparing the efficacy of different genome graph construction techniques \cite{Novak_2017, Garrison_2018}.
+In the paper ``Genome Graphs'', \citeauthor{Novak_2017a}\ compared different graph constructions based on their utility in read mapping, variant calling, and general graph character \citep{Novak_2017a} \todo{Does it really make sense to lean so heavily on our own unreviewed, unpublished manuscript in a review?}.
 They found that genome graphs in general provide superior read mapping and variant calling to their linear counterparts, and that different construction approaches varied greatly even within each region of the genome.
 To quantify this variability, they proposed three normalized graph metrics.
  \emph{Graph compression} is the length of primary reference sequence divided by the sum of the length of the nodes in the graph.
 It essentially measures the quantity of alt path sequence represented in the graph with respect to the size of the reference.
-The \emph{(base) degree} of the graph measures how much branching occurs in the graph, and the \emph{cut width} measures apparent sequence rearrangement.
+The \emph{(base) degree} of the graph measures how much branching occurs in the graph, and the \emph{cut width} measures apparent sequence rearrangement \todo{We don't have any evidence to support these being useful or accepted metrics, though.}.
 
 
-In the same study, Novak et al. demonstrated that their graphs improved mapping precision when more polymorphisms were added to the graph.
+In the same study, \citeauthor{Novak_2017a}\ demonstrated that their graphs improved mapping precision when more polymorphisms were added to the graph.
 As they pointed out, this is a potentially surprising result: they originally thought that adding more sequences similar to the read's target would reduce the likelihood of the read mapping to the correct region.
-Instead, adding known variants helped the mapping algorithm distinguish their true mapping location from other, paralogous sequences.
+Instead, adding known variants helped the mapping algorithm distinguish their true mapping location from other, paralogous sequences \citep{Novak_2017a}.
 
 \subsubsection{Improving graph utility with FORGe: A tool for prioritizing variants for graph genomes}
 
@@ -105,7 +106,8 @@ Without variance in the graph, reads with significant sequence dissimilarity fro
 Sometimes, however, adding a variant can reduce alignment accuracy by increasing the ambiguity of similar sequences already in the graph.
 In addition, adding variants to the graph can increase the cost of storing and querying the genome index.
 To predict the effects of adding a variant, FORGe scores variants based on their frequency in a population, its proximity to other variants, and how it increases/decreases repetitive sequence in the genome.
-It can then output a list of top-scoring variants for use in a graph aligner
+It can then output a list of top-scoring variants for use in a graph aligner.
+\todo{How do we square the results showing FORGe is needed with the results from our unpublished Graph Genomes manuscript? We don't do that work here.}
 
 
 \subsection{Indexing genome graphs}
@@ -119,43 +121,47 @@ Indexing or even enumerating all $k$-mers in the graph may be infeasible for rea
 
 In practice, indexes for genome graphs must make trade-offs not encountered in text indexes.
 In order to limit the exponential growth, the index may only support relatively short query strings.
-Some indexes support longer queries by doing extensive preprocessing.
-In other indexes, queries mapping to complex graph regions can be slow.
+Some indexes \todo{Which?}\ support longer queries by doing extensive preprocessing.
+In other indexes,  \todo{Which?}\  queries mapping to complex graph regions can be slow.
 Instead of indexing the entire graph, the index may only contain $k$-mers from a simplified graph, or from specific paths of the graph.
 While finding the path matching the query may be expensive in some cases, indexes typically save space by only reporting the starting position of the match.
 
 \subsubsection{Indexing sequences using a graph}
 
 The FM-index \cite{Ferragina_2005} is a text index, based on the Burrows--Wheeler transform (BWT) \cite{Burrows_1994}, that is frequently used with DNA sequences.
-A variant of the FM-index, the RLCSA \cite{Maekinen_2010}, run-length encodes the BWT, allowing it to store and index a collection of similar sequences space-efficiently.
+One variant of the FM-index, the RLCSA \cite{Maekinen_2010}, run-length encodes the BWT, allowing it to store and index a collection of similar sequences space-efficiently.
 \citeauthor{Huang_2010}\ \cite{Huang_2010} observed that if we know a good global alignment of the sequences, we can use that information to make the index both smaller and faster.
 \citeauthor{Na_2016}\ \cite{Na_2016,Na_2018} developed this approach further in their FM-index of alignment.
 While the articles do not mention it, both \citeauthor{Huang_2010}\ and \citeauthor{Na_2016}\ use the graph induced by the alignment as a space-efficient representation of the sequences.
 
-\subsubsection{Acyclic graphs}
+\subsubsection{Indexing acyclic graphs}
 
-% TODO "VCF graph" is a placeholder
+One class of graph indexing methods supports only acyclic graphs, often represented as directed acyclic graphs (DAGs).
+This constraint can exist either because the acyclicity of the graph provides guarantees that simplify the problem, or because incedental features of the method's software implementation preclude use on cyclic graphs.
+One common class of DAGs, here called \emph{VCF graphs}, represents each contig as a mostly linear run of graph nodes, branching to allow only for substitutions and possibly insertions and deletions.
+\todo{``VCF graph'' is a placeholder; is there a better term for this shape?}
+
 GenomeMapper \cite{Schneeberger_2009} was the first graph-based read aligner.
-It builds a directed acyclic graph from a reference sequence and a set of variants (VCF graph).
+It builds a VCF graph from a reference sequence and a set of variants.
 To index the graph, GenomeMapper uses a simple hash-based $k$-mer index, with $k \le 13$ to limit memory usage.
 
 GCSA \cite{Siren_2014} was the first attempt to use the BWT with graphs.
-It takes either a prebuilt DAG or generates one from a multiple alignment of sequences.
-GCSA then applies a number of graph transformations that preserve the path labels in the graph \todo{Should we describe this as the ``language'' of the graph?}, until the nodes can be unambiguously sorted by the labels of the paths starting from the node.
-This process balances on the fine line \todo{What does this mean, though? Is it linear in some graphs and exponential in others? Is it linear in practice and exponential in theory?} between linear and exponential.
+It either takes a prebuilt DAG or generates one from a multiple alignment of sequences.
+GCSA then applies a number of graph transformations that preserve the language, or set of admissable end-to-end sequences \todo{Is this correct?}, until the nodes can be unambiguously sorted by the labels of the paths starting from the node.
+This process balances on the fine line \todo{What does this mean, though? Is it linear in some graphs and exponential in others? Is it linear in practice and exponential in theory?}\ between linear and exponential.
 If the complexity of the graph is above a critical threshold, the transformed graph quickly becomes too large to handle.
 
 BWBBLE \cite{Huang_2013} is a BWT-based representation for VCF graphs.
 Simple substitutions are encoded in the sequence using IUPAC codes, and the sequence is indexed using a normal FM-index.
-Because each base can be encoded using 8 different characters, the search branches after every base.
-Most branches can be quickly eliminated, however.
+Because each base can be encoded using 8 different characters, the search branches at every base to cover all possible characters which admit the base searched.
+In practice, most branches quickly run out of results and can be pruned from the search.
 Insertions and deletions produce separate sequences, with selected amount of context around the variant.
 The length of this context is an effective upper bound for query length.
 
 The vBWT \cite{Maciuca_2016} took another approach to using the BWT for indexing VCF graphs.
-It encodes variants as \texttt{(ref|alt1|\dots)} in the sequence.
-When the search encounters a variant, it must branch to handle each allele separately.
-While both BWBBLE and vBWT trade faster index construction for slower queries, a combination of the ideas can be quite practical \cite{Buechler_2019}.
+It encodes variants as \texttt{(ref|alt1|alt2|\dots)} in the sequence.
+When the search encounters a variant, it must branch \todo{How must it branch? Or do we care?}\ to handle each allele separately.
+While both BWBBLE and vBWT trade faster index construction for slower queries, a combination of the ideas can be quite practical \todo{What combination? Practical in what way?}\ \cite{Buechler_2019}.
 
 \subsubsection{General graphs}
 
