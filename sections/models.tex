@@ -4,12 +4,12 @@
 
 A linear genome is essentially a simple genome graph without any integrated genetic variation. 
 More complex graphs can be constructed by inserting genetic variation as alternative paths in the linear genome, or can be constructed straight from de novo assemblies. 
-The primary advantage of including variation information in a genome graph--- either by modifying a linear genome or by assembling a graph de novo---is that the resulting genome graph conserves most or all of the sequence diversity present in the input assemblies. 
-As we'll see in the algorithms below, a graph's utility is frequently measured in terms of its ability to use that diversity for effective sequence mapping, variant calling, and the improved representation of genes specific to individual populations.
+The primary advantage of including variation information in a genome graph---either by modifying a linear genome or by assembling a graph de novo---is that the resulting genome graph conserves most or all of the sequence diversity present in the input assemblies. 
+As we'll see in the algorithms below, a graph's utility is frequently measured in terms of its ability to use that diversity for effective sequence mapping and variant calling, and the improved representation of genes specific to individual populations.
 
 \subsubsection{De novo graph construction}
 
-The VG library offers multiple graph construction algorithms, including the de novo assembly algorithm MSGA (Multiple Sequence to Graph Aligner) \cite{Garrison_2018,Novak_2017a}. 
+The VG tool offers multiple graph construction algorithms, including the de novo assembly algorithm MSGA (Multiple Sequence to Graph Aligner) \cite{Garrison_2018,Novak_2017a}. 
 MSGA implements a progressive alignment strategy.
 Initially, the graph is composed of any one sequence of the set of input sequences.
 Each subsequent sequence is inserted into the current iteration of the graph, until the graph contains all the sequences from the input.
@@ -18,7 +18,7 @@ In addition, the algorithm uses a large amount of working memory, which makes wo
 
 
 
-Seqwish, another de novo construction algorithm in VG, was developed to address the weaknesses of MSGA.\todo{cite seqwish}
+Seqwish, another de novo construction algorithm in the VG ecosystem, was developed to address the weaknesses of MSGA\footnote{\url{https://github.com/ekg/seqwish}}.
 Seqwish losslessly converts sets of pairwise alignments between sequences into a variation graph.
 Input sequence alignments are usually all-to-all, although it's not required.
 The algorithm constructs the graph by identifying chains of sequences that align together, which are then linked together to form walks through the graph.
