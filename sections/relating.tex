@@ -52,7 +52,7 @@ For example, by forcing the sequence-bearing nodes of the graph into a one-dimen
 The intended use case seems to be to use a single global linearization, and to interactively render regions of it for display, but it is also possible to non-interactively render an entire graph to a very large image \citep{Garrison_2019}. 
 The tool is designed around a base-level visual representation of the graph, and optimized for comparing long embedded paths in the graph, on the basis of which nodes they do or do not visit \citep{Garrison_2019}. 
 However, as with the Sequence Tube Map, it can be difficult to understand high-level or nonlinear structures in such a linearized layout \citep{Garrison_2019}. 
-In contrast to the Sequence Tube Map no provision is made for visualizing short read alignments \citep{Garrison_2019}.
+In contrast to the Sequence Tube Map no provision is made for visualizing short read alignments \citep{Garrison_2019}. \todo{EG: actually, this isn't exactly true. We do support coverage of short read alignments over the graph (it can read in the .pack format).}
 
 Figure~\ref{fig:visualization} provides a visual overview of the visualization methods surveyed here.
 It remains an open problem to interactively visualize a comprehensive human pangenome graph, potentially including interchromosomal connections, at a variety of zoom levels, with modestly provisioned end-user hardware.
@@ -120,14 +120,15 @@ i'll do that later.}
 The trend in the graph alignment research is toward greater generality and faster run time. 
 The generality comes in two main forms. 
 First, algorithms apply to increasingly general classes of graphs. 
-The foundational genomic sequence graph alignment algorithms applied only to graphs without cycles\cite{Lee_2002, Grasso_2004}. 
+The foundational genomic sequence graph alignment algorithms applied only to graphs without cycles\cite{Lee_2002, Grasso_2004}.
+\todo{EG: this is not accurate. Myers showed cyclic to cyclic graphs in 1990. This is also described in \emph{Biological sequence analysis}.}
 More recent research has discovered algorithms that align to graphs with any shape\cite{Antipov_2015,Rautiainen_2017,Jain_2019a}. 
 Second, graph alignment researchers have developed algorithms that use increasingly general scoring functions. 
 Some earlier algorithms require restricted scoring functions to achieve efficiency\cite{Rautiainen_2017}, but recent contributions have used the less restricted scoring functions that are required to produce biologically meaningful alignments in many contexts\cite{Jain_2019a}.
 
 Graph alignment research also has improved the algorithms' run time. 
 The first algorithms only required restricted graphs in order to run at comparable speed to non-graph sequence alignment algorithms, or else simply ran slower on general graphs\cite{Lee_2002, Kavya_2019}. 
-It has now been shown that graph alignment can run at the same speed as non-graph alignment (in the computer scientist's sense of ``Big-O'' asymptotics).
+It has now been shown that graph alignment can run at the same speed as non-graph alignment (in the computer scientist's sense of ``Big-O'' asymptotics).\todo{EG: Let's just use the actual notation here.}
 This is believed to be essentially optimal\cite{Jain_2019a,Equi_2019}. 
 Many of the advances in this space came from rediscovering analogs to the graph alignment problem in the related areas of regular expressions and hypertext\cite{Myers_1989,Amir_1997}. 
 In addition to these theoretical results, researchers have also developed modified algorithms that run quickly the practical context of real-world computer architectures\cite{Suzuki_2018,Rautiainen_2019,Jain_2019b}.
