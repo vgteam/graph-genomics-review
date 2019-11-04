@@ -122,7 +122,7 @@ Indexing or even enumerating all $k$-mers in the graph may be infeasible for rea
 In practice, indexes for genome graphs must make trade-offs not encountered in text indexes.
 In order to limit the exponential growth, the index may only support relatively short query strings.
 Some indexes (e.g.\ \cite{Siren_2014}) support longer queries by doing extensive preprocessing.
-In other indexes (e.g.\ \cite{Huang_2013,Maciuca_2016}), queries mapping to complex graph regions can be slow.
+In other indexes (e.g.\ \cite{Thachuk_2013,Huang_2013,Maciuca_2016}), queries mapping to complex graph regions can be slow.
 Instead of indexing the entire graph, the index may only contain $k$-mers from a simplified graph, or from specific paths of the graph.
 While finding the path matching the query may be expensive in some cases, indexes typically save space by only reporting the starting position of the match.
 
@@ -211,7 +211,7 @@ By indexing a batch of reads and searching for the complex regions in that index
 
 \subsubsection{gPBWT, GBWT}
 
-% Jouni: I can write this
+% Jouni: We should at least include this
 
 
 \subsubsection{Alignments / collections of strings}
