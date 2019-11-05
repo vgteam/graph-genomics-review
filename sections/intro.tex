@@ -1,9 +1,32 @@
-% Heading 1
 \section{Introduction}
 
-Our understanding of the structure and function of genomes depends on our ability to relate them to each other and to prior biological information.
+A \emph{pangenome} models the full set of genomic elements in a given species or clade \cite{sigaux2000cancer}.
+This concept has been essential to microbiology, where genomic plasticity and diversity have made a pangenomic perspective essential \cite{tettelin2005genome,medini2005microbial}.
+Usually, these analyses focus on the presence or absence of genes from given strains and the determination of a core (commonly present) and accessory (not essential) pangenome \cite{page2015roary}.
+
+Pangenomic techniques have been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,brohammer2018maize}.
+However, most ``high-throughput'' analyses of large genomes depend on comparison of individuals to a common reference genome.
+
+In recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{li2010building,sudmant2010,sudmant2015integrated,chaisson2018multi}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}.
+These and other related findings encourage the application of pangenomic methods in any research setting where more than one individual is being analyzed \cite{computational2016computational}.
+
+Here, we consider a new class of methods that approach the pangenome with precision, often at the resolution of single base pairs.
+Unlike widely-applied pangenomic methods which consider genes as their fundamental unit, these precise pangenomic methods support the interrogation of collections of genomes and their relationships at any level of resolution.
+They envision pangenomic analyses based on the full complement of DNA in the individuals under analysis, and aim to support downstream inference over variants of all types and scales, including small variation such as SNPs and indels in the same context as large structural variants gene gain or loss.
+Scaling such techniques to operate on eukaryotic pangenomes has required significant effort, much of which is still ongoing.
+
+The solutions to this problem are varied, but often rely on graphical data structures that represent compressed versions of genomes and embed the many-to-many relationships inherent in the pangenome.
+Not all methods expose this data structure as a coherent reference system, and they may instead use it internally to improve performance of a standard bioinformatic operation.
+
+Furthermore, not all pangenomic models are equivalent, and many feature limitations that prevent them from representing certain kinds of genomic variation.
+Although these limitations have appeared expedient or even necessary to scale precision pangenomics to eukaryotic genomes, new algorithms and approaches for the construction and interrogation of pangenome graphs demonstrate that generic models can be scalable.
+These results imply the possibility of simplifying and even expediting many bioinformatic analyses through the use of pangenomic reference systems.
+
+\subsection{Scaling genomics with resequencing}
+
+Our understanding of biological systems depends on our ability to see the relationships between genomes.
 In the early days of genomics, when the cost of sequencing was high, expensive algorithms would be applied to relate all sequences in a given experiment to all others, typically yielding multiple sequence alignments.
-These analyses were thus effectively \emph{pangenomic}, in their unified representation of all the genomic information in the analysis \cite{computational2016computational}.
+These analyses were thus effectively \emph{pangenomic}, in their unified representation of all the genomic information in the analysis.
 Each sequence was related to all others, and optimization procedures applied to the entire collection were used to obtain the most-parsimonious set of relationships between them.
 \todo{JME: we should make sure that we tie back to this section when we discuss constructing pangenome graphs from alignments}
 
