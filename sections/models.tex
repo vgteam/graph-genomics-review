@@ -3,100 +3,111 @@
 \subsection{Constructing graphs} 
 
 A linear genome is essentially a simple genome graph without any integrated genetic variation. 
-More complex graphs can be constructed by inserting genetic variation as alternative paths in the linear genome, or can be constructed straight from de novo assemblies. 
-The primary advantage of including variation information in a genome graph--– either by modifying a linear genome or by assembling a graph de novo---is that the resulting genome graph conserves most or all of the sequence diversity present in the input assemblies. 
-As we'll see in the algorithms below, a graph's utility is frequently measured in terms of its ability to use that diversity for effective sequence mapping, variant calling, and the improved representation of genes specific to individual populations.
+More complex graphs can be constructed by inserting genetic variation as alternative paths in the linear genome, or can be constructed straight from \textit{de novo} assemblies. 
+The primary advantage of including variation information in a genome graph---either by modifying a linear genome or by assembling a graph \textit{de novo}---is that the resulting genome graph conserves most or all of the sequence diversity present in the input assemblies. 
+As we'll see in the algorithms below, a graph's utility is frequently measured in terms of its ability to use that diversity for effective sequence mapping and variant calling, and the improved representation of genes specific to individual populations.
 
-\subsubsection{De novo graph construction}
+\subsubsection{\textit{De novo} graph construction}
+\todo{This section could be written at a higher level with more compare/contrast.}
 
-The VG library offers multiple graph construction algorithms, including the de novo assembly algorithm MSGA (Multiple Sequence to Graph Aligner). \cite{Garrison_2018,Novak_2017a} 
+The \texttt{vg} tool offers multiple graph construction algorithms, including the \textit{de novo} assembly algorithm MSGA (Multiple Sequence to Graph Aligner) \cite{Garrison_2018,Novak_2017a}. 
 MSGA implements a progressive alignment strategy.
 Initially, the graph is composed of any one sequence of the set of input sequences.
 Each subsequent sequence is inserted into the current iteration of the graph, until the graph contains all the sequences from the input.
-This algorithm is attractive because it only uses tools already present in VG, but the resulting graph is dependent on the order that the sequences were added.
+This algorithm is attractive because it only uses tools already present in \texttt{vg}, but the resulting graph is dependent on the order that the sequences were added.
 In addition, the algorithm uses a large amount of working memory, which makes working with large populations of genomes untenable.
 
-
-
-Seqwish, another de novo construction algorithm in VG, was developed to address the weaknesses of MSGA.\todo{cite seqwish}
+Seqwish\footnote{\url{https://github.com/ekg/seqwish}}, another \textit{de novo} construction algorithm in the \texttt{vg} ecosystem, was developed to address the weaknesses of MSGA.
 Seqwish losslessly converts sets of pairwise alignments between sequences into a variation graph.
 Input sequence alignments are usually all-to-all, although it's not required.
 The algorithm constructs the graph by identifying chains of sequences that align together, which are then linked together to form walks through the graph.
 By first implementing a disk-backed sort of the alignment and sequence inputs, the graph can be constructed in relatively low memory compared to the input sequence.
-In a comparison of seqwish to MSGA on the challenging-to-sequence region Major Histocompatibility Complex (~5Mb), seqwish used several times less RAM than MSGA, but had to save 12 GB of intermediate files during construction.
+In a comparison of seqwish to MSGA on the challenging-to-sequence region Major Histocompatibility Complex (~5Mb), seqwish used several times less RAM than MSGA, but had to save 12 GB of intermediate files during construction \todo{Where is this comparison documented? It's not described in the seqwish README.}.
 
 
-Novograph's algorithm also constructs graphs directly from assembly contigs without the need to integrate sequence information from a linear genome, although it requires a linear reference to determine the relative location of the contigs before integrating them into a graph. \cite{Biederstedt2018} 
+Novograph's algorithm also constructs graphs directly from assembly contigs without the need to integrate sequence information from a linear genome, although it requires a linear reference to determine the relative location of the contigs before integrating them into a graph \cite{Biederstedt2018}. 
 The algorithm first computes a global pairwise alignment to determine the approximate placement of each input contig, which it uses to perform an approximate global multiple sequence alignment between all input contigs and the reference genome.
 This identifies homology relationships between the input sequences and the reference genome.
 The contigs are then merged at positions that are both homologous and sequence-identical to create a directed acyclic graph.
 
  
-HUPAN, a pan-genome analysis pipeline for human genomes, is a recently developed tool for assembling pangenome graphs. \cite{Duan_2019} 
-To demonstrate the application of their tool, \citep{Duan_2019} identified several novel genes from a population of Chinese.
-Pan-genomes are graph-like in that they consist of a ``core genome'' containing genes present in all individual genomes and the ``distributed genome,'' which contains genes existing only in a subset of individuals.
+HUPAN, a pangenome analysis pipeline for human genomes, is a recently developed tool for assembling pangenome graphs \cite{Duan_2019}. 
+To demonstrate the application of their tool, \citep{Duan_2019} identified several novel genes in the genomes of a set of Chinese individuals.
+Pangenomes are graph-like in that they consist of a ``core genome'' containing genes present in all individual genomes and the ``distributed genome,'' which contains genes existing only in a subset of individuals.
 That is, genes in the distributed genome must be absent or at least one individual.
 The combination of core genome and distributed genome constitutes a genome graph because the location of distributed genes are marked in relation to coordinates in the core genome.\todo{is this true? I'm unclear how HUPAN constitutes a graph genome.}
 
 HUPAN construction is reference genome-oriented.
-For each individual in the population of interest, sequenced reads are assembled de novo into contigs.
+For each individual in the population of interest, sequenced reads are assembled \textit{de novo} into contigs.
 These contigs are then aligned to the reference genome.
 Because some of the genetic sequence in the population isn't represented in reference, there are some reads that align only partially or not at all.
 These are pooled, and aligned all-to-all.
-After filtering to remove non-human sequences, the pan-genome can be constructed by merging the now-connected partially- and fully-unaligned sequences with the reference genome.
+After filtering to remove non-human sequences, the pangenome can be constructed by merging the now-connected partially- and fully-unaligned sequences with the reference genome.
 
-VG also offers tools for constructing a genome graph using linear genomes, such as the cactus progressive aligner. \cite{Garrison_2018}
+\texttt{vg} also offers tools for constructing a genome graph using linear genomes, such as the Cactus progressive aligner \cite{Garrison_2018}.
 
-MSGA can also be used for constructing a linear genome-based graph.
-Starting with a graph composed entirely from a linear genome, MSGA constructs a more complex genome by using progressive calls to VG edit, which aligns and inserts the sequence to the graph. \todo{citation needed} \todo{Do we have a good publication detailing how Cactus graphs are constructed? Are there other VG algorithms I'm missing?}
+\todo{Do we have a good publication detailing how Cactus graphs are constructed? Are there other \texttt{vg} algorithms I'm missing?}
 
-\subsubsection{Graph Construction Based on Linear Graphs}
+\subsubsection{Graph construction based on existing linear genomes}
 
-GenomeMapper is the first major reference genome graph ever published. \cite{Schneeberger_2009}
-Their genome graph was constructed by indexing, and then merging, a population of genomes. 
-The index, which is effectively a compilation of the locations of all sequence signatures of 5 to 13 bp in length, guides the alignment process by offering an easy-access tool for identifying sets of similar substrings that are close to one another between genomes. 
+GenomeMapper was the first major tool to use a reference genome graph \cite{Schneeberger_2009}.
+The genome graph was constructed by indexing, and then merging, a population of genomes. 
+The index, which is effectively a compilation of the locations of all sequence signatures of 5 to 13 bp in length, guided the alignment process by offering an easy-access tool for identifying sets of similar substrings that are close to one another between genomes. 
 The GenomeMapper graph demonstrated access to polymorphisms that were otherwise unavailable in a linear reference.
+
+\texttt{vg}'s MSGA can also be used for constructing a graph based on linear input genomes, instead of assembly contigs.
+Starting with a graph composed entirely from a full linear genome, MSGA constructs a more complex graph by using the same progressive align-andintegrate strategy as is used for \textit{de novo} graph construction. \todo{citation needed}
 
 \subsubsection{Graph genome coordinates}
 
 Offset coordinates make it easy to unambiguously refer to any position or interval in a linear genome.
-Offset-based coordinate systems typically have two components: name of the chromosome, and distance in nt from the chromosome's start.
-For example, ``chr14: 100k'' would be on chromosome 14, 100,000 nt from the start.
+Offset-based coordinate systems typically have two components: name of the chromosome, and distance in nucleotides (nt) from the chromosome's start.
+For example, ``chr14:100k'' would be on chromosome 14, 100,000~nt from the start.
 Because genome graphs can include multiple walks of varying length, however, offset coordinates in a graph would vary depending on which path was taken.
-To resolve this problem, one graph-based coordinate system uses a similar offset-based format, except that [name of the chromosome] is replaced with name of the \emph{DNA region}; and similarly distance in nt from the \emph{region's} start. \cite{Rand_2016} 
-DNA region can be the chromosome itself, if the coordinate is on the linear backbone of the graph.
-In regions with alternate paths, however, DNA region would be the alternative allele ID in the graph.
-For example, a coordinate for an alternate path in the IGH region could be 'IGH-alt1:350', which would be 350 bases from the designated starting point of the alt path.
-Intervals in a graph are defined by a list of the genomic regions the interval passes through, e.g. `chr14:100, IGH-alt1, SERPIN-alt1, chr14:150m'.
-This coordinate system was chosen because it somewhat satisfies four criteria for its readability.
-It's readable – relatively easy for humans to interpret.
-It's backward compatible – adding more variants to the graph doesn't invalidate previously established coordinate points in the graph.
-And, it also sometimes satisfies spatiality – so that nearby bases frequently have similar coordinates, and monotonicity – coordinates increase gradually the further they are from the start of the chromosome, provided the coordinates are on the same DNA region.
+To resolve this problem, one graph-based coordinate system uses a similar offset-based format, except that the name of the chromosome is replaced with name of the \emph{DNA region}; and similarly distance in nt from the \emph{region's} start \cite{Rand_2016}. 
+The DNA region can be the chromosome itself, if the coordinate is on the linear backbone of the graph.
+In regions with alternate paths, however, the DNA region would be the alternative allele ID in the graph.
+For example, a coordinate for an alternate path in the IGH region could be ``IGH-alt1:350'', which would be 350~nt from the designated starting point of the alt path.
+Intervals in a graph are defined by a list of the genomic regions the interval passes through, e.g. ``chr14:100, IGH-alt1, SERPIN-alt1, chr14:150m''.
+This coordinate system was chosen because it at least partially satisfies the four criteria of \citeauthor{Rand_2016} by providing good:
+\begin{itemize}
+    \item \emph{Readability}: it is relatively easy for humans to interpret.
+    \item \emph{Backward compatiblity}: adding more variants to the graph doesn't invalidate previously established coordinate points in the graph.
+\end{itemize}
+It also provides acceptable:
+\begin{itemize}
+    \item \emph{Spatiality}: nearby bases frequently have similar coordinates, within a DNA region or within similarly named regions.
+    \item \emph{Monotonicity}: coordinates increase gradually the further they are from the start of the chromosome, within a DNA region.
+\end{itemize}
+
+\todo{Where are we going with this? Are we just saying that offset based coordinates are a good idea? Are we going to talk about whether/how tools like \texttt{vg} use them?}
 
 \subsubsection{Measuring graph utility}
 
-Because VG provides an integrated toolkit for constructing, manipulating, and using genome graphs, it's a tool well-suited for comparing the efficacy of different genome graph construction techniques. \cite{Novak_2017, Garrison_2018} In the paper Genome Graphs, Novak et al. compared different graph constructions based on their utility in read mapping, variant calling, and general graph character.
+Because \texttt{vg} provides an integrated toolkit for constructing, manipulating, and using genome graphs, it's a tool well-suited for comparing the efficacy of different genome graph construction techniques \cite{Novak_2017, Garrison_2018}.
+In the paper ``Genome Graphs'', \citeauthor{Novak_2017a}\ compared different graph constructions based on their utility in read mapping, variant calling, and general graph character \citep{Novak_2017a} \todo{Does it really make sense to lean so heavily on our own unreviewed, unpublished manuscript in a review?}.
 They found that genome graphs in general provide superior read mapping and variant calling to their linear counterparts, and that different construction approaches varied greatly even within each region of the genome.
 To quantify this variability, they proposed three normalized graph metrics.
  \emph{Graph compression} is the length of primary reference sequence divided by the sum of the length of the nodes in the graph.
 It essentially measures the quantity of alt path sequence represented in the graph with respect to the size of the reference.
-The \emph{(base) degree} of the graph measures how much branching occurs in the graph, and the \emph{cut width} measures apparent sequence rearrangement.
+The \emph{(base) degree} of the graph measures how much branching occurs in the graph, and the \emph{cut width} measures apparent sequence rearrangement \todo{We don't have any evidence to support these being useful or accepted metrics, though.}.
 
 
-In the same study, Novak et al. demonstrated that their graphs improved mapping precision when more polymorphisms were added to the graph.
+In the same study, \citeauthor{Novak_2017a}\ demonstrated that their graphs improved mapping precision when more polymorphisms were added to the graph.
 As they pointed out, this is a potentially surprising result: they originally thought that adding more sequences similar to the read's target would reduce the likelihood of the read mapping to the correct region.
-Instead, adding known variants helped the mapping algorithm distinguish their true mapping location from other, paralogous sequences.
+Instead, adding known variants helped the mapping algorithm distinguish their true mapping location from other, paralogous sequences \citep{Novak_2017a}.
 
 \subsubsection{Improving graph utility with FORGe: A tool for prioritizing variants for graph genomes}
 
 Adding more variants to the graph doesn't always improve mapping precision, however.
-FORGe is a tool for modeling the effects of adding a variant to the graph. \cite{Pritt_2018} 
+FORGe is a tool for modeling the effects of adding a variant to the graph \cite{Pritt_2018}. 
 The primary benefit of adding a variant to the graph is that it increases the graph's representation of sequence diversity.
 Without variance in the graph, reads with significant sequence dissimilarity from the linear genome won't be mapped to the correct region, or won't be mapped at all.
 Sometimes, however, adding a variant can reduce alignment accuracy by increasing the ambiguity of similar sequences already in the graph.
 In addition, adding variants to the graph can increase the cost of storing and querying the genome index.
 To predict the effects of adding a variant, FORGe scores variants based on their frequency in a population, its proximity to other variants, and how it increases/decreases repetitive sequence in the genome.
-It can then output a list of top-scoring variants for use in a graph aligner
+It can then output a list of top-scoring variants for use in a graph aligner.
+\todo{How do we square the results showing FORGe is needed with the results from our unpublished Graph Genomes manuscript? We don't do that work here.}
 
 
 \subsection{Indexing genome graphs}
@@ -110,43 +121,48 @@ Indexing or even enumerating all $k$-mers in the graph may be infeasible for rea
 
 In practice, indexes for genome graphs must make trade-offs not encountered in text indexes.
 In order to limit the exponential growth, the index may only support relatively short query strings.
-Some indexes support longer queries by doing extensive preprocessing.
-In other indexes, queries mapping to complex graph regions can be slow.
+Some indexes (e.g.\ \cite{Siren_2014}) support longer queries by doing extensive preprocessing.
+In other indexes (e.g.\ \cite{Thachuk_2013,Huang_2013,Maciuca_2016}), queries mapping to complex graph regions can be slow.
 Instead of indexing the entire graph, the index may only contain $k$-mers from a simplified graph, or from specific paths of the graph.
 While finding the path matching the query may be expensive in some cases, indexes typically save space by only reporting the starting position of the match.
 
 \subsubsection{Indexing sequences using a graph}
 
 The FM-index \cite{Ferragina_2005} is a text index, based on the Burrows--Wheeler transform (BWT) \cite{Burrows_1994}, that is frequently used with DNA sequences.
-A variant of the FM-index, the RLCSA \cite{Maekinen_2010}, run-length encodes the BWT, allowing it to store and index a collection of similar sequences space-efficiently.
+One variant of the FM-index, the RLCSA \cite{Maekinen_2010}, run-length encodes the BWT, allowing it to store and index a collection of similar sequences space-efficiently.
 \citeauthor{Huang_2010}\ \cite{Huang_2010} observed that if we know a good global alignment of the sequences, we can use that information to make the index both smaller and faster.
 \citeauthor{Na_2016}\ \cite{Na_2016,Na_2018} developed this approach further in their FM-index of alignment.
 While the articles do not mention it, both \citeauthor{Huang_2010}\ and \citeauthor{Na_2016}\ use the graph induced by the alignment as a space-efficient representation of the sequences.
 
-\subsubsection{Acyclic graphs}
+\subsubsection{Indexing acyclic graphs}
 
-% TODO "VCF graph" is a placeholder
+One class of graph indexing methods supports only acyclic graphs, often represented as directed acyclic graphs (DAGs).
+This constraint can exist either because the acyclicity of the graph provides guarantees that simplify the problem, or because incedental features of the method's software implementation preclude use on cyclic graphs.
+One common class of DAGs, here called \emph{VCF graphs}, represents each contig as a mostly linear run of graph nodes, branching to allow only for substitutions and possibly insertions and deletions.
+\todo{``VCF graph'' is a placeholder; is there a better term for this shape?}
+
 GenomeMapper \cite{Schneeberger_2009} was the first graph-based read aligner.
-It builds a directed acyclic graph from a reference sequence and a set of variants (VCF graph).
+It builds a VCF graph from a reference sequence and a set of variants.
 To index the graph, GenomeMapper uses a simple hash-based $k$-mer index, with $k \le 13$ to limit memory usage.
 
 GCSA \cite{Siren_2014} was the first attempt to use the BWT with graphs.
-It takes either a prebuilt DAG or generates one from a multiple alignment of sequences.
-GCSA then applies a number of graph transformations that preserve the path labels in the graph \todo{Should we describe this as the ``language'' of the graph?}, until the nodes can be unambiguously sorted by the labels of the paths starting from the node.
-This process balances on the fine line \todo{What does this mean, though? Is it linear in some graphs and exponential in others? Is it linear in practice and exponential in theory?} between linear and exponential.
-If the complexity of the graph is above a critical threshold, the transformed graph quickly becomes too large to handle.
+It either takes a prebuilt DAG or generates one from a multiple alignment of sequences.
+GCSA then applies a number of graph transformations that preserve the language, or set of end-to-end sequences, until the nodes can be unambiguously sorted by the labels of the paths starting from the node.
+When the complexity of the graph is sufficiently low, these transformations are reasonably fast and do not increase the size of the graph significantly.
+However, a phase transition happens at a certain threshold, and the transformed graph quickly becomes too large to handle above the threshold.
 
 BWBBLE \cite{Huang_2013} is a BWT-based representation for VCF graphs.
 Simple substitutions are encoded in the sequence using IUPAC codes, and the sequence is indexed using a normal FM-index.
-Because each base can be encoded using 8 different characters, the search branches after every base.
-Most branches can be quickly eliminated, however.
+Because each base can be encoded using 8 different characters, the search branches at every base to cover all possible characters which admit the base searched.
+In practice, most branches quickly run out of results and can be pruned from the search.
 Insertions and deletions produce separate sequences, with selected amount of context around the variant.
 The length of this context is an effective upper bound for query length.
 
 The vBWT \cite{Maciuca_2016} took another approach to using the BWT for indexing VCF graphs.
-It encodes variants as \texttt{(ref|alt1|\dots)} in the sequence.
+It encodes variants as \texttt{(ref|alt1|alt2|\dots)} in the sequence.
 When the search encounters a variant, it must branch to handle each allele separately.
-While both BWBBLE and vBWT trade faster index construction for slower queries, a combination of the ideas can be quite practical \cite{Buechler_2019}.
+Both BWBBLE and vBWT trade faster index construction for slower queries.
+However, a combination of IUPAC codes for substitutions, the vBWT approach for other variants, and a $k$-mer index for matching the first 5--10 bases, is faster than either of the originals \cite{Buechler_2019}.
 
 \subsubsection{General graphs}
 
@@ -155,17 +171,17 @@ These indexes first find partial matches between the query string and the indexe
 In the hypertext index \cite{Thachuk_2013}, each node is a separate phrase.
 Queries mapping to a single node or crossing a single edge can be matched efficiently, while finding mappings to complex graph regions can be slow.
 
-\citeauthor{Bowe_2012}\ \cite{Bowe_2012} used techniques similar to GCSA for representing de Bruijn graphs.
+\citeauthor{Bowe_2012}\ \cite{Bowe_2012} used techniques similar to GCSA for representing de~Bruijn graphs.
 If the graph transformations used in GCSA construction are stopped after $i$ steps, the resulting graph is equivalent to an order-$2^{i}$ de~Bruijn graph.
 This de~Bruijn graph can be used to approximate the original graph.
 There are no false negatives, but matches longer than $2^{i}$ may be false positives.
 By using this approach, GCSA2 \cite{Siren_2017} attempts to support fast queries in arbitrary graphs.
 
-While stopping the construction early allows GCSA2 to handle more complex graphs than GCSA, most graphs must be simplified before they can be indexed.
+GCSA2 faces the same issues with complex graphs as GCSA.
+In practice, most graphs must be simplified before they can be indexed.
 Typical simplifications include removing high-degree nodes and complex regions from the graph and replacing them with the reference sequence.
 If a collection of haplotypes is available, the removed regions can be replaced with new subgraphs that contain separate paths for each distinct local haplotype \cite{Siren_2019}.
-This way, the index will contain all $k$-mers from the haplotypes, while usually missing $k$-mers from their recombinations.
-\todo{JME: this paragraph feels a bit in-the-weeds to me. i think it could probably be cut}
+This way, the index contains all $k$-mers from the haplotypes, while usually missing $k$-mers from their recombinations.
 
 \subsubsection{Indexing graphs using sequences}
 
@@ -175,7 +191,7 @@ The distinct pieces form an artificial linear reference, which can be used with 
 The process guarantees that any substring of the haplotypes of length $k$ is also a substring of one of the pieces.
 As with BWBBLE, $k$ represents an effective upper bound for query length.
 
-The Pan-genome Seed Index (PSI) \cite{Ghaffaari_2019} follows a similar approach with artificial paths.
+The ``Pan-genome [sic] Seed Index'' (PSI) \cite{Ghaffaari_2019} follows a similar approach with artificial paths.
 Instead of using haplotypes, PSI uses a greedy algorithm to find a set of paths that covers as many $k$~bp windows in the graph as possible.
 An index using these paths alone already works well in practice.
 
@@ -195,7 +211,7 @@ By indexing a batch of reads and searching for the complex regions in that index
 
 \subsubsection{gPBWT, GBWT}
 
-% Jouni: I can write this
+% Jouni: We should at least include this
 
 
 \subsubsection{Alignments / collections of strings}

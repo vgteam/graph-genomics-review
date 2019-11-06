@@ -35,9 +35,10 @@ Work on github (Erik to make structure), use .bib for citations, use one line pe
 + Applications of pangenomic models (sections/applications.tex)
   + Error correction - __Robin__
   + Variant calling / Genotyping - __Glenn__
-  + Assembly/Metagenomics - __Erik__
+  + Assembly - __Erik__
   + Epigenomics - __Glenn__
   + Transcriptomics - __Jonas__
+  + Metagenomics and quasispecies - __Jonas__
 + Discussion - __Benedict__ (sections/discussion.tex)
 
 # References
@@ -228,6 +229,9 @@ https://www.biorxiv.org/content/10.1101/695338v2.abstract
 Pan-Tools (kmer based annotations) (just uses neo4j)
 https://doi.org/10.1093/bioinformatics/btw455
 
+SplitMEM: a graphical algorithm for pan-genome analysis with suffix skips (2014)
+https://doi.org/10.1093/bioinformatics/btu756
+
 ## Finding structures in pangenome graphs
 
 Bubbles (various)
@@ -365,17 +369,6 @@ https://doi.org/10.1038/s41588-018-0145-5
 Kourami (2018)
 https://doi.org/10.1186/s13059-018-1388-2
 
-## Assembly/Metagenomics
-
-Virus-VG (2019)
-https://doi.org/10.1093/bioinformatics/btz443
-
-VG-Flow (2019)
-https://doi.org/10.1101/645721 
-
-GROOT
-10.1093/bioinformatics/bty387
-
 ## Epigenomics
 
 GraphPeakCaller (2019)
@@ -431,3 +424,23 @@ https://doi.org/10.1093/bioinformatics/bty078
 
 HISAT2: Variation graph mapper (2019) - also mentioned in the variation graph mapping section
 https://doi.org/10.1038/s41587-019-0201-4
+
+## Metagenomics and quasispecies
+
+Mykrobe predictor (2015)
+https://doi.org/10.1038/ncomms10063
+
+MetaKallisto (2017)
+https://doi.org/10.1093/bioinformatics/btx106
+
+Metagenomic classification and assembly review (2017)
+https://doi.org/10.1093/bib/bbx120
+
+GROOT (2018)
+https://doi.org/10.1093/bioinformatics/bty387
+
+Virus-VG (2019)
+https://doi.org/10.1093/bioinformatics/btz443
+
+VG-Flow (2019)
+https://doi.org/10.1101/645721 

@@ -7,104 +7,149 @@
 % Glenn
 
 Genome graphs can leverage known sequence variation, available in increasingly large public databases, to improve variant identification in new samples.
-In general, variants are determined by finding paths through the graph that are best supported by mapped reads.
+In general, variants are determined by finding paths through the graph that are best supported by mapped reads, and noting how the reads differ form the paths that best represent them.
 Projecting these paths back to the reference yields the variants, typically in VCF format.
 When only paths from graph are considered, this process is considered \emph{genotyping}.
 Novel variants can be \emph{called} by augmenting the paths with edits from the reads.
 
-GraphTyper \cite{eggertsson2017graphtyper} begins with a pan-genome graph created from variants in dbSNP, and iteratively updates it with variants discovered in input reads.
+\subsubsection{General tools}
+
+GraphTyper \cite{eggertsson2017graphtyper} is a popular genome-graph-based caller.
+It begins with a pangenome graph created from variants in dbSNP, and iteratively updates it with variants discovered in input reads.
 Its authors showed it to be more accurate on benchmarks than top linear reference-based approaches such as GATK.
-It was applied to WGS data from 28,075 samples from an Icelandic population study.
-Another approach used a graph derived from the 1000 Genomes Project \cite{Rakocevic_2019} to improve calling accuracy, as well as find variants absent from common benchmarks such as GIAB.
+It is also practical to run on large datasets; its authors applied it to WGS data from 28,075 samples from an Icelandic population study.
 
-Difficult and diverse genomic regions stand to gain the most by moving from a linear reference to genome graph.
+A more recent approach, Graph Genome Pipeline, \cite{Rakocevic_2019}, uses a genome graph derived from the 1000 Genomes Project to improve calling accuracy.
+It has been shown to be able to find variants absent from common benchmarks such as GIAB, raising the question of whether these datasets, commonly used as truth sets in the evaluation of new methods, should be updated.
+
+\subsubsection{Approaches to challenging regions}
+
+Very diverse genomic regions (whose diversity makes them difficult to study) and low complexity regions (which can have condensed graph representations) intuitively stand to see the most improvement when moving from a linear reference to a genome graph.
 To this end, much work has been done exploring the application of graphs to the major histocompatibility complex (MHC) region on chromosome 6, which contains the human leukocyte antigen (HLA) genes.
-Determining the HLA alleles in a sample, or HLA typing, is often of great importance, but due to high polymorphism within the MHC region, WGS mapped to the linear reference cannot be effectively used and more costly Sanger sequencing is required.
-The Population Reference Graph (PRG) \cite{dilthey2015improved} is created from a multiple sequence alignment (MSA) of known haplotypes and variants spanning the MHC region.
-Reads are mapped to to the graph then used to extract a pair of ``chromotype'' paths that best represent them, which are then used linear references for standard mapping and calling tools.
-PRG*HLA \cite{dilthey2018hla} explicitly models the HLA genes, rather than the whole MHC region.
-HLA types are imputed directly from the graph, rather than intermediate chromotypes, providing faster performance and  HLA*LA \cite{dilthey2019hla} further improves runtime and adds support for long read and assembly inputs.
+These genes are critical components of the immune system, which produces a strong selective pressure for diversity and many dramatically distinct alleles.
+Determining the HLA alleles in a sample, or HLA typing, is often of great importance, but due to high polymorphism within the MHC region, short read sequencing against a linear reference is not effective, and more costly Sanger sequencing is required.
+
+As a potentially viable short-read-based approach, \citeauthor{dilthey2015improved} developed the Population Reference Graph (PRG) method.
+The PRG is created from a multiple sequence alignment (MSA) of known haplotypes and variants spanning the MHC region.
+Reads are mapped to to the graph, then used to extract a pair of ``chromotype'' paths that best represent them, which are then used linear references for standard mapping and calling tools.
+An extension, PRG*HLA \cite{dilthey2018hla}, explicitly models the HLA genes, rather than the whole MHC region.
+In this method, HLA types are imputed directly from the graph, rather than intermediate chromotypes, providing faster performance.
+A further extension, HLA*LA \cite{dilthey2019hla}, further improves runtime and adds support for long read and assembly inputs.
 Kourami \cite{lee2018kourami} is another method for HLA typing that assembles haplotypes using a graph genome as a guide, and is able to incorporate novel variation from the reads.
-HLA typing with these methods using WGS has been shown to be as accurate as the conventional Sanger sequencing based approach.
+HLA typing with these methods using whole genome short read data has been shown to be as accurate as the conventional Sanger sequencing based approach.
 
-ExpansionHunter \cite{dolzhenko2019expansionhunter} uses genome graphs to model low complexity regions in the genome.
+For working on low-complexity, repetitive regions of the genome, ExpansionHunter \cite{dolzhenko2019expansionhunter} provides an approach using genome graph models.
 It uses regular expressions are used to define variable sites of tandem repeats, which are modeled as self-loops in the graph.
-The authors show that short read data can be used to more accurately type clinically relevant sites of such variation using this approach than standard variant calling pipelines.
+Its authors show that this approach can more accurately genotype clinically relevant sites of such variation using short read data, as compared to standard variant calling pipelines.
 
-Structural variants (SVs) are mutational events of at least 50bp in length.
+\subsubsection{Genotyping structural variation}
+
+The study of structural variants (SVs), mutational events of at least 50~bp in length, is also benefiting from the application of genome graphs.
 SVs can be increasingly well characterized by long read sequencing, but this technology remains prohibitively expensive for population scale studies.
-Known SVs can be naturally represented as genome graphs, and genotyped using WGS short read data.
-Bayestyper \cite{sibbesen2018accurate} uses the distribution of kmers from sequencing reads, as well as that of the graph, to accurately identify variant haplotypes.  
+Known SVs can be naturally represented as genome graphs, and genotyped from short read data using a selection of tools.
+
+Bayestyper \cite{sibbesen2018accurate} uses the distribution of kmers from sequencing reads, as well as that of the graph, to accurately identify variant haplotypes.
+\todo{EG: we need to cite the update to GraphTyper here, where it was shown to work on SVs.}
+
 Paragraph \cite{chen2019paragraph} is a SV genotyper that operates on a genome graphs constructed from each variant in a VCF of SV calls.
 For each variant, it remaps nearby reads as retrieved from a linear alignment, to the graph.
 It then computes a genotype from the support of each allele's breakpoints in the graph alignment.
 Paragraph was shown to outperform similar methods that rely on linear references by a wide margin.
-vg's SV \cite{hickey2019genotyping} genotyper can be run on any genome graph, provided it contains embedded paths that can be used for coordinates.
-Unlike all other methods mentioned above, which remap a subset of relevant reads to the graph, vg operates directly on a graph alignment of the entire read set.
+
+\texttt{vg}'s SV genotyper can be run on any genome graph that contains embedded paths, which are required as the coordinate space for VCF output \cite{hickey2019genotyping}.
+Unlike all other methods mentioned above, which remap a subset of relevant reads to the graph, \texttt{vg} operates directly on an alignment of the entire read set against the graph.
 It uses the snarl decomposition \cite{paten2018superbubbles} to identify sites of variation in the graph, and derives haplotypes using read support.
 It was shown to be much more accurate than linear reference-based approaches, and was also evaluated on graphs derived from alignments of assemblies.
 
-\subsection{Assembly and metagenomics}
+\subsection{Assembly}
 % Erik
 
-\subsection{Epigenomics}
+\subsection{Transcription factor binding}
 % Glenn
 
-CHiP-seq data, reads that bind to specific transcription factors, are mapped back to the reference genome in order to locate binding sites.  
-Graph Peak Caller is based on vg and is the first tool to use a genome graph for this process \cite{Grytten_2019}.
-It was shown to find binding sites more enriched for known DNA binding motifs than linear methods on \emph{A. thaliana}.
+CHiP-seq data, reads that bind to specific transcription factors, can be mapped back to the reference genome in order to locate binding sites.
+ 
+Graph Peak Caller is based on \texttt{vg} and is the first tool to use a genome graph for this process \cite{Grytten_2019}.
+It was shown to find binding sites more enriched for known DNA binding motifs than linear methods on \emph{A.
+thaliana}.
 It was also applied to human data to discover novel sites for enhancers in the human genome \cite{groza2019personalized}. 
+
+\todo[inline]{Do we need a real epigenomics section about DNA base or histone modification?}
 
 \subsection{Transcriptomics}
 
-Using genome reference graphs for the analyses of transcriptomic sequencing data have generally received less attention compared to its whole genome sequencing counterpart.
-However, reference-bias is an important issue that needs to be addressed when estimating allele-specific expression (ASE \cite{Degner2009-vw,Castel2015-ef}.
-Here the expression levels of genes or transcripts are estimated on each allele separately by counting the difference in number of mapped RNA sequencing (RNA-seq) reads across heterozygous variants.
-A bias towards one of the alleles can therefore result in an false-positive difference in expression between the alleles. \\
+Attempts to use genome graphs to analyze transcriptomic sequencing data have generally received less attention than similar experiments with whole genome sequencing data.
+However, when estimating allele-specific expression (ASE) reference bias is an important issue that needs to be addressed \cite{Degner2009-vw,Castel2015-ef}.
+ASE analysis estimates the expression levels of genes or transcripts on each allele separately, by simply put comparing the number of RNA sequencing (RNA-seq) reads mapped to the two different alleles of heterozygous variants.
+A mapping bias in favor of one of the alleles can therefore result in a false-positive difference in expression between the alleles.
+Variant-aware methods, including those based on genome graphs, allow for the sequence difference between the two alleles to be considered during mapping thus reducing reference bias.
 
-Filtering strategies based on simulations that remove variant sites or reads with likely bias have been proposed as a way to mitigate this, but these approaches can result in less detectable allele-specific expressed genes or lower expression values \cite{Castel2015-ef,Van_de_Geijn2015-dz}. 
-Variant-aware methods, such as genome graphs, provides a means that does not rely on filtering and instead takes the sequence difference between the two alleles into account during mapping.
-The simplest approach involves creating a personalized diploid genome or transcriptome followed by the use of standard linear mapping method \cite{Turro2011-op,Rozowsky_2011,Bray_2016,Raghupathy2018-sd}.
-Methods using this approach have shown to reduce reference-bias and improve estimation of ASE, but one limitation is that they require that phased haplotypes are available for the samples investigated.
-Variant-aware mapping methods on the other hand does not require that the variants are phased.
-GSNAP was the first variation- and splicing-aware mapping method developed for RNA-seq data \cite{Wu2010-hv}.
-It uses a kmer-based approach where both the genome and a set of SNVs are indexed using hash tables. % We might want to add GSNAP introduction to the model section since it also works on WGS.
-Current version uses a suffix array in addition to the hash table.
-Alignment is performed by searching for kmers in the read that are in close proximity on the reference genome. % Needs a much more detailed and better description. 
+The simplest approach to using variation data in mapping involves creating a personalized diploid genome or transcriptome, which is then used as the reference for a standard linear mapping method \cite{Turro2011-op,Rozowsky_2011,Bray_2016,Raghupathy2018-sd}.
+Methods using this approach have been shown to reduce reference bias and improve estimation of ASE, relative to traditional single reference genome methods, but they are limited by requiring phased haplotypes for the individuals under study.
+
+Proper variant-aware mapping methods, on the other hand, do not require that the variants are phased beforehand.
+GSNAP was the first variant- and splicing-aware mapping method developed for RNA-seq data \cite{Wu2010-hv}\todo{JAS: We might want to add GSNAP introduction to the model section since it is general and also works for WGS}.
+It uses a kmer-based approach where both the genome and a set of SNVs are indexed using hash tables.
+The current version uses a suffix array in addition to the hash table.
 GSNAP is still competitive with regards to mapping accuracy, but it is generally much slower than contemporary mapping methods.
-The authors does not specifically show that GSNAP reduces reference-bias, however it has been shown later by others \cite{Castel2015-ef}.
-ASElux uses all heterozygote exonic SNVs in an individual to create a suffix array index of the alleles and their flanking sequences \cite{Miao2018-ps}. 
-This index is used to filter read pairs that does not overlap any SNVs with up to 2 mismatches allowed in the flanking regions. 
-Read pairs that pass this filter are then aligned to a different suffix array index consisting of exonic and intronic regions in order to find its exact location. 
-ASElux showed better reduction in reference-bias and higher alignment speed compared to variation aware-mapping methods.
-Similar to ASElux, iMapSplice creates an index of the SNV alleles and flanking sequences \cite{Liu_2018}.
-The sequences are indexed using enhanced suffix arrays and reads are mapped to both this index and the reference genome using semi-maximal prefix matching.
-The authors showed that iMapSplice achieves higher mapping accuracy and lower reference-bias compared to both linear and other variant-aware mapping methods.
-GSNAP, ASElux and iMapSplice only supports SNVs and is therefore not able to reduce reference-bias around indels.
-HISAT2 was the first genome graph based method capable of splice-aware mapping of RNA-seq data that also supports non-SNVs \cite{Kim_2019}. 
-Their method can use SNVs, deletions of any length and insertions up to 20 bp.
-Using a combination of a hierarchical graph FM index and a repeat region index (see ? section for more details) HISAT2 is able to map RNA-seq reads at an impressive speed to a genome graph containing 14.5M variations without sacrificing accuracy. 
-Their benchmark, however, only shows results for DNA sequencing data and therefore it is unknown how well this variant-aware version reduces reference-bias for RNA-seq data.
-Recently, the ability to create spliced variation graphs was added to the vg toolkit \cite{Garrison_2018}. 
-In these graphs known splice-junctions are added as edges to a variation graph similar to the addition of a deletion event while transcripts are embedded as paths through the graph. 
-This allows for the current algorithms in vg to also be used for mapping of RNA-seq data. 
-vg supports any type of variation, but it is limited to only known splice-junctions and thus reads that span a novel junction will only map partially. \\
+Although not demonstrated in the initial publication, GSNAP does reduce reference bias around SNVs \cite{Castel2015-ef}.
 
-Similar to WGS, variation-aware analysis of RNA-seq data is important for estimating expression of genes and transcripts in highly polymorphic regions, such as HLA genes in the human major histocompatibility complex region. 
-It has been shown that estimation of expression can be improved by comparing the reads against a collection of known HLA haplotypes instead of the linear reference. 
-AltHapAlignR is one such method \cite{Lee_2018}. It first maps the RNA-seq reads to the linear reference. Unmapped reads and reads that map to the HLA region are then collected and mapped to 7 alternative haplotypes followed by expression estimation in a haplotype-specific manner. 
-While this approach improves estimation of ASE it is unclear whether the method can scale to the thousands of haplotypes known in the HLA region.
-HLApers on the other hand first aligns the RNA-seq reads against an index containing thousands of known HLA haplotypes using either a regular mapper or pseudoaligner \cite{Aguiar2019-fy}.
-The aligned reads are then used to predict the most likely haplotype pair for each gene to which the reads are aligned against a second time and from which expression is estimated.  
-Using this approach they were able to align more reads compared to using the linear reference, especially for genes with high sequence divergence from the reference, but only aligning to the HLA haplotypes might bias their results toward these. \\
+Another variant-aware method, ASElux, uses all heterozygous exonic SNVs in an individual to create a suffix array index of the alleles and their flanking sequences \cite{Miao2018-ps}. 
+This index is used to filter read pairs that does not overlap any SNVs with up to 2 mismatches. 
+The much smaller set of read pairs that pass this filter are then aligned to a different suffix array index consisting of exonic and intronic regions and pairs that align unique to a single gene are used for allele counting. 
+ASElux achieves higher accuracy for ASE estimation compared to pipelines based on linear mappers and is significantly faster than GSNAP which reduces reference bias slightly more.
 
-Using variation in the intronic regions can also be beneficial when analysing RNA-seq data. 
-Variation in these regions can either disrupt or create new splice-site motifs resulting in intron retention or novel splicing, respectively. 
-This can affect mapping algorithms, since the absence or presence of canonical splice-site motifs are often used to score alignments across splice-junctions. 
-Indeed, by using a personalized genome approach Stein \textit{et al.} was able to identify 506 personal splice-junctions in 75 individuals of which 437 was novel \cite{Stein_2015}. 
-Later, Lui \textit{et al.} more than tripled this number in the same individuals using iMapSplice, thereby showing the importance of variant-aware analysis for bias-free splice-junction detection \cite{Liu_2018}.
+Similarly to ASElux, iMapSplice creates an index of SNV alleles and their flanking sequences \cite{Liu_2018}.
+The sequences are indexed using enhanced suffix arrays and reads are mapped to both this index and the reference genome simultaneously.
+The authors demonstrated that iMapSplice achieves higher mapping accuracy and lower reference bias compared to both a linear mapping method and HISAT2, another variant-aware method.
 
-% Papers that maybe needs to be added here or under calling/genotyping:
-% HLA typing from RNA-seq (Beretta \textit{et al.}, Denti \textit{et al.})
+GSNAP, ASElux and iMapSplice only support SNVs and are therefore not able to reduce reference bias around indels.
+HISAT2 was the first genome graph based, non-SNV-variant-aware method for splicing-aware mapping of RNA-seq data \cite{Kim_2019}. 
+This method can use SNVs, deletions of any length, and insertions up to 20~bp.
+HISAT2 uses a combination of a hierarchical graph FM index and a repeat region index to map the sequencing reads to the genome graph (see Variation Graph Mapper section for more details).
+Their benchmark only shows results for DNA sequencing data, but \citeauthor{Liu_2018} did show in their iMapSplice benchmark a reduction in reference bias for HISAT2 around SNVs using an older version.  
 
+Recently, the ability to create spliced variation graphs was added to the \texttt{vg} toolkit \cite{Garrison_2018}. 
+In these variation graphs, known splice junctions are added as edges, similar to the addition of a deletion event, while transcripts are embedded as paths through the graph. 
+This allows for existing algorithms in \texttt{vg} to also be used for variant-aware mapping of RNA-seq data. 
+\texttt{vg} supports any type of variation, but its splicing-awareness is limited to only known splice junctions, and it does not support generating supplementary alignments.
+Thus, reads that span a novel splice junction will only map partially.
 
+As with whole genome DNA sequencing data, variation-aware analysis of RNA-seq data is important for getting accurate results in highly polymorphic regions, such as the HLA genes in the human major histocompatibility complex region. 
+AltHapAlignR and HLApers have both demonstrated improvements in the estimation of HLA gene/transcript expression as a result of comparing the reads against a collection of known HLA haplotypes, instead of using the linear reference \cite{Lee_2018,Aguiar2019-fy}.
+
+Leveraging variation even in the intronic regions can be helpful when analysing RNA-seq data. 
+Variation in these regions can disrupt existing splice-site motifs or create new ones, resulting in intron retention or novel splicing, respectively. 
+Since the presence or absence of canonical splice-site motifs is often used as a factor when scoring alignments across splice junctions, mappers which are aware of these changes to the motifs are able to give more accurate mapping results for reads that overlaps the modified splice-junctions. 
+Indeed, by using a personalized genome approach, \citeauthor{Stein_2015} were able to identify 506 personal splice junctions in 75 individuals, of which 437 were novel \cite{Stein_2015}.
+Even more novel junctions were later found in the same individuals by \citeauthor{Liu_2018} using iMapSplice \cite{Liu_2018}.
+
+\subsection{Metagenomics and quasispecies}
+
+Most of the methods mentioned in this review has focused on the analyses of human data, however, the benefits of using graphs as a non-linear reference structure have also been demonstrated for other species.
+This is especially true for bacterial metagenomics and viral quasispecies where the sequencing data consists of a mixture of closely related sequences (e.g. strains).
+A graph with sequence paths here provides a natural representation of the data and methods have been developed that specifically take advantage of this. 
+
+Mykrobe predictor uses reference de Bruijn graphs to estimate antibody resistance from \textit{S. aureus} and \textit{M. Tuberculosis} sequencing data \cite{Bradley2015-kl}.
+The graphs are constructed from known resistant relevant alleles and genes and compared to a whole-genome de Bruijn graph built from the sample's sequencing reads.
+The frequency of alleles and genes are predicted using read coverages on the intersecting graphs.
+Using this approach the authors demonstrated accurate resistance prediction within minutes on a laptop.  
+
+GROOT \cite{Rowe2018-bg}
+
+Virus-VG uses variation graphs to estimate virus haplotypes within a viral quasispecies.
+Virus-VG first constructs a variation graph from assembled contigs to which the sequencing reads are mapped using the vg toolkit.
+Maximal-length candidate haplotype paths are then enumerated by merging overlapping contigs in a breadth-first search type procedure and their abundances estimated using an optimization algorithm that minimize the difference between predicted abundances and the mapped read coverage. 
+Baaijens \textit{et al.} demonstrated more accurate abundance estimates and longer haplotypes compared to reference-based approaches.
+Later, Baaijens \textit{et al.}, extended this method to allow it to scale to larger genomes, such as bacteria \cite{Baaijens2019-ha}.
+VG-flow, similar to Virus-VG, builds a variation graph from the assembled contigs, however, here a min-cost flow optimization algorithm is used in the candidate haplotype path enumeration step.
+This algorithm scales much better with contig number and genome size, and they showed that it also slightly improves accuracy for the smaller viral genomes compared to Virus-VG. 
+
+One major metagenomics analysis pipeline involves the taxonomical classification and quantification of sequencing data or assembled contigs using a database of known sequences, such as bacterial and viral genomes. 
+While most methods do not use graph structures for this analysis they do for the most part rely on a compressed representation of the reference sequences using for example a k-mer index or FM-index (see Breitwieser \textit{et al.} for review on classification methods \cite{Breitwieser2017-yp}). 
+One method that uses a graph representation is MetaKallisto \cite{Schaeffer2017-fh}. 
+This method is based on the algorithm originally developed for RNA-seq analysis, Kallisto, and uses a colored de Bruijn graphs to represent the database of known genomes \cite{Bray_2016}. 
+Read are aligned to these graphs using pseudoalignment and abundances estimated from the aligned reads using an expectation-maximization algorithm. 
+The authors demonstrated superior performance compared to state-of-the-art metagenomic abundance methods using simulated reads on a filtered set of 1027 bacterial genomes.
+One area where graph based methods have been used extensively, is in metagenomic assembly, however, since this review mainly focuses on non-linear representations of reference structures we will not go into detail about them here. 
+For more details on metagenomic assembly see Breitwieser \textit{et al.} review on assembly methods \cite{Breitwieser2017-yp}. 
