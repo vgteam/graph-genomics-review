@@ -102,7 +102,6 @@ They are capable of representing all other kinds of pangenomic models, and provi
 
 %The disadvantage of variation graphs is that their implementation has been difficult due to their generality.
 
-
 %Such a data structure may be compressed
 %Such sequence data can be represented in \emph{linear reference models}, like FASTA sequences, with variation represented in external files, but these approaches lack coherent representation of the relationship between sequences.
 %Supporting 
@@ -112,7 +111,21 @@ They are capable of representing all other kinds of pangenomic models, and provi
 %Pangenomic models encode both variation and sequence in a single model.
 
 
-%\subsection{Interfacing with the pangenome}
+\subsection{Interfacing with the pangenome}
+
+Pangenomes can be stored as collections of sequences in FASTA format.
+Variant calls in VCF format may be added to such a collection to describe small or structural variants found in the pangenome.
+Collections of FASTA sequences and alignments between them also imply a pangenomic data structure, which can be viewed in the form of a ``dot plot'' in two dimensions.
+This approach breaks down when considering large numbers of related sequences, and is not commonly used as a way to convey a pangenome.
+
+To encode graphical pangenomes, the community frequently employs the GFA format for sequence graph exchange.
+GFA was originally designed as an interchange format for assembly methods, but the equivalence between graphical pangenomes and the data structures used by assembly methods allowed it to be repurposed as a pangenomic interchange model.
+
+GFA provides no mechanism to express read alignments.
+The vg toolkit has developed the GAM format, which generalizes the data model of the SAM/BAM format to work on graphical reference systems, and this has been taken up by a number of other alignment tools.
+However, it lacks a simple text-based equivalent.
+The recently-proposed GAF format (which generalizes PAF to work on graphs) could serve this purpose.
+GAF is related to rGFA, which is a proposed restricted specialization of GFA for reference graphs.
 
 %\todo[inline]{EG: here we should talk about which tools exist, and which data formats they read and write, with a figure too?}
 
