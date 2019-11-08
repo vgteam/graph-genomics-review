@@ -8,18 +8,15 @@
 \todo[inline]{SH: Abyss: Does not take GFA as input and only output from Abyss. 
 Did not work on my machine.
 I vote to leave this out.}\cite{nielsen2009abyss}
-\todo[inline]{SH: MoMI-G}\cite{yokoyama_momi-g:_2019}
 \todo[inline]{SH: NGS Graph Generator: This tool does only produce a graph as output from linear NGS data. I vote to leave this out of here, too.}\cite{nazarie_visualization_nodate_2019}
-
-\todo[inline]{Taxonomy suggestion: Assembly graph viz, RNA-Seq assembly graph viz, variation graph viz. taxonomy of application + layout}
 
 Visualization of pangenome graphs presents novel challenges, because their data structure is \begin{enumerate*}[label=(\alph*)]
 \item convoluted,
 \item inherently multidimensional and
 \item nonlinear.
-\end{enumerate*} Traditional genome browsers exploit the one dimensional nature of linear sequence data and use the second dimension to paint annotations on the y-axis. This organizes the data in a matrix-like shape. Graph genomes follow network visualizations which require three dimensions to render without overlapping lines.  
-
-Existing visualization tools are specialized in layouting assembly or scaffold graphs or viewing the graph on a pangenome level. 
+\end{enumerate*} Traditional genome browsers exploit the one dimensional nature of linear sequence data and use the second dimension to paint annotations on the y-axis. This organizes the data in a matrix-like shape. Graph genomes follow network visualizations which require three dimensions to render without overlapping lines.
+Existing pangenome graph visualization tools target different applications / audiences, dependent on the graph structure to visualize. 
+\todo[inline]{SH: Start with our taxonomic system here. Then point to our fancy table.}
 A range of tools exist for visualization, each with their own target applications.
 \todo[inline]{JME: i think this section would benefit from a more inspirational lead-in.
 we want people to think that graph visualization is important, not just a thing that exists. JDS: Hopefully, this is a more interesting start, then Simon and I will add our categorization intro. SH: I would delete the sentence before this comment or at least try to merge it with the previous one.}
@@ -31,7 +28,7 @@ The tool does have support for restricting the portion of the graph displayed to
 Moreover, while the tool includes the ability to search for sequences in the graph, it does not have any ability to structure graph display using known linearization information.
 Additionally, Bandage is implemented as a cross-platform native C++/Qt application \citep{Wick_2015}, which allows the tool to be self-contained but precludes the use of cloud resources for dealing with larger graphs; all graph data must be stored and processed on the user's machine at visualization time.
 \todo[inline]{JME: i'm worried some of these implementation details might be too in-the-weeds.
-they have important implications, but i think this discussion would be more accessible to a general audience if we refocus it on the effects that these implementation decisions have on the user }
+they have important implications, but i think this discussion would be more accessible to a general audience if we refocus it on the effects that these implementation decisions have on the user. SH: I agree here. Josiah and I will try to merge the Bandage and GfaViz paragraphs by "putting a lot of text in our table".}
 \todo[inline]{JDS: Mention Jason Chin's work and other force directed graphs.  Mention Figure~\ref{fig:visualization}}
 
 GfaViz is another C++/Qt application for visualizing genome graphs which claims full support for newer GFA2 features, such as the gaps which allow GFA2 to represent scaffold graphs in addition to assembly graphs; these features are not available in Bandage, which supports only GFA1 \citep{Gonnella_2018}.
@@ -39,10 +36,10 @@ However, unlike Bandage, the GfaViz project has not released any binary builds o
 \todo{JME: we should probably introduce the GFA format before mentioning it.
 i wonder where we should do that...}
 
-Departing from the desktop application model, two recent graph visualization tools, \textbf{S}caffold \textbf{G}raph \textbf{T}ool\textbf{K}it (SGTK) and \textbf{A}ssembly \textbf{G}raph \textbf{B}rowser (AGB), adopt a build-a-web-page model, in which a web-based visualization is prepared that does not rely on further server support, lowering end-user system requirements \citep{Kunyavskaya_2018,Mikheenko_2019}.
+Departing from the desktop application model, two recent graph visualization tools, \texttt{SGTK} and \texttt{AGB}, adopt a build-a-web-page model, in which a web-based visualization is prepared that does not rely on further server support, lowering end-user system requirements \citep{Kunyavskaya_2018,Mikheenko_2019}.
 SGTK is designed for visualizing scaffold graphs, which can have negative-overlap gaps between sequenced segments, and is based around the in-browser Cytoscape.js graph layout and rendering library \citep{Kunyavskaya_2018}.
 It includes a potentially highly interpretable, reference-sequence-structured ``browser'' layout, but its use of Cytoscape.js appears to push it towards a generic circular node representation, rather than the noodles of Bandage \citep{Kunyavskaya_2018}.
-\todo{JME: i love `noodles', but i don't know if it's a science word}
+\todo{JME: i love `noodles', but i don't know if it's a science word. SH: I don't think it is, but I also like it a lot :)}
 Moreover, its authors do not demonstrate its usability on large graphs, with the largest graph evaluated having only 923 nodes and 60,679 edges \citep{Kunyavskaya_2018}.
 
 AGB has a similar overall design to SGTK, but makes different implementation choices.
@@ -60,7 +57,10 @@ To deal with comprehensive pangenome graphs with sequence data, one design appro
 This is the avenue taken by the Sequence Tube Map, which renders regions of pangenome graphs using a visual language inspired by transit system maps \citep{Beyer_2019}.
 This tool operates at a much more magnified zoom level than tools designed to work with assembly graphs, and is useful for visualizing base-scale variation and short read mapping locations in human-chromosome-scale graphs.
 However, its imposition of a local linear ordering and its limited graph simplification tools make it difficult to use on larger regions.
-Additionally, its architectural decision to load the graph from disk for every request makes latency prohibitively high when working with combined graphs above the scale of a single chromosome, so the tool is not suitable for graphs which cannot be broken up into chromosome-scale connected components. \todo{JDS: I'd like to remove this last implementation detail. It's not intrinsic to the STM concept.}
+
+The currently under heavy development multi-scale genome graph browser MoMI-G\cite{yokoyama_momi-g:_2019} takes the idea of SequenceTubeMap and integrates it into a multi-view visualization framework. 
+MoMI-G's focus to display and browse nested SVs is realized in various viewing modules:  a) A chromosomal overview is realized with circos, b) the feature table view is for the filtering of SVs, c) the SequenceTubeMap shows the genome graph and d) a linear view of annotations complements the web applicaton. 
+Though, as MoMI-G relies on SequenceTubeMap, is has the same disadvantages.
 
 Other approaches to visualizing comprehensive pangenome graphs rely on restricting the problem in order to improve efficiency.
 For example, by sorting the sequence-bearing nodes of the graph into a one-dimensional layout, and producing vector graphics rather than pixel images, the \texttt{vg viz} tool renders graphs of arbitrary size and complexity in linear time \citep{Garrison_2019}. 
@@ -71,6 +71,7 @@ However, as with the Sequence Tube Map, it can be difficult to understand high-l
 
 Figure~\ref{fig:visualization} provides a visual overview of the visualization methods surveyed here.
 It remains an open problem to interactively visualize a comprehensive human pangenome graph, potentially including interchromosomal connections, at a variety of zoom levels, with modestly provisioned end-user hardware.
+\todo[inline]{SH: This last sentence I would move to the discussion?}
 
 \begin{figure}[h]
     \includegraphics[width=0.9\textwidth]{figures/visualization.pdf}
