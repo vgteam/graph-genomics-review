@@ -2,14 +2,22 @@
 
 \subsection{Visualization}
 % Adam
+% Simon
+% Josiah
 
-Once one has constructed a graph pangenomic model, one might want to look at it.
-A number of tools have been developed for this purpose.
+\todo[inline]{SH: Abyss}\cite{nielsen2009abyss}
+\todo[inline]{SH: MoMI-G}\cite{yokoyama_momi-g:_2019}
+\todo[inline]{SH: NGS Graph Generator}\cite{nazarie_visualization_nodate_2019}
+\todo[inline]{SH: odgi}\footnote{\url{https://github.com/vgteam/odgi}}
+
+\todo[inline]{Taxonomy suggestion: Assembly graph viz, RNA-Seq assembly graph viz, variation graph viz. taxonomy of application + layout}
+
+After acquiring a pangenome graph, the next challenge is to visualize the graph and gain insight about the structure of genetic diversity.
+A range of tools exist for visualization, each with their own target applications.
 \todo[inline]{JME: i think this section would benefit from a more inspirational lead-in.
-we want people to think that graph visualization is important, not just a thing that exists}
+we want people to think that graph visualization is important, not just a thing that exists. JDS: Hopefully, this is a more interesting start, then Simon and I will add our categorization intro.}
 
-Bandage (\textbf{B}ioinformatics \textbf{A}pplication for \textbf{N}avigating \textit{\textbf{D}e novo} \textbf{A}ssembly \textbf{G}raphs \textbf{E}asily) \citep{Wick_2015} is one of the most popular \citep{Mikheenko_2019}.\todo{JME: IMO, spelling out these acronyms breaks up the flow and is not very important.
-bioinformatics acryonyms are shit, we don't need to elevate them in the text.}
+Bandage \citep{Wick_2015} is one of the most popular visualizations \citep{Mikheenko_2019}.
 Originally designed for working with bacterial assembly and meta-assembly graphs \citep{Wick_2015}, it supports a wide range of formats and graph  paradigms.
 It can be effectively used for interactively visualizing and exploring subregions of human-scale pangenome graphs \citep{Garrison_2019}, but its shortcomings become apparent at larger scales or with higher degrees of connectivity between graph regions \citep{Mikheenko_2019}.
 The tool does have support for restricting the portion of the graph displayed to a particular ``scope'', but the tool is fundamentally built around laying out the graph under study in two dimensions, with all nodes represented, and panning and zooming around it.
@@ -17,6 +25,7 @@ Moreover, while the tool includes the ability to search for sequences in the gra
 Additionally, Bandage is implemented as a cross-platform native C++/Qt application \citep{Wick_2015}, which allows the tool to be self-contained but precludes the use of cloud resources for dealing with larger graphs; all graph data must be stored and processed on the user's machine at visualization time.
 \todo[inline]{JME: i'm worried some of these implementation details might be too in-the-weeds.
 they have important implications, but i think this discussion would be more accessible to a general audience if we refocus it on the effects that these implementation decisions have on the user }
+\todo[inline]{JDS: Mention Jason Chin's work and other force directed graphs.  Mention Figure~\ref{fig:visualization}}
 
 GfaViz is another C++/Qt application for visualizing genome graphs which claims full support for newer GFA2 features, such as the gaps which allow GFA2 to represent scaffold graphs in addition to assembly graphs; these features are not available in Bandage, which supports only GFA1 \citep{Gonnella_2018}.
 However, unlike Bandage, the GfaViz project has not released any binary builds or user interface screenshots of their application, so Bandage remains the more accessible tool.
@@ -42,17 +51,16 @@ Moreover, to achieve their single-megabyte-scale visualization file sizes for hu
 
 To deal with comprehensive pangenome graphs with sequence data, one design approach is to keep the browser-based client but to put more intelligence into the server.
 This is the avenue taken by the Sequence Tube Map, which renders regions of pangenome graphs using a visual language inspired by transit system maps \citep{Beyer_2019}.
-This tool operates at a much more magnified zoom level than tools designed to work with assembly graphs, and is useful for visualizing base-scale variation and short read mapping locations in human-chromosome-scale graphs \citep{Beyer_2019}.
-However, its imposition of a local linear ordering and its limited graph simplification tools make it difficult to use on larger regions \citep{Beyer_2019}.
-Additionally, its architectural decision to load the graph from disk for every request makes latency prohibitively high when working with combined graphs above the scale of a single chromosome, so the tool is not suitable for graphs which cannot be broken up into chromosome-scale connected components.
+This tool operates at a much more magnified zoom level than tools designed to work with assembly graphs, and is useful for visualizing base-scale variation and short read mapping locations in human-chromosome-scale graphs.
+However, its imposition of a local linear ordering and its limited graph simplification tools make it difficult to use on larger regions.
+Additionally, its architectural decision to load the graph from disk for every request makes latency prohibitively high when working with combined graphs above the scale of a single chromosome, so the tool is not suitable for graphs which cannot be broken up into chromosome-scale connected components. \todo{JDS: I'd like to remove this last implementation detail. It's not intrinsic to the STM concept.}
 
 Other approaches to visualizing comprehensive pangenome graphs rely on restricting the problem in order to improve efficiency.
-For example, by forcing the sequence-bearing nodes of the graph into a one-dimensional layout, and producing vector rather than raster output, the \texttt{vg viz} tool promises to render graphs of arbitrary size and complexity in linear time \citep{Garrison_2019}. 
-\todo{JME: i don't know if our audience will understand the distinction between raster and vector}
-The intended use case seems to be to use a single global linearization, and to interactively render regions of it for display, but it is also possible to non-interactively render an entire graph to a very large image \citep{Garrison_2019}. 
-The tool is designed around a base-level visual representation of the graph, and optimized for comparing long embedded paths in the graph, on the basis of which nodes they do or do not visit \citep{Garrison_2019}. 
-However, as with the Sequence Tube Map, it can be difficult to understand high-level or nonlinear structures in such a linearized layout \citep{Garrison_2019}. 
-In contrast to the Sequence Tube Map no provision is made for visualizing short read alignments \citep{Garrison_2019}. \todo{EG: actually, this isn't exactly true. We do support coverage of short read alignments over the graph (it can read in the .pack format).}
+For example, by sorting the sequence-bearing nodes of the graph into a one-dimensional layout, and producing vector graphics rather than pixel images, the \texttt{vg viz} tool renders graphs of arbitrary size and complexity in linear time \citep{Garrison_2019}. 
+The intended use case is to generate a single global linearization and to interactively render regions of it for display.
+The tool is designed around a base-level visual representation of the graph, and optimized for comparing long embedded paths in the graph, on the basis of which nodes they do or do not visit. 
+However, as with the Sequence Tube Map, it can be difficult to understand high-level or nonlinear structures in such a linearized layout. 
+\texttt{ODGI viz}, also developed by Erik Garrison, uses a layout very similar to \texttt{vg viz} and addresses scalability by binning hundreds of adjacent nodes together, thus reducing the resolution and making it possible to render gigabase pangenomes in a single image.
 
 Figure~\ref{fig:visualization} provides a visual overview of the visualization methods surveyed here.
 It remains an open problem to interactively visualize a comprehensive human pangenome graph, potentially including interchromosomal connections, at a variety of zoom levels, with modestly provisioned end-user hardware.
