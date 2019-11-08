@@ -5,17 +5,24 @@
 % Simon
 % Josiah
 
-\todo[inline]{SH: Abyss}\cite{nielsen2009abyss}
+\todo[inline]{SH: Abyss: Does not take GFA as input and only output from Abyss. 
+Did not work on my machine.
+I vote to leave this out.}\cite{nielsen2009abyss}
 \todo[inline]{SH: MoMI-G}\cite{yokoyama_momi-g:_2019}
-\todo[inline]{SH: NGS Graph Generator}\cite{nazarie_visualization_nodate_2019}
-\todo[inline]{SH: odgi}\footnote{\url{https://github.com/vgteam/odgi}}
+\todo[inline]{SH: NGS Graph Generator: This tool does only produce a graph as output from linear NGS data. I vote to leave this out of here, too.}\cite{nazarie_visualization_nodate_2019}
 
 \todo[inline]{Taxonomy suggestion: Assembly graph viz, RNA-Seq assembly graph viz, variation graph viz. taxonomy of application + layout}
 
-After acquiring a pangenome graph, the next challenge is to visualize the graph and gain insight about the structure of genetic diversity.
+Visualization of pangenome graphs presents novel challenges, because their data structure is \begin{enumerate*}[label=(\alph*)]
+\item convoluted,
+\item inherently multidimensional and
+\item nonlinear.
+\end{enumerate*} Traditional genome browsers exploit the one dimensional nature of linear sequence data and use the second dimension to paint annotations on the y-axis. This organizes the data in a matrix-like shape. Graph genomes follow network visualizations which require three dimensions to render without overlapping lines.  
+
+Existing visualization tools are specialized in layouting assembly or scaffold graphs or viewing the graph on a pangenome level. 
 A range of tools exist for visualization, each with their own target applications.
 \todo[inline]{JME: i think this section would benefit from a more inspirational lead-in.
-we want people to think that graph visualization is important, not just a thing that exists. JDS: Hopefully, this is a more interesting start, then Simon and I will add our categorization intro.}
+we want people to think that graph visualization is important, not just a thing that exists. JDS: Hopefully, this is a more interesting start, then Simon and I will add our categorization intro. SH: I would delete the sentence before this comment or at least try to merge it with the previous one.}
 
 Bandage \citep{Wick_2015} is one of the most popular visualizations \citep{Mikheenko_2019}.
 Originally designed for working with bacterial assembly and meta-assembly graphs \citep{Wick_2015}, it supports a wide range of formats and graph  paradigms.
@@ -60,7 +67,7 @@ For example, by sorting the sequence-bearing nodes of the graph into a one-dimen
 The intended use case is to generate a single global linearization and to interactively render regions of it for display.
 The tool is designed around a base-level visual representation of the graph, and optimized for comparing long embedded paths in the graph, on the basis of which nodes they do or do not visit. 
 However, as with the Sequence Tube Map, it can be difficult to understand high-level or nonlinear structures in such a linearized layout. 
-\texttt{ODGI viz}, also developed by Erik Garrison, uses a layout very similar to \texttt{vg viz} and addresses scalability by binning hundreds of adjacent nodes together, thus reducing the resolution and making it possible to render gigabase pangenomes in a single image.
+\texttt{ODGI viz}\footnote{\url{https://github.com/vgteam/odgi}} uses a layout very similar to \texttt{vg viz} and addresses scalability by binning hundreds of adjacent nodes together, thus reducing the resolution and making it possible to render gigabase pangenomes in a single image.
 
 Figure~\ref{fig:visualization} provides a visual overview of the visualization methods surveyed here.
 It remains an open problem to interactively visualize a comprehensive human pangenome graph, potentially including interchromosomal connections, at a variety of zoom levels, with modestly provisioned end-user hardware.
