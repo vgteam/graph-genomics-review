@@ -1,7 +1,12 @@
 \section{Applications of pangenomic models}
 
 \subsection{Error correction}
-% Robin
+
+De Bruijn graph based methods have been used for correcting errors in reads.
+The principle used by these methods is to build an assembly from accurate short reads and use that to correct the reads.
+Assembly methods used include de Bruijn graphs \cite{Salmela2014LoRDEC, Salmela2016LORMA}, de Bruijn graphs with various cleaning operations \cite{Miclotte2016Jabba, Limasset_2019, Rautiainen_2019b, Marchet_2019}, FM-index representing all de Bruijn graphs \cite{Wang2018FMLRC} and variable order de Bruijn graphs \cite{Morisse2018HGcolor, Morisse2019Consent}.
+The reads are aligned to the assembly and the path in the graph is extracted as the corrected read.
+Comparisons of error correction methods \cite{Fu2019ErrorCorrectionSurvey, Zhang2019ErrorCorrectionSurvey} have found de Bruijn graph based methods to outperform read alignment based methods.
 
 \subsection{Variant calling and genotyping}
 % Glenn
