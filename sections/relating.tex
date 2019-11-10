@@ -22,20 +22,24 @@ An overview of such tools is given in Table \ref{table:1}.
 \begin{table}[h!]
 \centering
 \caption{Table to test captions and labels}
-\begin{tabular}{|c|c|c|c|c|} 
- \hline
- Tool & Layout Paradigm & Target Use Case & Scale of Data & Technical Notes \\ [0.5ex] 
- \hline
- \texttt{Bandage} & Force Directed & Genome Assembly & Gigabase Genome & Desktop \\ 
- 2 & 7 & 78 & 5415 \\
- 3 & 545 & 778 & 7507 \\
- 4 & 545 & 18744 & 7560 \\
- 5 & 88 & 788 & 6344 \\ [1ex] 
- \hline
-\end{tabular}
 \label{table:1}
+\begin{tabular}{|p{2.5cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|} 
+ \hline
+ \textbf{Tool} & \textbf{Layout Paradigm} & \textbf{Target Use Case} & \textbf{Scale of Data} & \textbf{Technical Notes} \\
+ \hline
+ \hline
+Bandage & \multirow[c]{13}{=}{force-directed} & assembly graphs & \multirow{13}{=}{subregions of human-scale pangenome graphs, whole chromosomes possible, no nucleotide level} & interactive desktop application \\ \cline{1-1} \cline{3-3} \cline{5-5}
+GfaViz &  & assembly graphs, variation graphs &  & interactive desktop application, GFA2 support, OGDF\cite{Chimani_2012_OGDF} \\ \cline{1-1} \cline{3-3} \cline{5-5}
+SHIMMER Sketch Graph &  & k-mer graph &  & command line tool, static images, GraphViz and Gephi \\\hline
+SGTK & force-directed, genome browser mode & scaffold graphs, assembly graphs, reads, reference sequences & megabyte scale, whole chromosomes, no nucleotide level & interactive web application, cytoscape.js \\\hline
+AGB & rank-based layout, genome browser mode & assembly graphs, reference sequences & megabyte-scale, single human genome, no nucleotide level & interactive web application, d3-graphviz\footnote{\url{https://github.com/magjac/d3-graphviz}} \\\hline
+SequenceTubeMap & pseudo-linear tubemap & \multirow{23}{=}{variation graph} & from nucleotides to kilobases, no whole chromosomes & interactive web application, unique layout \\ \cline{1-2} \cline{4-5}
+MoMI-G & pseudo-linear tubemap, circos, linear annotation &  & gigabase circos, from nucleotides to kilobases, no whole chromosomes & interactive web application, multiple views \\ \cline{1-2} \cline{4-5}
+vg view & force-directed &  & \multirow{7}{=}{nucleotide level, subgraph, no whole chromosomes} & command line tool, static image, GraphViz\\ \cline{1-2} \cline{5-5}
+vg viz & rectangular sorted matrix &  &  & command line tool, static image \\ \cline{1-2} \cline{4-5}
+odgi viz & rectangular sorted matrix &  & from nucleotide level to whole chromosomes of any size & command line tool, static image, binning \\\hline
+\end{tabular}
 \end{table}
-\todo[inline]{SH: Start with our taxonomic system here. Then point to our fancy table.}
 
 Bandage \citep{Wick_2015} is one of the most popular visualizations \citep{Mikheenko_2019}.
 Originally designed for working with bacterial assembly and meta-assembly graphs \citep{Wick_2015}, it supports a wide range of formats and graph  paradigms.
