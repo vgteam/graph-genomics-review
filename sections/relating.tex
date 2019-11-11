@@ -43,9 +43,6 @@ Force directed and Rank layout are both 2D network layouts handled by GraphViz. 
 As mature generic tools, they support a wide range of rendering options not mentioned here. 
 Layout paradigm also places restrictions on the scale of data a program can realistically process. SH: I DID SO. PLEASE DELETE THIS TODO, IF YOU THINK SO @JDS.}
 
-Force-directed graph drawing algorithms present an aesthetically pleasing way to layout a graph. 
-But, this layout paradigm restricts the data scale a program can realistically process. Adding an alternative genome browser view does not solve that issue, but allows the exploration of a graph from a different angle.
-
 Bandage \cite{Wick_2015}, one of the most popular assembly viewer \cite{Mikheenko_2019}, GfaViz \cite{}, SGTK \cite{} and AGB \cite{} were designed to explore assembly graphs. 
 However, except for GfaViz, they do not have any ability to structure graph display using known linearization information. 
 
@@ -69,6 +66,8 @@ Moreover, to achieve their single-megabyte-scale visualization file sizes for hu
 %AGB has a similar overall design to SGTK, but makes different implementation choices.
 %It is relatively tightly tied to the assembly graph use case, requiring each (sequence-bearing) edge to be classifiable as ``unique'' or ``repetitive'' based on assembler annotation or sequencing coverage \citep{Mikheenko_2019}.
 %AGB is built around the idea of splitting up an assembly graph and visualizing portions of it, and features many ways to do this, including linear reference based and minimum edge cut based approaches.
+Force-directed graph drawing algorithms present an aesthetically pleasing way to layout a graph. 
+But, this layout paradigm restricts the data scale a program can realistically process. Adding an alternative genome browser view does not solve that issue, but allows the exploration of a graph from a different angle.
 
 SequenceTubemap \cite{Beyer_2019} displays regions of variation graphs using a visual language inspired by transit system maps.
 Its design approach is to keep the browser-based client but put more intelligence into the server.
