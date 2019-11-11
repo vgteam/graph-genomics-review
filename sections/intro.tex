@@ -21,7 +21,7 @@ Not all methods expose this data structure as a coherent reference system.
 They may instead use it internally to improve performance of a standard bioinformatic operation.
 Even pangenomic models based on graphs are not necessarily equivalent, and many feature limitations that prevent them from representing certain kinds of genomic variation.
 
-Although these limitations have appeared expedient or even necessary to scale precision pangenomics to eukaryotic genomes, new algorithms and approaches for the construction and interrogation of pangenome graphs demonstrate that generic models can be scalable.
+Although, these limitations have appeared expedient or even necessary to scale precision pangenomics to eukaryotic genomes, new algorithms and approaches for the construction and interrogation of pangenome graphs demonstrate that generic models can be scalable.
 These results imply the possibility of simplifying and even expediting many bioinformatic analyses through the use of pangenomic reference systems and algorithms.
 
 \subsection{Resequencing scales genome inference}
@@ -118,14 +118,14 @@ Variant calls in VCF format may be added to such a collection to describe small 
 Collections of FASTA sequences and alignments between them also imply a pangenomic data structure, which can be viewed in the form of a ``dot plot'' in two dimensions.
 This approach breaks down when considering large numbers of related sequences, and is not commonly used as a way to convey a pangenome.
 
-To encode graphical pangenomes, the community frequently employs the GFA format for sequence graph exchange.
+To encode graphical pangenomes, the community frequently employs the GFA\footnote{\url{http://gfa-spec.github.io/GFA-spec/}} format for sequence graph exchange.
 GFA was originally designed as an interchange format for assembly methods, but the equivalence between graphical pangenomes and the data structures used by assembly methods allowed it to be repurposed as a pangenomic interchange model.
 
 GFA provides no mechanism to express read alignments.
 The vg toolkit has developed the GAM format, which generalizes the data model of the SAM/BAM format to work on graphical reference systems, and this has been taken up by a number of other alignment tools.
 However, it lacks a simple text-based equivalent.
-The recently-proposed GAF format (which generalizes PAF to work on graphs) could serve this purpose.
-GAF is related to rGFA, which is a proposed restricted specialization of GFA for reference graphs.
+The recently-proposed GAF\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md#the-graph-alignment-format-gaf}} format (which generalizes PAF\footnote{\url{https://github.com/lh3/miniasm/blob/master/PAF.md}} to work on graphs) could serve this purpose.
+GAF is related to rGFA\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md}}, which is a proposed restricted specialization of GFA for reference graphs.
 
 %\todo[inline]{EG: here we should talk about which tools exist, and which data formats they read and write, with a figure too?}
 
