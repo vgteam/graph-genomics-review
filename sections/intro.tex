@@ -1,14 +1,19 @@
 \section{Introduction}
 
 A \emph{pangenome} models the full set of genomic elements in a given species or clade \cite{sigaux2000cancer}.
+Pangenomics thus stands in contrast to standard genomics by emphasizing the sum total of available genomic information over a particular consensus model of the genome.
+By considering the pangenome during bioinformatic analyses, researchers can hope to remove bias towards any specific genome or haploid genome model and incorporate information about genomic variation directly into their study.
+%Pangenomic reference systems thus e single canonical version of the genome of a given species, but a widely-represenative collection of sequences.
+
 This concept has been essential to microbiology, where genomic plasticity and diversity have made a pangenomic perspective indispensable \cite{tettelin2005genome,medini2005microbial}.
 Usually, these analyses focus on the presence or absence of genes from given strains and the determination of a core (commonly present) and accessory (frequently absent) pangenome \cite{page2015roary}.
-
-Pangenomic techniques have been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,brohammer2018maize}.
-However, most ``high-throughput'' analyses of large genomes depend on comparison of individuals to a common reference genome.
-
+Pangenomic techniques have also been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,brohammer2018maize}.
 In recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{li2010building,sudmant2010,sudmant2015integrated,chaisson2018multi}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}.
-These and other related findings encourage the application of pangenomic methods in any research setting where more than one individual is being analyzed \cite{computational2016computational}.
+
+These trends encourage the application of pangenomic methods to settings where more than one individual is being analyzed \cite{computational2016computational}.
+However, most ``high-throughput'' analyses of large genomes still depend on comparison of individuals to a common reference genome.
+This expendient and conservative approach has its merits, but will become untenable with the developmen of true pangenomic references for humans and other model organisms.
+But, to be a true replacement for resequencing, methods based on reference pangenomes must provide precise resolution of variants of all scales, and they must support efficient pangenomic generalizations of many standard bioinformatic approaches.
 
 Here, we consider a new class of methods that approach the pangenome with precision, often at the resolution of single base pairs.
 Unlike widely-applied pangenomic methods which consider genes as their fundamental unit, these precise pangenomic methods support the interrogation of collections of genomes and their relationships at any level of resolution.
@@ -21,7 +26,7 @@ Not all methods expose this data structure as a coherent reference system.
 They may instead use it internally to improve performance of a standard bioinformatic operation.
 Even pangenomic models based on graphs are not necessarily equivalent, and many feature limitations that prevent them from representing certain kinds of genomic variation.
 
-Although these limitations have appeared expedient or even necessary to scale precision pangenomics to eukaryotic genomes, new algorithms and approaches for the construction and interrogation of pangenome graphs demonstrate that generic models can be scalable.
+Although, these limitations have appeared expedient or even necessary to scale precision pangenomics to eukaryotic genomes, new algorithms and approaches for the construction and interrogation of pangenome graphs demonstrate that generic models can be scalable.
 These results imply the possibility of simplifying and even expediting many bioinformatic analyses through the use of pangenomic reference systems and algorithms.
 
 \subsection{Resequencing scales genome inference}
@@ -118,14 +123,14 @@ Variant calls in VCF format may be added to such a collection to describe small 
 Collections of FASTA sequences and alignments between them also imply a pangenomic data structure, which can be viewed in the form of a ``dot plot'' in two dimensions.
 This approach breaks down when considering large numbers of related sequences, and is not commonly used as a way to convey a pangenome.
 
-To encode graphical pangenomes, the community frequently employs the GFA format for sequence graph exchange.
+To encode graphical pangenomes, the community frequently employs the GFA\footnote{\url{http://gfa-spec.github.io/GFA-spec/}} format for sequence graph exchange.
 GFA was originally designed as an interchange format for assembly methods, but the equivalence between graphical pangenomes and the data structures used by assembly methods allowed it to be repurposed as a pangenomic interchange model.
 
 GFA provides no mechanism to express read alignments.
 The vg toolkit has developed the GAM format, which generalizes the data model of the SAM/BAM format to work on graphical reference systems, and this has been taken up by a number of other alignment tools.
 However, it lacks a simple text-based equivalent.
-The recently-proposed GAF format (which generalizes PAF to work on graphs) could serve this purpose.
-GAF is related to rGFA, which is a proposed restricted specialization of GFA for reference graphs.
+The recently-proposed GAF\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md#the-graph-alignment-format-gaf}} format (which generalizes PAF\footnote{\url{https://github.com/lh3/miniasm/blob/master/PAF.md}} to work on graphs) could serve this purpose.
+GAF is related to rGFA\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md}}, which is a proposed restricted specialization of GFA for reference graphs.
 
 %\todo[inline]{EG: here we should talk about which tools exist, and which data formats they read and write, with a figure too?}
 
