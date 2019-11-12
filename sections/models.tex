@@ -1,4 +1,24 @@
-\section{Building pangenomic models}
+\section{Building the pangenome}
+
+A collection of genomic sequences, either raw reads or assembled genomes, can itself provide a pangenomic model.
+But this model lacks a mechanism to define the relationships between the sequences.
+It cannot assert anything more than the presence of a given sequence in the pangenome.
+In practice, we need to know when a particular sequence is identical to another by descent from a common ancestor.
+This information suggests phylogenetic structures that result from evolutionary processes.
+
+Furthermore, the identity of sequences by descent provides a basis for the compact representation of sequences.
+Our model need not grow linearly with the number of genomes that it includes.
+Rather, we should obtain improved compression of individual genomes in the context of a pangenome.
+Shared segments of DNA only need to be represented once.
+If most DNA is shared, then this makes the unique sequences of the pangenome much smaller than the total sequences in the genomes that we use to build it, providing compression that is both practical and helpful for analyses.
+
+Methods to construct pangenomic data structures mirror the classes of pangenomic models.
+A pangenome may simply be a collection of sequences, in which case construction is similar to the genome or metagenome assembly problem.
+Or, it may include information about the alignment of sequences.
+This alignment could be compressed into a set of variants found against a set of reference sequences.
+If this alignment is based on $k$-mers, then it implies a de Bruijn graph, and various methods exploit this to implement efficient or scalable pangenome model construction.
+If the alignments is a complete, gapped alignment, covering small and large variation, then the pangenome model can be thought of as a whole genome alignment.
+In practice, methods for pangenome construction often use a mixture of approaches, but in most cases their aim is to emulate the full all-to-all alignment of the base sequences.
 
 \begin{comment}
 PanTools https://github.com/Sheikhizadeh/pantools, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6158922/ \cite{Sheikhizadeh_Anari_2018}
