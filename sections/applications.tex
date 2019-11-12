@@ -46,17 +46,17 @@ For variant calling, some methods augment the genome graph with novel variants s
 %Novel variants can be \emph{called} by augmenting the paths with edits from the reads.
 \subsubsection{Small variants}
 
-In many ways, small variants stand to benefit the least from pangenomic variant calling.
+In many ways, small variants stand to benefit the least from pangenomic variant calling and genotyping.
 NGS read lengths are sufficient to span the entirety of small variants, and the associated variant calling algorithms are quite mature.
-However, pangenomes still have benefits to offer small variants, particularly around their use of the reference.
+However, pangenomes still have benefits to offer for small variants.
 First, structural variants and regions of otherwise dense variation can confound read mappers, leading to mis-mappings and missing mappings.
-Both can cause variant calling errors.
+This can cause variant calling errors.
 Second, missing variation in the reference can cause base-level alignment artifacts.
-These artifacts do not affect all variant calling algorithms equally, but in many tools they can be a further source of errors.
+Mapping and aligning to pangenome models provides the opportunity to mitigate these biases.
 
-One strategy for genotyping small variants consists of using graphs of known variation in local regions to realign mapped reads.
+One strategy for genotyping small variants consists of using graphs of known variation in local regions to realign reads that were mapped to a linear reference.
 This approach was pioneered in the 1000 Genomes Project by the GLIA software.
-GLIA and FreeBayes were used to call genotypes on indels and complex variants, acknowledging the difficulties in aligning through such variants \cite{1000_2015}.
+Acknowledging the difficulty of aligning through indels and complex regions, they developed GLIA to realign reads around such variants \cite{1000_2015}.
 Graphtyper later expanded the scale of this approach and incorporated pangenomic data sets.
 It produces results that are competitive with state-of-the-art conventional pipelines with significantly increased efficiency.
 Further, the addition of known variants modestly improves Graphtyper's accuracy \cite{eggertsson2017graphtyper}.
@@ -75,25 +75,65 @@ Interestingly, the authors' analysis suggests that the graph-based mappings cont
 %A more recent approach, Graph Genome Pipeline, \cite{Rakocevic_2019}, uses a genome graph derived from the 1000 Genomes Project to improve calling accuracy.
 %It has been shown to be able to find variants absent from common benchmarks such as GIAB, raising the question of whether these datasets, commonly used as truth sets in the evaluation of new methods, should be updated.
 
-\subsubsection{Approaches to challenging regions}
+\subsubsection{Challenging genomic regions}
 
-Very diverse genomic regions (whose diversity makes them difficult to study) and low complexity regions (which can have condensed graph representations) intuitively stand to see the most improvement when moving from a linear reference to a genome graph.
-To this end, much work has been done exploring the application of graphs to the major histocompatibility complex (MHC) region on chromosome 6, which contains the human leukocyte antigen (HLA) genes.
+Certain genomic regions give disproportionate trouble to conventional variant calling methods. 
+The primary cause of this trouble is high genomic diversity, which can make mapping and alignment difficult. 
+Some pangenomic genotyping methods have been developed that take advantage of the fact that these regions are relatively spatially contained. 
+Accordingly, these tools can target otherwise costly algorithms specifically to these regions.
+
+Much of this research has focused on the major histocompatibility complex (MHC) region on chromosome 6, which contains the human leukocyte antigen (HLA) genes. 
 These genes are critical components of the immune system, which produces a strong selective pressure for diversity and many dramatically distinct alleles.
-Determining the HLA alleles in a sample, or HLA typing, is often of great importance, but due to high polymorphism within the MHC region, short read sequencing against a linear reference is not effective, and more costly Sanger sequencing is required.
+Determining the HLA alleles in a sample, or HLA typing, is often of great importance. 
+However, due to high polymorphism within the MHC region, short read sequencing against a linear reference is not effective.
+Thus, HLA typing has relied on more costly Sanger sequencing.
 
-As a potentially viable short-read-based approach, \citeauthor{dilthey2015improved} developed the Population Reference Graph (PRG) method.
-The PRG is created from a multiple sequence alignment (MSA) of known haplotypes and variants spanning the MHC region.
-Reads are mapped to to the graph, then used to extract a pair of ``chromotype'' paths that best represent them, which are then used linear references for standard mapping and calling tools.
-An extension, PRG*HLA \cite{dilthey2018hla}, explicitly models the HLA genes, rather than the whole MHC region.
-In this method, HLA types are imputed directly from the graph, rather than intermediate chromotypes, providing faster performance.
-A further extension, HLA*LA \cite{dilthey2019hla}, further improves runtime and adds support for long read and assembly inputs.
-Kourami \cite{lee2018kourami} is another method for HLA typing that assembles haplotypes using a graph genome as a guide, and is able to incorporate novel variation from the reads.
-HLA typing with these methods using whole genome short read data has been shown to be as accurate as the conventional Sanger sequencing based approach.
+All genome-graph based HLA genotyping tool have focused on cheaper high throughput sequencing.
+The first such algorithm was PRG \cite{dilthey2015improved}, which uses the $k$-mers from a set of reads to select of pair of paths through a graph constructed from a multiple sequence alignment of HLA alleles.
+The paths can then be used as linear references for standard mapping and calling tools.
+A later iteration of the algorithm, HLA*PRG \cite{dilthey2018hla}, began aligning reads directly to the graph.
+This brought accuracy comparable to gold-standard methods, but at the cost of significant computation time.
+A further iteration, HLA*LA \cite{dilthey2019hla}, accelerated the alignment step by first mapping to GRCh38 and then making small, local edits to the corresponding alignment in the graph.
+This modification also lets it support long reads and assembly input.
+Kourami \cite{lee2018kourami} is a similar method that also takes the approach of aligning reads to a graph of the HLA region.
+However, it approximates full graph alignment by aligning to a large database of linear HLA haplotypes, which allows it to use faster alignment algorithms.
+It achieves significantly faster speeds than even HLA*LA, and comparable accuracy on high-coverage short reads.
+Kourami also performs some novel variant calling based on local assembly.
 
-For working on low-complexity, repetitive regions of the genome, ExpansionHunter \cite{dolzhenko2019expansionhunter} provides an approach using genome graph models.
-It uses regular expressions are used to define variable sites of tandem repeats, which are modeled as self-loops in the graph.
-Its authors show that this approach can more accurately genotype clinically relevant sites of such variation using short read data, as compared to standard variant calling pipelines.
+General purpose genotyping tools have also targeted the HLA region.
+On a population of Icelandic samples, Graphtyper \cite{eggertsson2017graphtyper} produced genotypes with high accuracy in only minutes per sample.
+However, these genotypes were at a lower level of sequence resolution than the PRG tools or Kourami.
+Like Graphtyper, HISAT-genotype \cite{Kim_2019} is a general purpose calling algorithm whose authors demonstrated on HLA genotyping.
+Like Kourami, the algorithm is based on a graph-guided local assembly of reads, although HISAT-genotype aligns the reads with HISAT2 rather than a linear mapper.
+In a sample of 17 genomes, HISAT-genotype produced full-resolution HLA genotypes with no errors.
+A larger simulation study suggested that Kourami is more accurate than HLA-genotype on previously observed haplotypes, but less accurate if there is novel variation.
+
+
+%Very diverse genomic regions (whose diversity makes them difficult to study) and low complexity regions (which can have condensed graph representations) intuitively stand to see the most improvement when moving from a linear reference to a genome graph.
+%To this end, much work has been done exploring the application of graphs to the major histocompatibility complex (MHC) region on chromosome 6, which contains the human leukocyte antigen (HLA) genes.
+%These genes are critical components of the immune system, which produces a strong selective pressure for diversity and many dramatically distinct alleles.
+%Determining the HLA alleles in a sample, or HLA typing, is often of great importance, but due to high polymorphism within the MHC region, short read sequencing against a linear reference is not effective, and more costly Sanger sequencing is required.
+
+%TODO: add HISAT-genotype
+
+%As a potentially viable short-read-based approach, \citeauthor{dilthey2015improved} developed the Population Reference Graph (PRG) method.
+%The PRG is created from a multiple sequence alignment (MSA) of known haplotypes and variants spanning the MHC region.
+%Reads are mapped to to the graph, then used to extract a pair of ``chromotype'' paths that best represent them, which are then used linear references for standard mapping and calling tools.
+%An extension, PRG*HLA \cite{dilthey2018hla}, explicitly models the HLA genes, rather than the whole MHC region.
+%In this method, HLA types are imputed directly from the graph, rather than intermediate chromotypes, providing faster performance.
+%A further extension, HLA*LA \cite{dilthey2019hla}, further improves runtime and adds support for long read and assembly inputs.
+%Kourami \cite{lee2018kourami} is another method for HLA typing that assembles haplotypes using a graph genome as a guide, and is able to incorporate novel variation from the reads.
+%HLA typing with these methods using whole genome short read data has been shown to be as accurate as the conventional Sanger sequencing based approach.
+
+Beyond the MHC, another type of challenging region on short tandem repeats (STRs).
+These regions also have high polymorphism due to high mutation rates.
+In addition, the low complexity sequences tend to make alignment and assembly challenging.
+ExpansionHunter \cite{dolzhenko2019expansionhunter} provides an approach using genome graph models.
+It uses cyclic graphs to model the repeat structure of STR variants.
+The graph is then used as a target for read alignments.
+The authors show that this approach can more accurately genotype clinically relevant sites of such variation using short read data compared to standard variant calling pipelines.
+HISAT-genotype \cite{Kim_2019} was demonstrated on STRs as well. 
+For a single well-characterized pedigree, the authors argue that HISAT-genotype's results were more accurate than wet lab methods at genotyping the Federal Bureau of Investigation's CODIS loci.
 
 \subsubsection{Genotyping structural variation}
 
