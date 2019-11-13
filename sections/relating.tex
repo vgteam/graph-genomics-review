@@ -10,7 +10,10 @@ Visualization of pangenome graphs presents novel challenges, because their data 
 Traditional genome browsers neatly organize into a 2D rectangular shape, with 1D linear sequence on the x-axis and annotations on the y-axis.
 In contrast, graph genomes follow network topology which requires three dimensions to render without overlapping lines.
 Annotation tracks add another dimension, forcing all graph visualizations to involve some degree of flattening.  
-Visualization tools can be roughly separated into two target applications based on their input data: genome assembly graphs contain nodes and edges whereas variation graphs contain nodes, edges, and paths.
+Genome graph visualization tools can be considered in terms of their target applications. 
+Many tools support the interpretation of assembly graphs. 
+These tend to focus on the overall structure of the graph. 
+In contrast, tools designed to support pangenome graph (often variation graph) visualization must additionally describe the relationship between genomes and the graph in which they are embedded.
 An overview of tools features is given in Table \ref{table:Visualization_Features}.
 \begin{table}[h!]
 \centering
@@ -63,7 +66,6 @@ Moreover, to achieve visualization output file sizes on the scale of megabytes g
 %AGB has a similar overall design to SGTK, but makes different implementation choices.
 %It is relatively tightly tied to the assembly graph use case, requiring each (sequence-bearing) edge to be classifiable as ``unique'' or ``repetitive'' based on assembler annotation or sequencing coverage \citep{Mikheenko_2019}.
 %AGB is built around the idea of splitting up an assembly graph and visualizing portions of it, and features many ways to do this, including linear reference based and minimum edge cut based approaches.
-
 
 MoMI-G is a multi-scale genome graph browser currently under development \cite{yokoyama_momi-g:_2019}. It employs SequenceTubemap at nucleotide scale and integrates it into a  framework along side a Circos \cite{Krzywinski_2009_Circos} plot for chromosome scale connections. 
 The integration of multiple visualizations brings their strengths to bear on different areas. 
