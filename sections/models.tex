@@ -20,6 +20,12 @@ If this alignment is based on $k$-mers, then it implies a de Bruijn graph, and v
 If the alignments is a complete, gapped alignment, covering small and large variation, then the pangenome model can be thought of as a whole genome alignment.
 In practice, methods for pangenome construction often use a mixture of approaches, but in most cases their aim is to emulate the full all-to-all alignment of the base sequences.
 
+%The great majority of pangenome construction methods generate or use graphical models
+% new organization
+% 1) bags of sequences -- pantools comes close (collection of genes), HUPAN is similar with its core/accessory breakdown
+% 2) DBG based models (TwoPaCo, LOGAN, McCortex, Bifrost, PRG, Novograph?)
+% 3) alignment and match based systems (cactus, REVEAL, vg msga, seqwish)
+
 \begin{comment}
 PanTools https://github.com/Sheikhizadeh/pantools, https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6158922/ \cite{Sheikhizadeh_Anari_2018}
 TwoPaCo https://github.com/medvedevgroup/TwoPaCo, https://academic.oup.com/bioinformatics/article/33/24/4024/2725383 \cite{Minkin_2016}
