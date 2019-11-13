@@ -236,12 +236,12 @@ This allows it to align high-error long reads more efficiently than VG, although
 deBGA & \multirow[c]{3}{=}{De Bruijn graph} & \multirow[c]{3}{=}{NGS} &  \\ \cline{1-1} \cline{4-4}
 BGREAT &  &  & Gapless alignment  \\ \cline{1-1} \cline{4-4}
 BrownieAligner &  &  &   \\ \hline
-GraphAligner & De Bruijn graph, variation graph (including complex) & Long read & Fast \\ \hline
-GenomeMapper & \multirow[c]{4}{=}{Variation graph (acyclic)} & \multirow[c]{3}{=}{NGS} & No longer maintained \\ \cline{1-1} \cline{4-4}
+GenomeMapper & \multirow[c]{4}{=}{acyclic variation graph} & \multirow[c]{3}{=}{NGS} & No longer maintained \\ \cline{1-1} \cline{4-4}
 Graph Genome Aligner &  &  &  \\ \cline{1-1} \cline{4-4}
 HISAT2 &  &  & Fast \\ \cline{1-1} \cline{3-4}
 V-MAP &  & Long read, NGS & \\ \hline
-VG & Variation graph (including complex) & NGS & Accurate, high memory usage \\ \hline
+VG & variation graph & NGS and long read & Accurate, high memory usage \\ \hline
+GraphAligner & variation graph or overlap graph & Long read & Fast \\ \hline
 %GfaViz &  & assembly graphs, variation graphs & \multirow{15}{=}{megabase subgraph of a variation graph, no nucleotide level} & interactive desktop app, GFA2 support, OGDF\cite{Chimani_2012_OGDF} \\ \cline{1-1} \cline{3-3} \cline{5-5}
 %SHIMMER Sketch Graph &  & variation graphs &  & cli app, static images, GraphViz, Gephi \\ \cline{1-3} \cline{5-5}
 %SGTK & \multirow{10}{=}{force-directed, genome browser mode} & scaffold graphs, assembly graphs, reads, reference sequences &  & interactive web app, cytoscape.js\cite{Franz_2016_cytoscape} \\ \cline{1-1} \cline{3-5}
