@@ -171,13 +171,15 @@ While common for conventional mappers, the clustering step has proven challengin
 
 
 One major point of distinction between mapping tools is the type of graphs they were designed for. 
-Several tools apply only to acyclic variation graphs, often the largely linear graphs that are formed by adding substitution and indel variants to a linear reference. Examples include GenomeMapper (an early forerunner) \cite{Schneeberger_2009}, Seven Bridge's Graph Genome Aligner \cite{Rakocevic_2019}, HISAT2 \cite{Kim_2019}, and V-MAP \cite{Vaddadi_2019}. 
-Another set of tools focus on de Bruijn graphs: BGREAT \cite{Limasset_2016}, deBGA \cite{Liu_2016}, BrownieAligner \cite{Heydari_2018}, and GraphAligner \cite{Rautiainen_2019b}. 
+Several tools apply only to acyclic variation graphs, often the largely linear graphs that are formed by adding substitution and indel variants to a linear reference.
+Examples include GenomeMapper (an early forerunner) \cite{Schneeberger_2009}, Seven Bridge's Graph Genome Aligner \cite{Rakocevic_2019}, HISAT2 \cite{Kim_2019}, V-MAP \cite{Vaddadi_2019}, and PaSGAL \cite{Jain_2019b}.
+Another set of tools focus on de Bruijn graphs: BGREAT \cite{Limasset_2016}, deBGA \cite{Liu_2016}, and BrownieAligner \cite{Heydari_2018}.
 Most of these were developed in parallel to recent pangenomics research, often with motivations in genome assembly. 
-VG \cite{Garrison_2019} appears to be the only tool with open ambitions of mapping to both acyclic variation graphs and more complex genome graphs, although GraphAligner is valid on general graph topologies as well.
+VG \cite{Garrison_2019} and GraphAligner \cite{Rautiainen_2019b} appear to be the only tools with open ambitions of mapping to arbitrary variation graphs, including complex local and global topologies encoding all kinds of variation.
+GraphAligner is notable in that it can apply to generic overlap graphs, including de Bruijn graphs, but its current graph indexing and alignment seeding strategy limits it to the alignment of long reads.
 
 The majority of these tools emphasize mapping short-read \emph{next-generation sequencing (NGS)} data. 
-Most likely, the motivation for doing so is the same as why NGS remains the standard for conventional resequencing experiments; the price point currently favors it. 
+%Most likely, the motivation for doing so is the same as why NGS remains the standard for conventional resequencing experiments; the price point currently favors it. 
 In this sense, pangenomic graph mappers essentially represent an incremental technical improvement over previous pipelines, albeit a very important one. 
 To our knowledge, GraphAligner and V-MAP are the only graph mapping tools that explicitly targets high-error long read sequencing data\cite{Rautiainen_2019b, Vaddadi_2019}, although others are in development \cite{Li_2019}.
 
@@ -199,6 +201,7 @@ VG uses the GCSA2 \cite{Siren_2017} and a longest-common-prefix array, which ena
 The cost is that the index is large, which contributes to VG's high memory utilization \cite{Garrison_2019}.
 HISAT2 uses a modified GCSA \cite{Siren_2014}  that also encodes the graph structure itself.
 This helps give HISAT2 an impressively low memory footprint at the expense of a somewhat more limited set of queries \cite{Kim_2019}.
+GraphAligner uses either minimizer or full text indexes of the node sequences of the graph, but the memory savings of these are offset by large in-memory structures that it uses to support its efficient alignment algorithm, yielding runtime memory costs similar to those of VG \cite{Rautiainen_2019b}.
 
 Most de Bruijn graph mappers have used searches through the graph to make alignments.
 deBGA exhaustively enumerates paths, but reduces the space of sequences to align to with a clustering step.
@@ -211,7 +214,7 @@ It also has a unique trick of choosing paths partially based on a Markov model t
 This is essentially a limited form of read-backed phasing.
 According to the authors' analysis, BrownieAligner is more accurate than deBGA and BGREAT, but BGREAT tends to be more memory efficient, and deBGA tends to be faster \cite{Heydari_2018}.
 Finally, GraphAligner is the only de Bruijn graph mapper to take advantage of recent research into graph alignment algorithms.
-It uses a banded alignment algorithm to achieve impressive speed aligning long reads to genome graphs \cite{Rautiainen_2019b}.
+It uses a banded alignment algorithm to achieve impressive speed aligning long reads to genome graphs \cite{Rautiainen_2019b}, and requires around twice the runtime of minimap2 \cite{Li_2018} when the latter is configured to derive the full alignment (as GraphAligner does by default).
 
 While few of the de Bruijn graph mappers employ graph-based alignment algorithms, most variation graph mappers do. One exception is GenomeMapper, which aligns to all paths out from a seed. However, GenomeMapper also seems to be unmaintained since 2009, and it has heuristics that are better suited to earlier NGS technologies \cite{Schneeberger_2009}. 
 Seven Bridges' mapper, VG, and V-MAP all employ some version of partial order alignment \cite{Rakocevic_2019, Garrison_2019, Vaddadi_2019}. 
@@ -236,12 +239,12 @@ This allows it to align high-error long reads more efficiently than VG, although
 deBGA & \multirow[c]{3}{=}{De Bruijn graph} & \multirow[c]{3}{=}{NGS} &  \\ \cline{1-1} \cline{4-4}
 BGREAT &  &  & Gapless alignment  \\ \cline{1-1} \cline{4-4}
 BrownieAligner &  &  &   \\ \hline
-GraphAligner & De Bruijn graph, variation graph (including complex) & Long read & Fast \\ \hline
-GenomeMapper & \multirow[c]{4}{=}{Variation graph (acyclic)} & \multirow[c]{3}{=}{NGS} & No longer maintained \\ \cline{1-1} \cline{4-4}
+GenomeMapper & \multirow[c]{4}{=}{acyclic variation graph} & \multirow[c]{3}{=}{NGS} & No longer maintained \\ \cline{1-1} \cline{4-4}
 Graph Genome Aligner &  &  &  \\ \cline{1-1} \cline{4-4}
 HISAT2 &  &  & Fast \\ \cline{1-1} \cline{3-4}
 V-MAP &  & Long read, NGS & \\ \hline
-VG & Variation graph (including complex) & NGS & Accurate, high memory usage \\ \hline
+VG & variation graph & NGS and long read & Accurate, high memory usage \\ \hline
+GraphAligner & variation graph or overlap graph & Long read & Fast \\ \hline
 %GfaViz &  & assembly graphs, variation graphs & \multirow{15}{=}{megabase subgraph of a variation graph, no nucleotide level} & interactive desktop app, GFA2 support, OGDF\cite{Chimani_2012_OGDF} \\ \cline{1-1} \cline{3-3} \cline{5-5}
 %SHIMMER Sketch Graph &  & variation graphs &  & cli app, static images, GraphViz, Gephi \\ \cline{1-3} \cline{5-5}
 %SGTK & \multirow{10}{=}{force-directed, genome browser mode} & scaffold graphs, assembly graphs, reads, reference sequences &  & interactive web app, cytoscape.js\cite{Franz_2016_cytoscape} \\ \cline{1-1} \cline{3-5}
@@ -473,6 +476,6 @@ VG & Variation graph (including complex) & NGS & Accurate, high memory usage \\ 
 % See also: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1103-9
 
 
-\subsection{Non-graph population mapping tools}
+%\subsection{Non-graph population mapping tools}
 % Erik
 
