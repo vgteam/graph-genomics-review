@@ -10,6 +10,8 @@ Comparisons of error correction methods \cite{Fu2019ErrorCorrectionSurvey, Zhang
 
 \subsection{Variant calling and genotyping}
 
+\todo[inline]{EG: this section must be reduced dramatically}
+
 In the era of resequencing, variant calling emerged as an essential methodology for genome inference in many species.
 The advent of pangenomics represents an opportunity to improve this methodology in multiple ways, all related to the theme of leveraging prior data in the form of known variation.
 These strategies can be coarsely divided into two umbrella approaches.
@@ -37,6 +39,7 @@ In a genome graph, haplotypes can be expressed as paths through the graph.
 Accordingly, many published tools have naturally focused on using paths to define alleles and haplotypes \cite{dilthey2015improved, sibbesen2018accurate,lee2018kourami,hickey2019genotyping,dolzhenko2019expansionhunter}.
 The problem of genotyping then can be recast as finding the paths that are best supported by reads.
 For variant calling, some methods augment the genome graph with novel variants so that the entire haplotype exists as a path in the graph \cite{sibbesen2018accurate,lee2018kourami,hickey2019genotyping}.
+A similar approach is to infer a pangenomic reference model from read alignments to a pangenome and to then use this reference model for downstream analysis \cite{Maciuca_2016,Valenzuela_2018}, although this limits the genome model to a haploid, acyclic one.
 
 % Glenn
 %Genome graphs can leverage known sequence variation, available in increasingly large public databases, to improve variant identification in new samples.
