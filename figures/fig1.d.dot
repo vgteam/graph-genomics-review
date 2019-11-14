@@ -1,0 +1,21 @@
+graph graphname {
+    node [shape=plaintext];
+    rankdir=LR;
+    1 [label="h"];
+    2 [label="b"];
+    3 [label="c"];
+    4 [label="d"];
+    5 [label="e"];
+    6 [label="f"];
+    7 [label="g"];
+    8 [label="R", fontcolor="blue"];
+    9 [label="∆", fontcolor="red", fontsize=22];
+    1 -- 8;
+    2 -- 8;
+    3 -- 8;
+    4 -- 8;
+    5 -- 8;
+    6 -- 8;
+    7 -- 8;
+    9 -- 8;
+}
