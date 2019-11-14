@@ -1,0 +1,23 @@
+graph graphname {
+    node [shape=plaintext];
+    rankdir=LR;
+    1 [label="reference"];
+    2 [label="sample"];
+    3 [label="sample"];
+    4 [label="sample"];
+    5 [label="sample"];
+    6 [label="sample"];
+    7 [label="sample"];
+    8 [label="sample"];
+    9 [label="sample"];
+    10 [label="sample"];
+    1 -- 2;
+    1 -- 3;
+    1 -- 4;
+    1 -- 5;
+    1 -- 6;
+    1 -- 7;
+    1 -- 8;
+    1 -- 9;
+    1 -- 10;
+}
