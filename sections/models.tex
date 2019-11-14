@@ -135,6 +135,7 @@ It either takes a prebuilt DAG or generates one from a multiple alignment of seq
 GCSA then applies a number of graph transformations that preserve the language, or set of end-to-end sequences, until the nodes can be unambiguously sorted by the labels of the paths starting from the node.
 When the complexity of the graph is sufficiently low, these transformations are reasonably fast and do not increase the size of the graph significantly.
 However, a phase transition happens at a certain threshold, and the transformed graph quickly becomes too large to handle above the threshold.
+\todo{JME: threshold of what? variant density?}
 
 BWBBLE \cite{Huang_2013} is a BWT-based representation for VCF graphs.
 Simple substitutions are encoded in the sequence using IUPAC codes, and the sequence is indexed using a normal FM-index.
