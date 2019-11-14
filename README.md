@@ -62,6 +62,11 @@ Genome graphs and genome inference (2017)
 Is it time to change the reference genome? (2019)
 https://doi.org/10.1186/s13059-019-1774-4
 
+Hackathon Paper (2019)
+http://dx.doi.org/10.12688/f1000research.19630.1
+
+One reference genome is not enough (2019)
+http://dx.doi.org/10.1186/s13059-019-1717-0
 
 ## Constructing graphs
 
@@ -93,6 +98,15 @@ https://genomebiology.biomedcentral.com/articles/10.1186/gb-2009-10-9-r98
 
 ## Graph alignment algorithms
 
+Classic (bit little known) DP for aligning to (cyclic) graphs (2000)
+http://dx.doi.org/10.1016/S0304-3975(99)00333-3
+
+Approximate matching of regular expressions (1989)
+http://dx.doi.org/10.1016/S0092-8240(89)80046-1
+
+A New Method That Simultaneously Aligns and Reconstructs Ancestral Sequences for Any Number of Homologous Sequences, When the Phylogeny Is Given (1989)
+http://dx.doi.org/10.1093/oxfordjournals.molbev.a040577
+
 Partial order alignment (2002)
 https://doi.org/10.1093/bioinformatics/18.3.452
 
@@ -108,11 +122,12 @@ https://www.semanticscholar.org/paper/Aligning-reads-against-a-graph-based-refer
 Complexity of string matching for graphs (2019)
 10.4230/LIPIcs.ICALP.2019.55
 
-V-ALIGN sequence alignment on directed graphs (preprint 2017) -- this has an official publication, but it’s paywalled
+V-ALIGN sequence alignment on directed graphs (preprint 2017) -- this has an official publication (http://dx.doi.org/10.1089/cmb.2017.0264), but it’s paywalled
 https://doi.org/10.1101/124941
 
 Aligning sequences to general graphs in O(V + mE) time (preprint 2017)
 http://dx.doi.org/10.1101/216127
+(Note that similar results have been published by Navarro in 2000, see above)
 
 Bit-parallel sequence to graph alignment (2019)
 https://doi.org/10.1093/bioinformatics/btz162
@@ -163,6 +178,9 @@ https://doi.org/10.1186/s13015-017-0109-9
 
 GBWT (preprint 2018)
 https://arxiv.org/abs/1805.03834
+
+Efficient Construction of a Complete Index for Pan-Genomics Read Alignment (preprint Nov 2018)
+https://doi.org/10.1101/472423
 
 ## Other population-ish succinct data structures
 
@@ -276,7 +294,8 @@ V-MAP (2019)
 https://doi.org/10.1038/s41588-018-0316-4
 
 GraphAligner (2019) -- also in the alignment section
-https://doi.org/10.1093/bioinformatics/btz162
+DP Algorithm: https://doi.org/10.1093/bioinformatics/btz162
+Tool preprint: https://doi.org/10.1101/810812
 
 ## De Bruijn graph mappers
 
@@ -325,11 +344,17 @@ https://doi.org/10.1093/bioinformatics/bty956
 
 ## Error correction
 
+Lordec (2014)
+http://dx.doi.org/10.1093/bioinformatics/btu538
+
 Bcool (2019)
 https://doi.org/10.1093/bioinformatics/btz102
 
 BCT (preprint 2019)
 http://dx.doi.org/10.1101/673624
+
+GraphAligner (preprint 2019) -- alread mentioned as aligner above
+https://doi.org/10.1101/810812
 
 ## Variant calling / Genotyping
 
