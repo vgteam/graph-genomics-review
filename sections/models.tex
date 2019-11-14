@@ -6,7 +6,7 @@ It cannot assert anything more than the presence of a given sequence in the pang
 In practice, we need to know when a particular sequence is identical to another by descent from a common ancestor.
 This information suggests phylogenetic structures that result from evolutionary processes, which can in turn help support our understanding of 
 
-Furthermore, the identity of sequences by descent provides a basis for the compact representation of sequences.
+Furthermore, the identity of sequences by descent provides a basis for the compact representation of pangenomes.
 Our model need not grow linearly with the number of genomes that it includes.
 Rather, we should obtain improved compression of individual genomes in the context of a pangenome.
 Shared segments of DNA only need to be represented once.
@@ -29,17 +29,29 @@ Methods for pangenome construction often use a mixture of approaches, but in mos
 \subsection{Collecting sequences}
 
 % oldschool pan-genomics
-Panseq \cite{Laing_2010}
-PGAP \cite{Zhao_2011}
+A pangenome can be represented as a collection of sequences.
+Determining which sequences provide a compact represenation of a pangenome is non-trivial.
+Many software systems support this process.
+Panseq \cite{Laing_2010} finds novel regions, determines the core and accessory genome, finds SNPs within the core pangenome, and then determines a subset of loci useful for molecular fingerprinting.
+PGAP \cite{Zhao_2011} extends Panseq's approach with modules for evolutionary and functional analysis, and is implemented as a single standalone executable.
 % pangenome using a collection of sequences model
-PanTools  \cite{Sheikhizadeh_Anari_2018}
-HUPAN \citep{Duan_2019}
+Recent work has focused on scaling these techniques to ever larger genomes.
+PanTools \cite{Sheikhizadeh_Anari_2018} detects and annotates homology groups in large collections of large genomes using a $k$-mer based approach.
+Its detailed graph database model connects the pan-proteome defined by homology groups to genomic annotations and sequences.
+HUPAN \citep{Duan_2019} extends the sequence collection model to human and large eukaryotic genomes, taking assembled genomes as input and finding non-reference sequences within them by comparison to a reference genome.
 
 \subsection{Adding variation}
 
 GenomeMapper was the first major tool to use a reference genome graph \cite{Schneeberger_2009}.
 PRG \cite{dilthey2015improved}.
 vg construct \cite{Garrison_2018}.
+gramtools \cite{Maciuca_2016}
+
+\subsection{Refining sequences}
+
+These tools use variation aware pangenome indexes to infer a better haploid sequence model for a given genome, then do variant calling against that.
+gramtools \cite{Maciuca_2016}
+PanVC \cite{Valenzuela_2018}
 
 \subsection{Colored and linked De Bruijn graphs}
 
@@ -75,21 +87,9 @@ Seqwish\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019}
 
 \textit{This needs to be rewritten!! The idea is to focus on bubbles and positions at the same time.} \cite{Rand_2016}
 
-\subsection{Pangenomic data formats}
+\subsection{Measuring model utility}
 
-Pangenomes can be stored as collections of sequences in FASTA format.
-Variant calls in VCF format may be added to such a collection to describe small or structural variants found in the pangenome.
-Collections of FASTA sequences and alignments between them also imply a pangenomic data structure, which can be viewed in the form of a ``dot plot'' in two dimensions.
-This approach breaks down when considering large numbers of related sequences, and is not commonly used as a way to convey a pangenome.
-
-To encode graphical pangenomes, the community frequently employs the GFA\footnote{\url{http://gfa-spec.github.io/GFA-spec/}} format for sequence graph exchange.
-GFA was originally designed as an interchange format for assembly methods, but the equivalence between graphical pangenomes and the data structures used by assembly methods allowed it to be repurposed as a pangenomic interchange model.
-
-GFA provides no mechanism to express read alignments.
-The vg toolkit has developed the GAM format, which generalizes the data model of the SAM/BAM format to work on graphical reference systems, and this has been taken up by a number of other alignment tools.
-However, it lacks a simple text-based equivalent.
-The recently-proposed GAF\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md#the-graph-alignment-format-gaf}} format (which generalizes PAF\footnote{\url{https://github.com/lh3/miniasm/blob/master/PAF.md}} to work on graphs) could serve this purpose.
-GAF is related to rGFA\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md}}, which is a proposed restricted specialization of GFA for reference graphs.
+Briefly discuss the ``Genome graphs'' paper, \cite{Novak_2017a}, findings in the vg paper \cite{Garrison_2018}, and FORGe \cite{Pritt_2018}.
 
 
 \begin{comment}
@@ -117,6 +117,23 @@ To predict the effects of adding a variant, FORGe scores variants based on their
 It can then output a list of top-scoring variants for use in a graph aligner.
 \todo{How do we square the results showing FORGe is needed with the results from our unpublished Graph Genomes manuscript? We don't do that work here.}
 \end{comment}
+
+
+\subsection{Pangenomic data formats}
+
+Pangenomes can be stored as collections of sequences in FASTA format.
+Variant calls in VCF format may be added to such a collection to describe small or structural variants found in the pangenome.
+Collections of FASTA sequences and alignments between them also imply a pangenomic data structure, which can be viewed in the form of a ``dot plot'' in two dimensions.
+This approach breaks down when considering large numbers of related sequences, and is not commonly used as a way to convey a pangenome.
+
+To encode graphical pangenomes, the community frequently employs the GFA\footnote{\url{http://gfa-spec.github.io/GFA-spec/}} format for sequence graph exchange.
+GFA was originally designed as an interchange format for assembly methods, but the equivalence between graphical pangenomes and the data structures used by assembly methods allowed it to be repurposed as a pangenomic interchange model.
+
+GFA provides no mechanism to express read alignments.
+The vg toolkit has developed the GAM format, which generalizes the data model of the SAM/BAM format to work on graphical reference systems, and this has been taken up by a number of other alignment tools.
+However, it lacks a simple text-based equivalent.
+The recently-proposed GAF\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md#the-graph-alignment-format-gaf}} format (which generalizes PAF\footnote{\url{https://github.com/lh3/miniasm/blob/master/PAF.md}} to work on graphs) could serve this purpose.
+GAF is related to rGFA\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md}}, which is a proposed restricted specialization of GFA for reference graphs.
 
 
 \section{Indexing pangenomes} % was indexing genome graphs
