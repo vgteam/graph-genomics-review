@@ -11,8 +11,9 @@ Pangenomic techniques have also been applied outside of microbiology, such as in
 In recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{li2010building,sudmant2010,sudmant2015integrated,chaisson2018multi}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}.
 
 These trends encourage the application of pangenomic methods to settings where more than one individual is being analyzed \cite{computational2016computational}.
+\todo{JME: I don't understand the logical transition to talking about multiple individuals here. How does this follow from cataloging variation in eukaryotes?}
 However, most ``high-throughput'' analyses of large genomes still depend on comparison of individuals to a common reference genome.
-This expendient and conservative approach has its merits, but will become untenable with the developmen of true pangenomic references for humans and other model organisms.
+This expendient and conservative approach has its merits, but will become untenable with the development of true pangenomic references for humans and other model organisms.
 But, to be a true replacement for resequencing, methods based on reference pangenomes must provide precise resolution of variants of all scales, and they must support efficient pangenomic generalizations of many standard bioinformatic approaches.
 
 Here, we consider a new class of methods that approach the pangenome with precision, often at the resolution of single base pairs.
@@ -20,11 +21,11 @@ Unlike widely-applied pangenomic methods which consider genes as their fundament
 They envision pangenomic analyses based on the full complement of DNA in the individuals under analysis, and aim to support downstream inference over variants of all types and scales, including small variation such as SNPs and indels in the same context as large structural variants gene gain or loss.
 
 Scaling such techniques to operate on eukaryotic pangenomes has required significant effort in the development of new data models and algorithms.
-Solutions to this problem are varied, but they often rely on graphical data structures that represent compressed versions of genomes and embed the many-to-many relationships inherent in the pangenome.
+Solutions to this problem are varied, but they often rely on graph data structures that represent compressed versions of genomes and embed the many-to-many relationships inherent in the pangenome.
 
 Not all methods expose this data structure as a coherent reference system.
 They may instead use it internally to improve performance of a standard bioinformatic operation.
-Even pangenomic models based on graphs are not necessarily equivalent, and many feature limitations that prevent them from representing certain kinds of genomic variation.
+Even pangenomic models based on graphs are not necessarily equivalent, and many feature limitations prevent them from representing certain kinds of genomic variation.
 
 Although, these limitations have appeared expedient or even necessary to scale precision pangenomics to eukaryotic genomes, new algorithms and approaches for the construction and interrogation of pangenome graphs demonstrate that generic models can be scalable.
 These results imply the possibility of simplifying and even expediting many bioinformatic analyses through the use of pangenomic reference systems and algorithms.
@@ -82,6 +83,7 @@ These models can take linear forms.
 A linear reference genome in FASTA format may be augmented with smaller variation represented in auxiliary VCF files to build a pangenomic model.
 A similar pangenomic model is the multiple sequence alignment, which can be built for any syntenic region of a collection of genomes.
 However, both approaches have difficulty when representing complex and structural variation, such as copy number changes or translocations, and they must be augmented with \textit{ad hoc} information to do so.
+\todo{JME: I think we can cut the discussion of file formats here since it's covered in the next subsection}
 
 Graphical pangenome representations naturally handle all kinds of variation, both small and large.
 These models embed the pangenome in a graph where nodes are labeled with DNA sequences and edges represent linkages between successive nodes that occur in some set of the genomes.
@@ -99,6 +101,7 @@ However, they are lossy models that cannot reproduce their input, within which a
 %In contrast to $k$-mer based models, which represent links implicitly,
 \emph{Genome graphs} explicitly extend collections of linear sequences of arbitrary length with links that describe possible connections between sequences \cite{Paten_2017}.
 These graphs can be seen as a kind of language model, in which each genome or sequence in the pangenome is a valid expression in the graph's language.
+\todo{JME: I think most casual readers will be unfamiliar with automata and languages (in the theoretical CS sense) -- can we cut this sentence?}
 However, they also admit many sequences which are highly unlikely combinations of actual genomes.
 To provide further structure to genome graphs, \emph{variation graphs} embed the observed linear sequences of the pangenome in the graph as \emph{paths}, or walks through the sequences of the graph \cite{Garrison_2018}.
 Variation graphs are thus fully lossless pangenomic models that represent both a collection of sequences and their mutual alignment.
@@ -118,6 +121,7 @@ They are capable of representing all other kinds of pangenomic models, and provi
 
 \subsection{Interfacing with the pangenome}
 
+\todo{JME: I think this subsection would be better off split into a new subsection (i.e. Intro -> Formats -> Construction ...) }
 Pangenomes can be stored as collections of sequences in FASTA format.
 Variant calls in VCF format may be added to such a collection to describe small or structural variants found in the pangenome.
 Collections of FASTA sequences and alignments between them also imply a pangenomic data structure, which can be viewed in the form of a ``dot plot'' in two dimensions.

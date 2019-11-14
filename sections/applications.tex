@@ -48,9 +48,9 @@ For variant calling, some methods augment the genome graph with novel variants s
 
 In many ways, small variants stand to benefit the least from pangenomic variant calling and genotyping.
 NGS read lengths are sufficient to span the entirety of small variants, and the associated variant calling algorithms are quite mature.
-However, pangenomes still have benefits to offer for small variants.
+However, pangenomes still have benefits to offer.
 First, structural variants and regions of dense variation can confound read mappers, leading to mis-mappings and missing mappings.
-This can cause variant calling errors.
+This can, in turn, cause variant calling errors.
 Second, missing variation in the reference can cause base-level alignment artifacts.
 Mapping and aligning to pangenome models provides the opportunity to mitigate these biases.
 
@@ -58,14 +58,14 @@ One strategy for genotyping small variants consists of using graphs of known var
 This approach was pioneered in the 1000 Genomes Project by the GLIA software.
 Acknowledging the difficulty of aligning through indels and complex regions, they developed GLIA to realign reads around such variants \cite{1000_2015}.
 More recently, Graphtyper expanded the scale of this approach and incorporated pangenomic data sets.
-It produces results that are competitive with state-of-the-art conventional pipelines with significantly increased computational efficiency.
-Further, the addition of known variants modestly improves Graphtyper's accuracy \cite{eggertsson2017graphtyper}.
+It produces results that are competitive with state-of-the-art conventional pipelines with significantly better computational efficiency.
+Further, information on known variation modestly improves Graphtyper's accuracy \cite{eggertsson2017graphtyper}.
 
 Seven Bridges' Graph Genome Pipeline includes a variant calling module that itself is minimally pangenomic.
-Rather, it is broadly similar to existing local assembly methods based on the linear reference except in that it prioritizes haplotypes that are found in a genome graph.
+Rather, it is broadly similar to existing local assembly methods based on the linear reference \cite{Poplin_2017, Rimmer_2014} except in that it prioritizes haplotypes that are found in a genome graph \cite{Rakocevic_2019}.
 This can be seen as an example of a statistical prior on variation expressed in the pangenome; simply knowing where one should look for variants is informative.
 With this feature and graph-based read mappings, the Graph Genome Pipeline shows advantages over conventional pipelines in variant recall, especially for indels.
-Interestingly, the authors' analysis suggests that the graph-based mappings contribute a minority of the effect.
+Interestingly, the authors' analysis suggests that the graph-based read mappings contribute a minority of the effect.
 
 %GraphTyper \cite{eggertsson2017graphtyper} is a popular genome-graph-based caller.
 %It begins with a pangenome graph created from variants in dbSNP, and iteratively updates it with variants discovered in input reads.
@@ -82,13 +82,13 @@ The primary cause of this trouble is high genomic diversity, which can make mapp
 Some pangenomic genotyping tools take advantage of the fact that these regions are relatively spatially contained. 
 Accordingly, these tools can achieve efficiency by targeting otherwise costly algorithms specifically to these regions.
 
-Much of this research has focused on the major histocompatibility complex (MHC) region on chromosome 6, which contains the human leukocyte antigen (HLA) genes. 
+Much of this research has focused on the human major histocompatibility complex (MHC) region on chromosome 6, which contains the human leukocyte antigen (HLA) genes. 
 These genes are critical components of the immune system, which produces a strong selective pressure for diversity and many dramatically distinct alleles.
 Determining the HLA alleles in a sample, or HLA typing, is often of great importance. 
-However, due to high polymorphism within the MHC region, short read sequencing against a linear reference is not effective.
-Thus, HLA typing has relied on more costly Sanger sequencing.
+However, due to high polymorphism within the MHC region, NGS resequencing methods have not been effective with the linear reference.
+Thus, HLA typing has historically relied on more costly Sanger sequencing.
 
-Several tools have used genome graphs to enable HLA typing with cheaper high throughput sequencing.
+Several tools have used genome graphs to enable HLA typing with cheaper NGS data.
 The first such algorithm was PRG \cite{dilthey2015improved}, which uses the $k$-mers from a set of reads to select of pair of paths through a graph constructed from a multiple sequence alignment of HLA alleles.
 The paths can then be used as linear references for standard mapping and calling tools.
 A later iteration of the algorithm, HLA*PRG \cite{dilthey2018hla}, began aligning reads directly to the graph.
@@ -103,10 +103,10 @@ Kourami also performs some novel variant calling based on local assembly.
 General purpose genotyping tools have also targeted the HLA region.
 On a population of Icelandic samples, Graphtyper \cite{eggertsson2017graphtyper} produced genotypes with high accuracy in only minutes per sample.
 However, these genotypes were at a lower level of sequence resolution than the PRG tools or Kourami.
-Like Graphtyper, HISAT-genotype \cite{Kim_2019} is a general purpose calling algorithm whose authors demonstrated on HLA genotyping.
+HISAT-genotype \cite{Kim_2019} is another general purpose calling algorithm whose authors demonstrated on HLA genotyping.
 Like Kourami, the algorithm is based on a graph-guided local assembly of reads, although HISAT-genotype aligns the reads with HISAT2 rather than a linear mapper.
 In a sample of 17 well-characterized genomes, HISAT-genotype produced full-resolution HLA genotypes with no errors.
-A larger simulation study suggested that Kourami is more accurate than HLA-genotype on previously observed haplotypes, but less accurate if there is novel variation.
+A larger experiment based on simulated data suggested that Kourami is more accurate than HLA-genotype on previously observed haplotypes, but less accurate if there is novel variation.
 
 
 %Very diverse genomic regions (whose diversity makes them difficult to study) and low complexity regions (which can have condensed graph representations) intuitively stand to see the most improvement when moving from a linear reference to a genome graph.
@@ -129,42 +129,49 @@ Beyond the MHC, another type of challenging variation are short tandem repeats (
 STR regions also have high polymorphism due to high mutation rates.
 In addition, the low complexity sequences tend to make alignment and assembly challenging.
 ExpansionHunter \cite{dolzhenko2019expansionhunter} provides an approach to genotyping STRs using cyclic graphs to model variants' repeat structure.
-The graph is then used as a target for read alignments.
+The graph is used as a target for read alignments.
 The authors show that this approach can more accurately genotype clinically relevant sites of such variation using short read data compared to standard variant calling pipelines.
 HISAT-genotype \cite{Kim_2019} was demonstrated on STRs as well. 
 For a single well-characterized pedigree, the authors argue that HISAT-genotype's results were more accurate than wet lab methods at genotyping the Federal Bureau of Investigation's CODIS loci.
 
 \subsubsection{Genotyping structural variation}
 
-The study of structural variants (SVs), mutational events of at least 50~bp in length, is also benefiting from the application of genome graphs.
+The study of structural variants (SVs)---typically defined as variants affecting at least 50 bp---is also benefiting from the application of genome graphs.
 SVs are difficult to call with NGS reads because they are large relative to the read length.
 Long read seequencing does not share this difficulty, but this technology remains prohibitively expensive for population scale studies.
 This represents an opportunity for pangenomic methods.
-Known SVs can be naturally represented as genome graphs, and genotyped from short read data using a selection of tools.
+Known SVs can be naturally represented in genome graphs and genotyped using a selection of tools.
 
 Bayestyper \cite{sibbesen2018accurate} compares the distribution of $k$-mers from sequencing reads to the distribution of $k$-mers along paths in the graph.
 It calls structural variants with high accuracy almost irrespective of the size of the variant.
 However, it has a high memory footprint, and it requires external variant calling tools to generate candidates for novel variation.
-\todo{EG: we need to cite the update to GraphTyper here, where it was shown to work on SVs.\\ JME: is there a citation for this? I can't find anything}
+Later analysis has also suggested that its reliance on long exact matches at breakpoints makes it fragile to breakpoint uncertainty \cite{hickey2019genotyping}.
 
 Paragraph \cite{chen2019paragraph} is a SV genotyper that operates on a genome graphs constructed from each variant in a VCF of SV calls.
 Its strategy is similar to Graphtyper's \cite{eggertsson2017graphtyper}.
-For each variant, Paragraph realigns nearby reads, as determined by mapping to a linear reference.
+For each variant, Paragraph realigns reads that are nearby, as determined by mapping to a linear reference.
 It then computes a genotype from the support of each allele's breakpoints in the graph alignment.
 Paragraph was shown to outperform similar methods that rely on linear references by a wide margin.
+\todo{EG: we need to cite the update to GraphTyper here, where it was shown to work on SVs.\\ JME: is there a citation for this? I can't find anything}
+
 
 VG's SV genotyper can be run on any genome graph that contains embedded paths, which are required as the coordinate space for VCF output \cite{hickey2019genotyping}.
-Unlike all other methods mentioned above, which remap a subset of relevant reads to the graph, VG operates directly on an alignment of the entire read set against the graph.
+Unlike Paragraph, VG operates on alignments that were produced against against the graph without any intermediate use of a linear reference.
 It uses the snarl decomposition \cite{paten2018superbubbles} to identify sites of variation in the graph, and derives haplotypes using read support.
 It was shown to be much more accurate than linear reference-based approaches, and was also evaluated on graphs derived from alignments of assemblies.
 
 \subsection{Assembly}
 % Erik
 
-\paragraph{Phasing bubble chains in single individuals or trios.}
-Determining the two genome sequences of diploid organisms per chromosome is important in order to correctly understand allele-specific expression and compound heterozygosity, and in order to carry out many analyses in the genetics of common diseases and in population genetics \cite{tewhey2011importance}. However, current assembly approaches often generate mixed haplotype assembly and, therefore, fail to capture the diploid nature of the organism under study. 
+\subsubsection{Phasing bubble chains in single individuals or trios}
 
-WHdenovo \cite{garg2019trio, garg2018graph} is the first tool that leverages information of short and long-reads to generate happlotype-resolved assembly. The basic idea is to work in the space of assembly graph (without collapses halotypes) to perform phasing. This method was applied to genomes of moderate sizes with low to high heterozygosity rates. Furthermore, we have shown that we can detect and phase structural variants.
+Determining the two genome sequences of diploid organisms per chromosome is important in order to correctly understand allele-specific expression and compound heterozygosity, and in order to carry out many analyses in the genetics of common diseases and in population genetics \cite{tewhey2011importance}. 
+However, current assembly approaches often generate mixed haplotype assembly and, therefore, fail to capture the diploid nature of the organism under study. 
+
+WHdenovo \cite{garg2019trio, garg2018graph} is the first tool that leverages information of short and long-reads to generate happlotype-resolved assembly. 
+The basic idea is to work in the space of assembly graph (without collapses halotypes) to perform phasing. 
+This method was applied to genomes of moderate sizes with low to high heterozygosity rates. 
+Furthermore, we have shown that we can detect and phase structural variants.
 
 \subsection{Transcription factor binding}
 % Glenn
