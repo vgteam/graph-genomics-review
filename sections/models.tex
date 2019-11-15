@@ -30,8 +30,8 @@ Methods for pangenome construction often use a mixture of approaches, but in mos
 
 % oldschool pan-genomics
 A pangenome can be represented as a collection of sequences.
-Determining which sequences provide a compact represenation of a pangenome is non-trivial.
-Many software systems support this process.
+Determining which sequences provide a compact represenation of a pangenome is non-trivial, and a number of software systems have been developed to support this process.
+
 Panseq \cite{Laing_2010} finds novel regions, determines the core and accessory genome, finds SNPs within the core pangenome, and then determines a subset of loci useful for molecular fingerprinting.
 PGAP \cite{Zhao_2011} extends Panseq's approach with modules for evolutionary and functional analysis, and is implemented as a single standalone executable.
 % pangenome using a collection of sequences model
@@ -40,28 +40,42 @@ PanTools \cite{Sheikhizadeh_Anari_2018} detects and annotates homology groups in
 Its detailed graph database model connects the pan-proteome defined by homology groups to genomic annotations and sequences.
 HUPAN \citep{Duan_2019} extends the sequence collection model to human and large eukaryotic genomes, taking assembled genomes as input and finding non-reference sequences within them by comparison to a reference genome.
 
+Many published pangenomes are established with ad-hoc methods to determine novel sequences.
+These approaches typically apply assembly methods to determine contigs representative of the pangenome, and then align data from individual biosamples back to them to determine their significicance.
+Standard alignment and variant calling methods typically work without issue on a pangenome stored as a collection of sequences, and can be applied in custom pipelines tailored to particular species contexts.
+
 \subsection{Adding variation}
 
-GenomeMapper was the first major tool to use a reference genome graph \cite{Schneeberger_2009}.
-PRG \cite{dilthey2015improved}.
-vg construct \cite{Garrison_2018}.
-gramtools \cite{Maciuca_2016}
+Rather than collecting unique sequences that represent a collection of genomes, we can consider small variants between the collection and a reference genome.
+Such a model directly implies a directed acyclic graph, ordered along the reference genome, with bubbles at the sites of variation.
+It has been key to the first wave of precision pangenomic methods.
+%These ``reference and variant'' models cannot compactly represent complex structural variation (such as inversions and copy number amplifications).
+%But this has been largely irrelevant to the field.
+%The low-cost short read sequencing that is used for pangenomic surveys does not easily support their detection, and so much of the population scale pangenomic information made available in the last decade has been for small variants that comfortably fit into this model.
 
-\subsection{Refining sequences}
+%A number of methods have been developed around this pangenomic model, but typically they use a specialized or limited version of the model as in internal data structure to drive improvements in read alignment and genome inference.
+These methods typically use a specialized or restricted version of the ``reference plus variation'' pangenome graph.
+GenomeMapper \cite{Schneeberger_2009} first introduced the linear \emph{genome graph} a reference system for resequencing.
+To facilitate its alignment model (which has exponential costs in the number of traversed bubbles), it breaks the graph into blocks of a fixed reference length (typically 256bp).
+The Population Reference Graph (PRG) model \cite{dilthey2015improved}, which was validated primarily in the human MHC region, takes a more curated approach to graph construction.
+Over multiple phases it builds an acyclic genome graph from $k$-mer based alignment of long haplotypes, additional gene alleles, and finally small variants.
+To support its alignment (which has exponential costs in the number of bubbles) and indexing systems, gramtools \cite{Maciuca_2016} combines variants found within a given window length (~30bp) into a single locus.
+PanVC \cite{Valenzuela_2018} employs a gapped MSA as its pangenomic model, inferring underlying recombinant haplotype that may then be used as a reference for alignment and variant calling with standard tools.
+Seven Bridges' Graph Genome Pipeline \cite{Rakocevic_2019} was vetted on a graph with common variation and indels, which is used primarily to improve read alignment, with alignments reported against the linear reference.
+The variation graph toolkit, specifically \textit{vg construct} \cite{Garrison_2018}, can be applied to transform VCF files and reference sequences into genome graphs, which can be rendered into GFA format and are subsequently used by other tools for alignment and genome annotation.
 
-These tools use variation aware pangenome indexes to infer a better haploid sequence model for a given genome, then do variant calling against that.
-gramtools \cite{Maciuca_2016}
-PanVC \cite{Valenzuela_2018}
+We observe out that most of these methods (excluding GenomeMapper and vg) produce reference-relative alignments or recombinant haplotypes inferred by matching a read set against their pangenomic model.
+Thus, their models are not pangenome graph references in the same sense as linear genome references.
 
-\subsection{Colored and linked De Bruijn graphs}
+\subsection{Colored and linked de Bruijn graphs}
 
-% dbg methods with pangenomic flavors (coloring)
-Coloring:
-Cortex \cite{Iqbal_2012}
-Bifrost \cite{holley2019bifrost}
-Linked DBGs:
-McCortex \cite{Turner_2018}
-LOGAN \cite{Bolger_2017}
+De Bruijn graph based assemblers can be given a pangenomic quality through the addition of ``colors'' to their nodes ($k$-mers) or unitigs (unbranching components in the graph).
+Each color provides a mapping between a specific biosample and a subset of the graph.
+Efficiently storing such colors allows for population scale variant calling within the context of the graph, as was first demonstrated with Cortex assembler \cite{Iqbal_2012}.
+Recent improvements to colored DBG construction, such as Bifrost \cite{holley2019bifrost}, allow the construction of cDBGs from very large sequence sets (the authors build a pangenome of 118,000 \emph{Salmonella} genomes), and further support efficient update of these pangenomic models.
+The feature which makes these methods efficient, the fixed $k$ on which they are based, also limits their resolution of repetitive genomic features.
+They also struggle handle long noisy reads produce by third generation sequencing, and are lossy with respect to their input sequences.
+In response, several methods embed linking information within the DBG that can be used to reconstruct embedded haplotypes or reads \cite{Bolger_2017,Turner_2018}.
 
 \subsection{Whole genome alignments}
 
