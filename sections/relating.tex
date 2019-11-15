@@ -476,6 +476,43 @@ GraphAligner & Variation graph or overlap graph & Long read & Fast \\ \hline
 
 % See also: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1103-9
 
+\subsection{Variation-aware transcriptomic mapping}
+
+Attempts to use pangenomic models to analyze transcriptomic sequencing data have generally received less attention than similar experiments with whole genome sequencing data.
+However, certain downstream applications also benefit from incorporating information on genomic variation.
+Due to presence of splicing, mapping transcriptomic reads typically requires specialized algorithms.
+Thus, variation-aware mappers for transcript reads have largely been developed in parallel to mappers for genomic reads, although there is some overlap.
+
+%Proper variant-aware mapping methods, on the other hand, do not require that the variants are phased beforehand.
+GSNAP was the first variant- and splicing-aware mapping method developed for RNA-seq data \cite{Wu2010-hv}%\todo{JAS: We might want to add GSNAP introduction to the model section since it is general and also works for WGS}.
+It uses a $k$-mer-based approach where both the genome and a set of SNVs are indexed using hash tables.
+The current version uses a suffix array in addition to the hash table.
+GSNAP is still competitive with regards to mapping accuracy, but it is generally much slower than contemporary mapping methods.
+Although not demonstrated in the initial publication, GSNAP does reduce reference bias around SNVs \cite{Castel2015-ef}.
+
+Another variant-aware method, ASElux, uses all heterozygous exonic SNVs in an individual to create a suffix array index of the alleles and their flanking sequences \cite{Miao2018-ps}. 
+This index is used to filter read pairs that does not overlap any SNVs with up to 2 mismatches. 
+The much smaller set of read pairs that pass this filter are then aligned to a different suffix array index consisting of exonic and intronic regions and pairs that align unique to a single gene are used for allele counting. 
+
+Similarly to ASElux, iMapSplice creates an index of SNV alleles and their flanking sequences \cite{Liu_2018}.
+The sequences are indexed using enhanced suffix arrays and reads are mapped to both this index and the reference genome simultaneously.
+The authors demonstrated that iMapSplice achieves higher mapping accuracy and lower reference bias compared to both a linear mapping method and HISAT2, another variant-aware method.
+
+GSNAP, ASElux and iMapSplice only support SNVs and are therefore not able to reduce reference bias around indels.
+HISAT2 was the first explicitly genome graph-based, non-SNV-variant-aware method for splicing-aware mapping of RNA-seq data \cite{Kim_2019}. 
+This method can use SNVs, deletions of any length, and insertions up to 20~bp.
+Its mapping algorithm for transcriptomic sequencing is the same as for genomic DNA (See above).
+In their benchmark for iMapSplice, \citeauthor{Liu_2018} showed a reduction in reference bias around SNVs for an early version of HISAT2. 
+
+Recently, the ability to create spliced variation graphs was added to VG \cite{Garrison_2018}. 
+In these variation graphs, known splice junctions are added as edges, similar to the addition of a deletion event, while transcripts are embedded as paths through the graph. 
+This allows for existing algorithms in \texttt{vg} to also be used for variant-aware mapping of RNA-seq data. 
+VG supports any type of variation, but its splicing-awareness is limited to only known splice junctions, and it does not support generating supplementary alignments.
+Thus, reads that span a novel splice junction will only map partially.
+
+%As with whole genome DNA sequencing data, variation-aware analysis of RNA-seq data is important for getting accurate results in highly polymorphic regions, such as the HLA genes in the human major histocompatibility complex region. 
+%AltHapAlignR and HLApers have both demonstrated improvements in the estimation of HLA gene/transcript expression as a result of comparing the reads against a collection of known HLA haplotypes, instead of using the linear reference \cite{Lee_2018,Aguiar2019-fy}.
+
 
 %\subsection{Non-graph population mapping tools}
 % Erik
