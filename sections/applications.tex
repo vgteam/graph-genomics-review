@@ -28,7 +28,7 @@ It is no longer necessary, or even advisable, to restrict inference to the sampl
 Increasingly large databases of variation are publicly available to guide future analyses.
 The benefits of multi-sample calling can now be brought to bear even on individual samples.
 
-In pangenomics, it is useful distinguish between \emph{variant calling} and \emph{genotyping}.
+In pangenomics, it is useful to distinguish between \emph{variant calling} and \emph{genotyping}.
 Variant calling consists of detecting variation that is yet unobserved, whereas genotyping involves determining whether a previously observed variant is present in a new sample.
 Intuitively, pangenomic methods should provide greater benefit to genotyping, and indeed most existing tools emphasize it over variant calling.
 %TODO: i thought i had another sentence here, but i can't remember it...
@@ -56,6 +56,10 @@ First, structural variants and regions of dense variation can confound read mapp
 This can, in turn, cause variant calling errors.
 Second, missing variation in the reference can cause base-level alignment artifacts.
 Mapping and aligning to pangenome models provides the opportunity to mitigate these biases.
+
+\todo[inline] {JE: maybe also mention Cortex? They mainly focus on calling variants but also describe how to genotype them. Bubbleparse seems to be another variant caller.}
+% Cortex constructs a colored de Bruijn graph which can include data of multiple samples and additional sources of sequence information, like a reference sequence or known alleles \cite{Iqbal_2012}. Variants are called from the graph by identifying bubble structures in the graph, and can be genotyped based on a samples coverage of allele specific kmers. The approach efficiently handles simultaneous analysis of multiple genomes and enables accurate variant detection in a reference-free manner.
+
 
 One strategy for genotyping small variants consists of using graphs of known variation in local regions to realign reads that were mapped to a linear reference.
 This approach was pioneered in the 1000 Genomes Project by the GLIA software.
@@ -159,7 +163,7 @@ Paragraph was shown to outperform similar methods that rely on linear references
 
 
 VG's SV genotyper can be run on any genome graph that contains embedded paths, which are required as the coordinate space for VCF output \cite{hickey2019genotyping}.
-Unlike Paragraph, VG operates on alignments that were produced against against the graph without any intermediate use of a linear reference.
+Unlike Paragraph, VG operates on alignments that were produced against the graph without any intermediate use of a linear reference.
 It uses the snarl decomposition \cite{paten2018superbubbles} to identify sites of variation in the graph, and derives haplotypes using read support.
 It was shown to be much more accurate than linear reference-based approaches, and was also evaluated on graphs derived from alignments of assemblies.
 
