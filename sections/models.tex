@@ -85,12 +85,21 @@ As observed in its first description \cite{hein1989new}, by compressing ancestra
 This model was later used as the basis for the partial order alignment (POA) sequence to graph alignment and graph to graph aligner PO-POA \cite{Lee_2002,Grasso_2004}.
 It was generalized to represent \emph{whole genome alignments} by allowing cyclic and inverting structures in Cactus \cite{Paten_2011}, yielding superb results in evalution during the Alignathon competition \cite{earl2014alignathon}.
 
+However, not all researchers have focused on generic graphs, with several arguing that complex structures are not relevant to many kinds of analyses, or computationally intractable to consider in a primary model of whole genome alignment.
+The recursive hierarchical alignment model in REVEAL \cite{linthorst2015scalable} finds a set of maximal exact unique matches of decreasing size between a pair of sequences, and uses these and the flanking un-matched sequences to build a sequence graph.
+By applying the same alignment algorithm to the sequences in the nodes of the graph, REVEAL supports the alignment of sequences to graphs, or graphs to graphs, supporting the construction of pangenome graphs for human sized genomes.
+Its pangenome model is linear, but supports the post-hoc detection of inversions by aligning sequences in bubbles in the alignment graph.
+The linear alignment-based pangenome model is further explored by NovoGraph \cite{Biederstedt2018}, and seq-seq-pan \cite{Jandrasits_2018}.
+NovoGraph follows a reference-guided approach, breaking a set of genomes into syntenic alignable blocks and deriving a multiple sequence alignment for each, and yielding a VCF file as its output.
+Similarly, seq-seq-pan employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the its input geomes.
+% syntenic by design
+% very similar to novograph, linear, based on whole genome alignments, generates locally collinear blocks
+% reference guided, linear alignments, MSA based, makes a linear variation graph, outputs VCF
+
+
 vg msga \cite{Novak_2017a,Garrison_2018,Garrison_2019} % progressive graph construction, like POA
 Seqwish\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019}
 
-REVEAL \cite{linthorst2015scalable} % linear, hierarchical model
-seq-seq-pan \cite{Jandrasits_2018} % very similar to novograph, linear, based on whole genome alignments, generates locally collinear blocks
-Novograph \cite{Biederstedt2018} % reference guided, linear alignments, MSA based, makes a linear variation graph, outputs VCF
 
 \subsection{Positional systems in pangenomes}
 
