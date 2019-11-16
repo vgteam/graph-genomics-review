@@ -117,7 +117,7 @@ The trend in the graph alignment research is toward greater generality and faste
 The generality comes in two main forms. 
 First, algorithms apply to increasingly general classes of graphs. 
 The first widely-used algorithm for aligning biological sequences to graphs, partial order alignment, applied only to graphs without cycles \cite{Lee_2002, Grasso_2004}. 
-More recent research has discovered algorithms that align to graphs with any shape \cite{Antipov_2015, Rautiainen_2017, Jain_2019a}. 
+More recent research has described algorithms that align to graphs with any shape \cite{Antipov_2015, Rautiainen_2017, Jain_2019a}. 
 Second, graph alignment researchers have developed algorithms that use increasingly general scoring functions. 
 Some earlier algorithms require restricted scoring functions to achieve efficiency \cite{Rautiainen_2017}, but recent contributions have used the less restricted scoring functions that are required to produce biologically meaningful alignments in many contexts \cite{Jain_2019a}.
 
@@ -130,8 +130,8 @@ In fact, these results were already known in other fields.
 Many of the recent advances in graph alignment came from rediscovering analogs to the graph alignment problem in the related areas of regular expressions and hypertext \cite{Myers_1989, Amir_1997, Navarro_2000}. % hein1989new, ?
 In addition to these theoretical results, researchers have also developed modified algorithms that run quickly the practical context of real-world computer architectures \cite{Suzuki_2018, Rautiainen_2019, Jain_2019b}.
 
-From a practical standpoint, the primary benefit of the research in alignment algorithms has been in aiding the design of read mapping tools. 
-Graph alignment algorithms are a central component of the graph mapping tools described below.
+%From a practical standpoint, the primary benefit of the research in alignment algorithms has been in aiding the design of read mapping tools. 
+%Graph alignment algorithms are a central component of the graph mapping tools described below.
 
 \subsection{Genome graph mapping}
 
@@ -174,7 +174,7 @@ Examples include GenomeMapper (an early forerunner) \cite{Schneeberger_2009}, Se
 Another set of tools focus on de Bruijn graphs: BGREAT \cite{Limasset_2016}, deBGA \cite{Liu_2016}, and BrownieAligner \cite{Heydari_2018}.
 Most of these were developed in parallel to recent pangenomics research, often with motivations in genome assembly. 
 VG \cite{Garrison_2019} and GraphAligner \cite{Rautiainen_2019b} appear to be the only tools with open ambitions of mapping to arbitrary variation graphs, including complex local and global topologies encoding all kinds of variation.
-GraphAligner is notable in that it can also apply to generic overlap graphs.
+GraphAligner is notable in that it can also align to generic overlap graphs.
 
 The majority of these tools emphasize mapping short-read \emph{next-generation sequencing (NGS)} data. 
 %Most likely, the motivation for doing so is the same as why NGS remains the standard for conventional resequencing experiments; the price point currently favors it. 
@@ -475,6 +475,43 @@ GraphAligner & Variation graph or overlap graph & Long read & Fast \\ \hline
 % BrownieAligner (2018) \citep{Heydari_2018}
 
 % See also: https://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1103-9
+
+\subsection{Variation-aware transcriptomic mapping}
+
+Attempts to use pangenomic models to analyze transcriptomic sequencing data have generally received less attention than similar methods with whole genome sequencing data.
+However, certain downstream applications also benefit from incorporating information on genomic variation in transcriptomics.
+Due to presence of splicing, mapping transcriptomic reads typically requires specialized algorithms.
+Thus, variation-aware mappers for transcript reads have largely been developed in parallel to mappers for genomic reads, although there is some overlap.
+
+%Proper variant-aware mapping methods, on the other hand, do not require that the variants are phased beforehand.
+GSNAP was the first variant- and splicing-aware mapping method developed for RNA-seq data \cite{Wu2010-hv}. %\todo{JAS: We might want to add GSNAP introduction to the model section since it is general and also works for WGS}.
+It uses a $k$-mer-based approach where both the genome and a set of SNVs are indexed using hash tables.
+The current version uses a suffix array in addition to the hash table.
+GSNAP is still competitive contemporary mapping methods with regards to mapping accuracy, but it is generally much slower.
+Although not demonstrated in the initial publication, GSNAP does reduce reference bias around SNVs \cite{Castel2015-ef}.
+
+Another variant-aware method, ASElux, uses all heterozygous exonic SNVs in an individual to create a suffix array index of the alleles and their flanking sequences \cite{Miao2018-ps}. 
+This index is used to filter read pairs that does not overlap any SNVs with up to 2 mismatches. 
+The much smaller set of read pairs that pass this filter are then aligned to a different suffix array index consisting of exonic and intronic regions and pairs that align unique to a single gene are used for allele counting. 
+
+Similarly to ASElux, iMapSplice creates an index of SNV alleles and their flanking sequences \cite{Liu_2018}.
+The sequences are indexed using enhanced suffix arrays and reads are mapped to both this index and the reference genome simultaneously.
+The authors demonstrated that iMapSplice achieves higher mapping accuracy and lower reference bias compared to both a linear mapping method and HISAT2.
+
+GSNAP, ASElux and iMapSplice only support SNVs and are therefore not able to reduce reference bias around indels.
+HISAT2 was the first explicitly genome graph-based, non-SNV-variant-aware method for splicing-aware mapping of RNA-seq data \cite{Kim_2019}. 
+This method can use SNVs, deletions of any length, and insertions up to 20~bp.
+Its mapping algorithm for transcriptomic sequencing is the same as for genomic DNA (See above).
+In their benchmark for iMapSplice, \citeauthor{Liu_2018} showed a reduction in reference bias around SNVs for an early version of HISAT2. 
+
+Recently, the ability to create spliced variation graphs was added to VG \cite{Garrison_2018}. 
+In these variation graphs, known splice junctions are added as edges, similar to the addition of a deletion event, while transcripts are embedded as paths through the graph. 
+This allows for existing algorithms in VG to also be used for variant-aware mapping of RNA-seq data. 
+VG supports any type of variation, but its splicing-awareness is limited to only known splice junctions, and it does not support generating supplementary alignments.
+Thus, reads that span a novel splice junction will only map partially.
+
+%As with whole genome DNA sequencing data, variation-aware analysis of RNA-seq data is important for getting accurate results in highly polymorphic regions, such as the HLA genes in the human major histocompatibility complex region. 
+%AltHapAlignR and HLApers have both demonstrated improvements in the estimation of HLA gene/transcript expression as a result of comparing the reads against a collection of known HLA haplotypes, instead of using the linear reference \cite{Lee_2018,Aguiar2019-fy}.
 
 
 %\subsection{Non-graph population mapping tools}

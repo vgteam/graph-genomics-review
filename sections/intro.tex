@@ -7,7 +7,7 @@ By considering the pangenome during bioinformatic analyses, researchers can hope
 
 This concept has been essential to microbiology, where genomic plasticity and diversity have made a pangenomic perspective indispensable \cite{tettelin2005genome,medini2005microbial}.
 Usually, these analyses focus on the presence or absence of genes from given strains and the determination of a core (commonly present) and accessory (frequently absent) pangenome \cite{page2015roary}.
-Pangenomic techniques have also been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,brohammer2018maize}.
+Pangenomic techniques have also been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,brohammer2018maize,Ou_2018}.
 In recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{li2010building,sudmant2010,sudmant2015integrated,chaisson2018multi,Yang_2019}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}.
 
 %These trends encourage the application of pangenomic methods to settings where more than one individual is being analyzed
@@ -108,41 +108,13 @@ However, they also admit many sequences which are highly unlikely combinations o
 To provide further structure to genome graphs, \emph{variation graphs} embed the observed linear sequences of the pangenome in the graph as \emph{paths}, or walks through the sequences of the graph \cite{Garrison_2018}.
 Variation graphs are thus fully lossless pangenomic models that represent both a collection of sequences and their mutual alignment.
 They are capable of representing all other kinds of pangenomic models, and provide stable coordinate systems based on the genomic sequences embedded within them.
-%The set of sequences embedded within these graphs may be compressed into data structures that  \cite{Siren_2019}.
-
-%The disadvantage of variation graphs is that their implementation has been difficult due to their generality.
-
-%Such a data structure may be compressed
-%Such sequence data can be represented in \emph{linear reference models}, like FASTA sequences, with variation represented in external files, but these approaches lack coherent representation of the relationship between sequences.
-%Supporting 
-%\footnote{\url{http://fastg.sourceforge.net/}}
-%\footnote{\url{https://github.com/GFA-spec/GFA-spec}}
-%In contrast to \emph{linear reference models}, like FASTA sequences, which require external information such as data in the variant call format (VCF)
-%Pangenomic models encode both variation and sequence in a single model.
-
-
-%\todo[inline]{EG: here we should talk about which tools exist, and which data formats they read and write, with a figure too?}
 
 \begin{figure}[h]
     \includegraphics[width=1.0\textwidth]{figures/fig1.pdf}
     \caption{\label{fig:models} Genomic versus pangenomic sequence analysis patterns.
       Top left: In reference based genomic analyses, all genomes ($a \ldots f$) are compared to each other via their relationship to the reference genome $R$.
-      Top right: In a pangenomic setting, we attempt to model direct relationships between all the genomes in our analysis, of which a particular reference $R$ is chose arbitrarily.
+      Top right: In a pangenomic setting, we attempt to model direct relationships between all the genomes in our analysis, of which a particular reference $R$ is chosen arbitrarily.
       Bottom left: When extending our analysis with a new genome, $\Delta$, we add it to the genomic model by comparing it to reference $R$.
       Bottom right: In contrast, adding a new genome to a pangenomic analysis compares it directly with all other genomes in the model.
     }
-%\textbf{A:} Bandage, adapted from \cite{Wick_2015} supplementary section~6.
-%\textbf{B:} GfaViz, adapted from \cite{Gonnella_2018} supplementary figure~S4.
 \end{figure}
-
-
-%Each class of pangenomic model can be used as a basis to drive biological analyses.
-%Implementations of particular analytical processes may produce or consume different types of pangenomic models.
-%Methods to do so \todo{To do what?} are not fully equivalent.
-%\todo[inline]{JME: I think this section should probably be expanded or cut}
-%To provide perspective on the scope of these approaches, we consider their
-
-
-%\subsection{Past reviews}
-
-%\cite{computational2016computational}.
