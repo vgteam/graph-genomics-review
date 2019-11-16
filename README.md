@@ -252,8 +252,8 @@ https://doi.org/10.1093/bioinformatics/btu756
 
 ## Finding structures in pangenome graphs
 
-Bubbles (various)
-...
+Bubbles (various) 
+Bubbleparse (2013) https://journals.plos.org/plosone/article/comments?id=10.1371/journal.pone.0060058
 
 Superbubbles (various)
 ...
@@ -357,6 +357,12 @@ GraphAligner (preprint 2019) -- alread mentioned as aligner above
 https://doi.org/10.1101/810812
 
 ## Variant calling / Genotyping
+
+Cortex (2012)
+ https://www.nature.com/articles/ng.1028
+
+Bubbleparse (2013)
+https://journals.plos.org/plosone/article/comments?id=10.1371/journal.pone.0060058
 
 1000GP phase 3 paper (2015) -- graph based genotyping process described in supplement
 https://doi.org/10.1038/nature15393 
