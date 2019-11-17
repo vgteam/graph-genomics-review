@@ -28,7 +28,7 @@ It is no longer necessary, or even advisable, to restrict inference to the sampl
 Increasingly large databases of variation are publicly available to guide future analyses.
 The benefits of multi-sample calling can now be brought to bear even on individual samples.
 
-In pangenomics, it is useful distinguish between \emph{variant calling} and \emph{genotyping}.
+In pangenomics, it is useful to distinguish between \emph{variant calling} and \emph{genotyping}.
 Variant calling consists of detecting variation that is yet unobserved, whereas genotyping involves determining whether a previously observed variant is present in a new sample.
 Intuitively, pangenomic methods should provide greater benefit to genotyping, and indeed most existing tools emphasize it over variant calling.
 %TODO: i thought i wanted another sentence here, but i can't remember it...
@@ -53,6 +53,10 @@ In many ways, small variants stand to benefit the least from pangenomic variant 
 NGS read lengths are sufficient to span their entirety, and the associated variant calling algorithms are quite mature.
 However, reference bias in mapping can be a source of variant calling error. 
 Pangenome models provide an opportunity to mitigate these biases.
+
+
+In order to call variants, approaches relying on de Bruijn graphs have been suggested. Cortex  \cite{Iqbal_2012} constructs a colored de Bruijn graph which can include data of multiple samples and additional sources of sequence information, like a reference genome or known alleles. Variants are detected by identifying bubble structures in the graph and  genotyped based on the samples' coverage of allele specific kmers. The approach efficiently handles simultaneous analysis of multiple genomes and enables accurate variant detection in a reference-free manner.
+Bubbleparse \cite{Leggett_2013} extends the model implemented in Cortex and aims at improving SNP discovery. Candidate variants are produced by a bubble calling algorithm and a heuristic is presented which uses a classification and ranking system to controls the specificity of reported SNP calls \cite{Leggett_2013}.
 
 One strategy for genotyping small variants consists of using graphs of known variation in local regions to realign reads that were mapped to a linear reference.
 This approach was pioneered in the 1000 Genomes Project by the GLIA software.
@@ -144,9 +148,8 @@ It then computes a genotype from the support of each allele's breakpoints in the
 Paragraph was shown to outperform similar methods that rely on linear references by a wide margin.
 \todo{EG: we need to cite the update to GraphTyper here, where it was shown to work on SVs.\\ JME: is there a citation for this? I can't find anything}
 
-
 VG's SV genotyper can be run on genome graphs of arbitrary shape \cite{hickey2019genotyping}.
-Unlike Paragraph, VG operates on alignments that were produced against against the graph without any intermediate use of a linear reference.
+Unlike Paragraph, VG operates on alignments that were produced against the graph without any intermediate use of a linear reference.
 It uses the snarl decomposition \cite{paten2018superbubbles} to identify sites of variation in the graph, and derives haplotypes using read support.
 It was shown to be much more accurate than linear reference-based approaches.
 
