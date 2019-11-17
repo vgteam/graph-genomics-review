@@ -39,7 +39,7 @@ In a genome graph, haplotypes can be expressed as paths through the graph.
 Accordingly, many published tools have naturally focused on using paths to define alleles and haplotypes \cite{dilthey2015improved, sibbesen2018accurate,lee2018kourami,hickey2019genotyping,dolzhenko2019expansionhunter}.
 The problem of genotyping then can be recast as finding the paths that are best supported by reads.
 For variant calling, some methods augment the genome graph with novel variants so that the entire haplotype exists as a path in the graph \cite{sibbesen2018accurate,lee2018kourami,hickey2019genotyping}.
-A similar approach is to infer a pangenomic reference model from read alignments to a pangenome and to then use this reference model for downstream analysis \cite{Maciuca_2016,Valenzuela_2018}, although this limits the genome model being haploid and acyclic.
+A similar approach is to infer a sample-specific linear reference model from read alignments to a pangenome and to then use this reference model for downstream analysis \cite{Maciuca_2016,Valenzuela_2018}, although this limits the genome model to being haploid and acyclic.
 
 % Glenn
 %Genome graphs can leverage known sequence variation, available in increasingly large public databases, to improve variant identification in new samples.
@@ -50,8 +50,8 @@ A similar approach is to infer a pangenomic reference model from read alignments
 \subsubsection{Small variants}
 
 In many ways, small variants stand to benefit the least from pangenomic variant calling and genotyping.
-NGS read lengths are sufficient to span the entirety of small variants, and the associated variant calling algorithms are quite mature.
-However, mapping errors from reference bias can be a source of variant calling error. 
+NGS read lengths are sufficient to span their entirety, and the associated variant calling algorithms are quite mature.
+However, reference bias in mapping can be a source of variant calling error. 
 Pangenome models provide an opportunity to mitigate these biases.
 
 One strategy for genotyping small variants consists of using graphs of known variation in local regions to realign reads that were mapped to a linear reference.
@@ -64,9 +64,8 @@ Further, information on known variation modestly improves Graphtyper's accuracy 
 Seven Bridges' Graph Genome Pipeline includes a variant calling module that itself is minimally pangenomic beyond its use of graph-based read mappings.
 Rather, it is broadly similar to existing local assembly methods based on the linear reference \cite{Poplin_2017, Rimmer_2014} except in that it prioritizes haplotypes that are found in a genome graph \cite{Rakocevic_2019}.
 %This can be seen as an example of a statistical prior on variation expressed in the pangenome; simply knowing where one should look for variants is informative.
-The Graph Genome Pipeline shows advantages over conventional pipelines in variant recall, especially for indels.
-Interestingly, the authors' analysis suggests that the graph-based read mappings contribute a minority of the effect.
-It seems simply knowing what alleles to look for is significantly informative.
+It shows advantages over conventional pipelines in variant recall, especially for indels.
+Interestingly, the authors' analysis suggests that the graph-based read mappings contribute a minority of the effect; simply knowing what alleles to look for is quite informative.
 
 %GraphTyper \cite{eggertsson2017graphtyper} is a popular genome-graph-based caller.
 %It begins with a pangenome graph created from variants in dbSNP, and iteratively updates it with variants discovered in input reads.
@@ -79,7 +78,7 @@ It seems simply knowing what alleles to look for is significantly informative.
 \subsubsection{Challenging genomic regions}
 
 Certain genomic regions give disproportionate trouble to conventional variant calling methods. 
-The primary cause of this trouble is high genomic diversity, which can make mapping and alignment difficult. 
+The cause is often high genomic diversity, which can make mapping and alignment difficult. 
 Some pangenomic genotyping tools have achieved efficiency by targeting otherwise costly algorithms specifically to these regions.
 
 Much of this research has focused on the human major histocompatibility complex (MHC) region on chromosome 6, which contains the human leukocyte antigen (HLA) genes. 
@@ -88,22 +87,20 @@ Determining an individual's HLA alleles, or HLA typing, is often of great medica
 
 %TODO: must cut down coverage of PRG, but i want to see how erik handles it...
 Several tools have used genome graphs to enable HLA typing with NGS data.
-The first such algorithm was PRG \cite{dilthey2015improved}, which selects of pair of paths through a graph constructed from a multiple sequence alignment of HLA alleles.
-The paths can then be used as linear references for standard mapping and calling tools.
+The first such algorithm was PRG \cite{dilthey2015improved}, which uses the approach described above of extracting ad hoc linear references from a graph and using them for conventional variant calling.
 Later iterations of the algorithm, HLA*PRG \cite{dilthey2018hla} and HLA*LA \cite{dilthey2019hla}, began aligning reads directly to the graph.
-This brought accuracy comparable to Sanger methods.
-The cost of significant computation time, although HLA*LA improved the efficiency.
+This brought accuracy comparable to existing gold-standard methods.
+The cost was significant computation time, although HLA*LA improved the efficiency.
 Kourami \cite{lee2018kourami} is a similar alignment-based method.
-It achieves faster speeds than HLA*LA and comparable accuracy.
+It achieves faster speeds than HLA*LA and comparable accuracy by using alignment heuristics.
 Kourami also performs some novel variant calling based on local assembly.
 
-General purpose genotyping tools have also targeted the HLA region.
-On a population of Icelandic samples, Graphtyper \cite{eggertsson2017graphtyper} produced high accuracy genotypes in minutes per sample.
-However, these genotypes were at a lower level of sequence resolution than HLA*LA or Kourami.
-HISAT-genotype \cite{Kim_2019} is another general purpose calling algorithm whose authors demonstrated on HLA genotyping.
+General purpose genotyping tools have also targeted the MHC region.
+On a population of Icelandic samples, Graphtyper \cite{eggertsson2017graphtyper} produced high accuracy genotypes in minutes per sample, albeit at a low level of sequence resolution.
+HISAT-genotype \cite{Kim_2019} is another general purpose variant calling algorithm that has been demonstrated on the MHC.
 Like Kourami, the algorithm is based on a graph-guided local assembly of reads, although HISAT-genotype aligns the reads with HISAT2 rather than a linear mapper.
-In a sample of 17 well-characterized genomes, HISAT-genotype produced full-resolution HLA genotypes with no errors.
-A larger experiment based on simulated data suggested that Kourami is more accurate than HLA-genotype on previously observed haplotypes, but less accurate if there is novel variation.
+In 17 genomes, HISAT-genotype produced full-resolution HLA genotypes with no errors.
+A larger experiment based on simulated data suggested that Kourami is more accurate than HLA-genotype on previously observed haplotypes but less accurate on novel variation.
 
 
 %Very diverse genomic regions (whose diversity makes them difficult to study) and low complexity regions (which can have condensed graph representations) intuitively stand to see the most improvement when moving from a linear reference to a genome graph.
@@ -125,8 +122,8 @@ A larger experiment based on simulated data suggested that Kourami is more accur
 Outside of the MHC, another type of challenging variation are short tandem repeats (STRs).
 STR regions also have high polymorphism due to high mutation rates.
 In addition, the low complexity sequences tend to make alignment and assembly challenging.
-ExpansionHunter \cite{dolzhenko2019expansionhunter} provides an approach to genotyping STRs by aligning reads to cyclic graphs that model variants' repeat structure.
-The authors show that this approach can genotype STRs using short read data more accurately than standard variant calling pipelines.
+ExpansionHunter \cite{dolzhenko2019expansionhunter} provides an approach to genotyping STRs by aligning reads to cyclic graphs that model STRs' repeat structure.
+The authors show that this approach can genotype STRs more accurately than standard variant calling pipelines.
 HISAT-genotype \cite{Kim_2019} was demonstrated on STRs as well. 
 For a single well-characterized pedigree, the authors argue that HISAT-genotype's results were more accurate than wet lab methods at genotyping the Federal Bureau of Investigation's CODIS loci.
 
