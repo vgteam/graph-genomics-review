@@ -186,12 +186,14 @@ Some transcriptomic analyses are strongly affected by reference bias.
 Chief among these is allele-specific expression (ASE) \cite{Degner2009-vw,Castel2015-ef}.
 ASE analysis estimates the expression levels of genes or transcripts on each allele separately by comparing the number of RNA sequencing (RNA-seq) reads mapped to the two different alleles of heterozygous variants.
 A mapping bias in favor of one of the alleles can therefore create illusory differences in expression between the alleles.
+Using variation information during mapping can help ameliorate this.
 
 The simplest approach to using variation data in mapping involves creating a personalized diploid genome or transcriptome, which is then used as the reference for a standard linear mapping method \cite{Turro2011-op,Rozowsky_2011,Bray_2016,Raghupathy2018-sd}.
-Methods using this approach have been shown to reduce reference bias and improve estimation of ASE, relative to traditional single reference genome methods, but they are limited by requiring phased haplotypes for the individuals under study.
+Methods using this approach have been shown to reduce reference bias and improve estimation of ASE, relative to traditional single reference genome methods, but they are generally limited by requiring phased haplotypes of either the whole genome or the individual genes for the individuals under study.
 Variant-aware mappers remove this necessity.
-For example, ASElux \cite{Miao2018-ps} and GSNAP \cite{Castel2015-ef} were both shown to reduce reference bias in ASE quantification.
-ASElux is significantly faster than GSNAP, but GSNAP reduces reference bias slightly more \cite{Miao2018-ps}.
+Indeed, ASElux \cite{Miao2018-ps}, iMapSplice \cite{Liu_2018} and GSNAP \cite{Wu2010-hv,Castel2015-ef} have all shown to reduce reference bias by using known SNVs during mapping. 
+Resulting in better estimates of ASE compared to using a linear reference genome \cite{Miao2018-ps}.
+%ASElux is significantly faster than GSNAP, but GSNAP reduces reference bias slightly more \cite{Miao2018-ps}.
 
 %GSNAP was the first variant- and splicing-aware mapping method developed for RNA-seq data \cite{Wu2010-hv}\todo{JAS: We might want to add GSNAP introduction to the model section since it is general and also works for WGS}.
 %It uses a kmer-based approach where both the genome and a set of SNVs are indexed using hash tables.
@@ -220,18 +222,18 @@ ASElux is significantly faster than GSNAP, but GSNAP reduces reference bias slig
 %\texttt{vg} supports any type of variation, but its splicing-awareness is limited to only known splice junctions, and it does not support generating supplementary alignments.
 %Thus, reads that span a novel splice junction will only map partially.
 
-Variation-aware analysis of RNA-seq data is important accurately analyzing highly polymorphic regions.
+Variation-aware analysis of RNA-seq data is important for accurately analyzing highly polymorphic regions.
 As with variant calling, the case that has generated the most interest is the HLA genes in the human MHC. 
-AltHapAlignR and HLApers have both demonstrated improvements in the estimation of HLA gene/transcript expression as a result of comparing the reads against a collection of known HLA haplotypes, instead of using the linear reference \cite{Lee_2018,Aguiar2019-fy}.
+AltHapAlignR \cite{Lee_2018} and HLApers \cite{Aguiar2019-fy} have both demonstrated improvements in the estimation of HLA gene/transcript expression as a result of comparing the reads against a collection of known HLA haplotypes, instead of using the linear reference.
 
 Even intronic variation can be helpful for analyzing RNA-seq data. 
 Intronic variation can disrupt existing splice-site motifs or create new ones, resulting in intron retention or novel splicing, respectively. 
 Since the presence or absence of canonical splice-site motifs is often used as a factor when scoring alignments across splice junctions, mappers which are aware of these changes to the motifs are able to give more accurate mapping results for reads that overlaps the modified splice-junctions. 
-Indeed, by using a personalized genome approach, \citeauthor{Stein_2015} were able to identify 506 personal splice junctions in 75 individuals, of which 437 were novel \cite{Stein_2015}.
-Even more novel junctions were later found in the same individuals by \citeauthor{Liu_2018} using iMapSplice \cite{Liu_2018}.
+Indeed, by using a personalized genome approach, \citeauthor{Stein_2015} \cite{Stein_2015} were able to identify 506 personal splice junctions in 75 individuals, of which 437 were novel.
+Even more novel junctions were later found in the same individuals by \citeauthor{Liu_2018} \cite{Liu_2018} using iMapSplice.
 
 \subsection{Metagenomics and quasispecies}
-
+\todo{JAS: In the interest of space and given that this review focuses mainly on humans I think we should delete this section. Instead, I think we should add a sentence or two about metagenomics and quasispecies in the discussion}
 Most of the methods mentioned in this review has focused on the analyses of human data, however, the benefits of using graphs as a non-linear reference structure have also been demonstrated for other species.
 This is especially true for bacterial metagenomics and viral quasispecies where the sequencing data consists of a mixture of closely related sequences (e.g. strains).
 A graph with sequence paths here provides a natural representation of the data and methods have been developed that specifically take advantage of this. 
