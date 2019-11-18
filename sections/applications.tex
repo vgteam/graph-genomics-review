@@ -29,11 +29,12 @@ Increasingly large databases of variation are publicly available to guide future
 The benefits of multi-sample calling can now be brought to bear even on individual samples.
 
 In pangenomics, it is useful to distinguish between \emph{variant calling} and \emph{genotyping}.
-Variant calling consists of detecting variation that is yet unobserved, whereas genotyping involves determining whether a previously observed variant is present in a new sample.
+Genotyping consists of determining whether a previously observed variant is present in a new sample, whereas variant calling involves detecting yet unobserved variation.
 Intuitively, pangenomic methods should provide greater benefit to genotyping, and indeed most existing tools emphasize it over variant calling.
 %TODO: i thought i wanted another sentence here, but i can't remember it...
 % - something about the variants where mapping is the most difficult?
 
+\todo[inline]{JME: we could maybe cut this whole next paragraph}
 Another trend in genome graph methods are path-based formulations for inference.
 In a genome graph, haplotypes can be expressed as paths through the graph.
 Accordingly, many published tools have naturally focused on using paths to define alleles and haplotypes \cite{dilthey2015improved, sibbesen2018accurate,lee2018kourami,hickey2019genotyping,dolzhenko2019expansionhunter}.
@@ -51,12 +52,14 @@ A similar approach is to infer a sample-specific linear reference model from rea
 
 In many ways, small variants stand to benefit the least from pangenomic variant calling and genotyping.
 NGS read lengths are sufficient to span their entirety, and the associated variant calling algorithms are quite mature.
-However, reference bias in mapping can be a source of variant calling error. 
-Pangenome models provide an opportunity to mitigate these biases.
+However, reference bias in mapping can be a source of small variant calling error, and pangenome models provide an opportunity to mitigate these biases.
 
-
-In order to call variants, approaches relying on de Bruijn graphs have been suggested. Cortex  \cite{Iqbal_2012} constructs a colored de Bruijn graph which can include data of multiple samples and additional sources of sequence information, like a reference genome or known alleles. Variants are detected by identifying bubble structures in the graph and  genotyped based on the samples' coverage of allele specific kmers. The approach efficiently handles simultaneous analysis of multiple genomes and enables accurate variant detection in a reference-free manner.
-Bubbleparse \cite{Leggett_2013} extends the model implemented in Cortex and aims at improving SNP discovery. Candidate variants are produced by a bubble calling algorithm and a heuristic is presented which uses a classification and ranking system to controls the specificity of reported SNP calls \cite{Leggett_2013}.
+In order to call variants, approaches relying on de Bruijn graphs have been suggested.
+Cortex \cite{Iqbal_2012} constructs a colored de Bruijn graph which can include data of multiple samples and additional sources of sequence information, like a reference genome or known alleles. 
+Variants are detected by identifying bubble structures in the graph and  genotyped based on the samples' coverage of allele specific kmers.
+The approach efficiently handles simultaneous analysis of multiple genomes and enables accurate variant detection in a reference-free manner.
+Bubbleparse \cite{Leggett_2013} extends the model implemented in Cortex and aims at improving SNP discovery.
+Candidate variants are produced by a bubble calling algorithm and a heuristic is presented which uses a classification and ranking system to controls the specificity of reported SNP calls \cite{Leggett_2013}.
 
 One strategy for genotyping small variants consists of using graphs of known variation in local regions to realign reads that were mapped to a linear reference.
 This approach was pioneered in the 1000 Genomes Project by the GLIA software.
