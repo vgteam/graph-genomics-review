@@ -197,13 +197,14 @@ GAF is related to rGFA\footnote{\url{https://github.com/lh3/gfatools/blob/master
 
 
 \section{Indexing pangenomes} % was indexing genome graphs
-
 A \emph{text index} maps query strings to their occurrences in the indexed text.
 The occurrences are typically reported as a list of starting positions, from which one can easily determine the substrings matching the query.
+\todo{JAS: Is a bit more introduction needed explaining what an index can be used for?}
 
 Indexing the sequences encoded in a graph is more involved.
 The number of $k$~bp paths often grows exponentially in $k$, and the number of distinct $k$-mers encoded as path labels may also grow exponentially.
 Indexing or even enumerating all $k$-mers in the graph may be infeasible for reasonable values of $k$, and if the starting position of the occurrence reported by the index is in a complex region of the graph, there may be an exponential number of $k$~bp paths to investigate.
+\todo{JAS: The above paragraph could maybe be shorten a bit? Seems to state the same twice.}
 
 In practice, indexes for genome graphs must make trade-offs not encountered in text indexes.
 In order to limit the exponential growth, the index may only support relatively short query strings.
@@ -263,6 +264,7 @@ If the graph transformations used in GCSA construction are stopped after $i$ ste
 This de~Bruijn graph can be used to approximate the original graph.
 There are no false negatives, but matches longer than $2^{i}$ may be false positives.
 By using this approach, GCSA2 \cite{Siren_2017} attempts to support fast queries in arbitrary graphs.
+\todo{JAS: Is the above paragraph too complicated for non-expert readers.}
 
 GCSA2 faces the same issues with complex graphs as GCSA.
 In practice, most graphs must be simplified before they can be indexed.
