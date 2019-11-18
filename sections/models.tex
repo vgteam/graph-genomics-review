@@ -99,27 +99,27 @@ Seqwish\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019}
 
 \subsection{Positional systems in pangenomes}
 
-One of the major uses of conventional reference genomes is to provide a positional system for genomic analyses.
+One of the most important uses of conventional reference genomes is to provide a positional system for genomic analyses.
 Researchers report many genomic features and annotations relative to positions on a reference genomes: variants, genes, binding sites, epigenetic profiles, homologies, and more.
 Despite the increasing prominence of pangenomic methods, there have been relatively few inroads into this particular domain, even though the need for such research has been long recognized \cite{computational2016computational}. 
 
-Part of the reason is certainly that pangenomic coordinate systems cannot provide all of the positive properties that linear coordinate systems currently do.
-In linear references, genomic coordinates are easily interpretable, and they unambiguous indicate both the layout of the sequence and the distance between bases.
-Similar schemes cannot do the same on genome graphs \cite{Rand_2017}.
-We would note, however, that positional systems in linear references also have ambiguities of their own.
+Part of the reason is certainly that pangenomic coordinate systems cannot provide all of the customary advantages that linear coordinate systems currently do.
+In linear references, genomic coordinates are easily interpretable, and they unambiguously indicate both the layout of the sequence and the distance between bases.
+Similar schemes cannot do the same on genome graphs \cite{Rand_2017} or in collections of sequences.
+We note, however, that positional systems in linear references have ambiguities of their own.
 In particular, any sequence missing from the reference has no positional system at all, except by ad hoc use of the reference's system.
-Yet, for the time being, this particular ambiguity seems to be counterbalanced by the informatic ease of comparing different data.
+Yet, for the time being, this particular ambiguity seems to be counterbalanced by the relative informatic ease of comparing different data.
 
 Despite these challenges, some positional systems have been proposed.
-\citeauthor{Rand_2017} propose some coordinate systems tailored for the GRCh38 alternative contigs that provide some (but not all) of the positive properties associated with linear coordinates.
+\citeauthor{Rand_2017} \citep{Rand_2017} propose some coordinate systems tailored for the GRCh38 alternative contigs that provide some (but not all) of the positive properties associated with linear coordinates.
 They also discuss some options for expressing genomic intervals.
 Unfortunately, these options all rely either on significantly more verbose representations or on heuristics to reduce the representation.
 
 Another proposal focuses only on genomic variation \cite{paten2018superbubbles}.
-This type of annotation is unique in the context of pangenomics because, unlike other annotations, variation is expressed in the topology of the pangenomic model.
+This type of annotation is unique in the context of graphical pangenomics because, unlike other annotations, variation is expressed in the topology of the graph.
 Accordingly, these authors use the graph topology as a means to describe variation in a manner that is very general and free of reference bias.
 Essentially, the proposal is to use bubble-like structures in the graph, which had been recognized as indicative of variation for some time in genome assembly literature \cite{Iqbal_2012, Onodera_2013}.
-This solution is rigorous but also mathematically complex.
+This solution is rigorous but also quite mathematically complex.
 
 \subsection{Measuring model utility}
 
