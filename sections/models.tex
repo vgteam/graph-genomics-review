@@ -20,12 +20,6 @@ If this alignment is based on $k$-mers, then it implies a de Bruijn graph, and v
 If the alignments is a complete, gapped alignment, covering small and large variation, then the pangenome model can be thought of as a whole genome alignment.
 Methods for pangenome construction often use a mixture of approaches, but in most cases their aim is to emulate the full all-to-all alignment of the base sequences.
 
-%The great majority of pangenome construction methods generate or use graphical models
-% new organization
-% 1) bags of sequences -- pantools comes close (collection of genes), HUPAN is similar with its core/accessory breakdown
-% 2) DBG based models (TwoPaCo, LOGAN, McCortex, Bifrost, PRG, Novograph?)
-% 3) alignment and match based systems (cactus, REVEAL, vg msga, seqwish)
-
 \subsection{Collecting sequences}
 
 % oldschool pan-genomics
@@ -58,17 +52,24 @@ It has been key to the first wave of precision pangenomic methods.
 These methods typically use a specialized or restricted version of the ``reference plus variation'' pangenome graph.
 GenomeMapper \cite{Schneeberger_2009} first introduced the linear \emph{genome graph} a reference system for resequencing.
 To facilitate its alignment model (which has exponential costs in the number of traversed bubbles), it breaks the graph into blocks of a fixed reference length (typically 256bp).
+The journaled string tree \cite{Rahn_2014} supports time and space-efficient windowed traversal over a large collection of similar sequences represented as phased series of small variants relative to a reference.
 The Population Reference Graph (PRG) model \cite{dilthey2015improved}, which was validated primarily in the human MHC region, takes a more curated approach to graph construction.
 Over multiple phases it builds an acyclic genome graph from $k$-mer based alignment of long haplotypes, additional gene alleles, and finally small variants.
-To support its alignment (which has exponential costs in the number of bubbles) and indexing systems, gramtools \cite{Maciuca_2016} combines variants found within a given window length (~30bp) into a single locus.
+To support its alignment (which has exponential costs in the number of bubbles) and indexing systems, gramtools \cite{Maciuca_2016} combines variants found within a given window length ($\approx$30bp) into a single locus.
 PanVC \cite{Valenzuela_2018} employs a gapped MSA as its pangenomic model, inferring underlying recombinant haplotype that may then be used as a reference for alignment and variant calling with standard tools.
 Seven Bridges' Graph Genome Pipeline \cite{Rakocevic_2019} was vetted on a graph with common variation and indels, which is used primarily to improve read alignment, with alignments reported against the linear reference.
 The variation graph toolkit, specifically \textit{vg construct} \cite{Garrison_2018}, can be applied to transform VCF files and reference sequences into genome graphs, which can be rendered into GFA format and are subsequently used by other tools for alignment and genome annotation.
+Deciding which variation should be added to a graph is non-trivial, and has encouraged studies of graph utility \cite{Novak_2017a} and algorithms to determine which variation is helpful \cite{Pritt_2018}.
 
-We observe out that most of these methods (excluding GenomeMapper and vg) produce reference-relative alignments or recombinant haplotypes inferred by matching a read set against their pangenomic model.
-Thus, their models are not pangenome graph references in the same sense as linear genome references.
+%We observe out that most of these methods (excluding GenomeMapper and vg) produce reference-relative alignments or recombinant haplotypes inferred by matching a read set against their pangenomic model.
+%Thus, their models are not pangenome graph references in the same sense as linear genome references.
 
-\subsection{Colored and linked de Bruijn graphs}
+%\subsection{Measuring model utility}
+
+%Briefly discuss the ``Genome graphs'' paper, \cite{Novak_2017a}, findings in the vg paper \cite{Garrison_2018}, and 
+%FORGe \cite{Pritt_2018}.
+
+\subsection{Colored, linked, and compacted de Bruijn graphs}
 
 De Bruijn graph based assemblers can be given a pangenomic quality through the addition of ``colors'' to their nodes ($k$-mers) or unitigs (unbranching components in the graph).
 Each color provides a mapping between a specific biosample and a subset of the graph.
@@ -78,24 +79,53 @@ The feature which makes these methods efficient, the fixed $k$ on which they are
 They also struggle handle long noisy reads produce by third generation sequencing, and are lossy with respect to their input sequences.
 In response, several methods embed linking information within the DBG that can be used to reconstruct embedded haplotypes or reads \cite{Bolger_2017,Turner_2018}.
 
-\subsection{Whole genome alignments}
+A number of methods use compacted DBG\footnote{Compacted here means that chains of $k$-mers which contain no internal furcations are merged into a single node in the graph represenation.} construction to elaborate pangenome graphs.
+SplitMEM \cite{Marcus_2014} uses a suffix tree with suffix skips to derive the set of maximal exact matches $\geq k$ between a set of genomes.
+Improving on this result in both time and space efficiency, \cite{Baier_2015} demonstrated two similar pangenome graph induction algorithms based on succinct representations of the suffix tree and the Burrows--Wheeler transform (BWT) \cite{Burrows_1994}.
+TwoPaCo \cite{Minkin_2016} applies a probabilistic data structure to narrow the set of candidate verticies in the compacted de Bruijn graph of a set of genomes, supporting the efficient generation of a pangenome graph from larger genomes than previous methods.
+Thus far, no implementations of methods like these which record each genome in the graph have matched the scalability of ``colored'' DBGs.
 
-% whole genome alignments
-Multiple sequence alignments (predecessor) POA and PO-POA \cite{Lee_2002,Grasso_2004} % only small graphs
+\subsection{Alignment-based sequence graphs}
 
-Alignment based pangenome models.
+The sequence graph model of multiple alignment has long served as a mechanism to reduce the complexity of many to many relationships required to develop parsimonious models for collections of related genomic sequences.
+As observed in its first description \cite{hein1989new}, by compressing ancestrally equivalent sequences into single entities in the graph, this model can accelerate alignment and other inference methods based on a pangenomic collection of sequences.
+This model was later used as the basis for the partial order alignment (POA) sequence to graph alignment and graph to graph aligner PO-POA \cite{Lee_2002,Grasso_2004}.
+It was generalized to represent \emph{whole genome alignments} by allowing cyclic and inverting structures in Cactus \cite{Paten_2011}, yielding superb results in evalution during the Alignathon competition \cite{earl2014alignathon}.
+The multiple sequence/graph aligner (vg msga) \cite{Novak_2017a,Garrison_2018,Garrison_2019} generalizes the progressive alignment model of POA to work on generic variation graphs, including cycles and inversions.
+Although it requires linear time in the number of sequences, it suffers from high memory and runtime for large sequences due to the expense of vg's indexing and alignment algorithms.
+It has found use where the number of sequences is small, or sequences are short, such as in viral pangenomic studies \cite{Baaijens2019-ng}
 
-% hein1989new, ?
-Cactus \cite{Paten_2011} as demonstrated in alignathon \cite{earl2014alignathon}
-jst \cite{Rahn_2014}
-SplitMEM \cite{Marcus_2014}
-cdbg \cite{Baier_2015}
-REVEAL \cite{linthorst2015scalable}
-TwoPaCo \cite{Minkin_2016}
-vg msga \cite{Novak_2017a,Garrison_2018,Garrison_2019}
-seq-seq-pan \cite{Jandrasits_2018}
-Novograph \cite{Biederstedt2018}
-Seqwish\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019}
+However, not all researchers have focused on generic graphs, with several arguing that complex structures are not relevant to many kinds of analyses, or computationally intractable to consider in a primary model of whole genome alignment.
+The recursive hierarchical alignment model in REVEAL \cite{linthorst2015scalable} finds a set of maximal exact unique matches of decreasing size between a pair of sequences, and uses these and the flanking un-matched sequences to build a sequence graph.
+By applying the same alignment algorithm to the sequences in the nodes of the graph, REVEAL supports the alignment of sequences to graphs, or graphs to graphs, supporting the construction of pangenome graphs for human sized genomes.
+Its pangenome model is linear, but supports the post-hoc detection of inversions by aligning sequences in bubbles in the alignment graph.
+The linear alignment-based pangenome model is further explored by NovoGraph \cite{Biederstedt2018}, and seq-seq-pan \cite{Jandrasits_2018}.
+NovoGraph follows a reference-guided approach, breaking a set of genomes into syntenic alignable blocks and deriving a multiple sequence alignment for each, and yielding a VCF file as its output.
+Similarly, seq-seq-pan employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the its input geomes.
+
+Not all methods generate a pangenome model that relates all of their input sequences.
+minigraph\footnote{\url{https://github.com/lh3/minigraph}} extends the minimap2 \cite{Li_2018} alignment chaining model to work on acyclic, non-inverting sequence graphs.
+It can be used to construct a graph based on an initial linear reference by progressively augmenting the graph with new sequences that are not covered by minimizer chains matching existing components of the graph.
+Althoug it does not embed the sequences (other than the first reference) which it was built from, the resulting graph should include representative versions of each genomic locus in the collection.
+This may make it suitable as a technique to develop a single hierarchical coordinate system for a pangenome, or to extract a set of representative sequences from a collection of assembled genomes.
+
+Unlike most other pangenome graph construction methods, seqwish\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019} is a simplistic graph inducer.
+It generates the variation graph implied by a collection of sequences and alignments between them, using disk-backed implicit interval trees\footnote{See \url{https://github.com/lh3/cgranges} and \url{https://github.com/mlin/iitii}} to scale to large pangenome sizes.
+The resulting graph depends only on the input alignment set and sequences, allowing external configuration of the graph via changes in the way the alignments are generated or filtered.
+
+%It maps a set of sequences and alignments between them to the variation graph implied by the 
+%is a variation graph induction algorithm.
+%It 
+
+
+% syntenic by design
+% very similar to novograph, linear, based on whole genome alignments, generates locally collinear blocks
+% reference guided, linear alignments, MSA based, makes a linear variation graph, outputs VCF
+
+%Several unpublished methods extend previous approaches to
+%Most alignment based pangenome graph construction methods present a monolithic 
+
+
 
 
 \subsection{Positional systems in pangenomes}
@@ -121,10 +151,6 @@ This type of annotation is unique in the context of graphical pangenomics becaus
 Accordingly, these authors use the graph topology as a means to describe variation in a manner that is very general and free of reference bias.
 Essentially, the proposal is to use bubble-like structures in the graph, which had been recognized as indicative of variation for some time in genome assembly literature \cite{Iqbal_2012, Onodera_2013}.
 This solution is rigorous but also quite mathematically complex.
-
-\subsection{Measuring model utility}
-
-Briefly discuss the ``Genome graphs'' paper, \cite{Novak_2017a}, findings in the vg paper \cite{Garrison_2018}, and FORGe \cite{Pritt_2018}.
 
 
 \begin{comment}
@@ -239,7 +265,7 @@ If the graph transformations used in GCSA construction are stopped after $i$ ste
 This de~Bruijn graph can be used to approximate the original graph.
 There are no false negatives, but matches longer than $2^{i}$ may be false positives.
 By using this approach, GCSA2 \cite{Siren_2017} attempts to support fast queries in arbitrary graphs.
-\todo{JAS: Is the above paragraph too complicated for non-expert readers.}
+\todo{JAS: Is the above paragraph too complicated for non-expert readers. SH: I had to read it 2 times to get it. Maybe just say that "If GCSA construction is stopped within / at a  transformation step, the resulting graph is equivalent to a de~Bruijn graph". Can we be so "inexact"?}
 
 GCSA2 faces the same issues with complex graphs as GCSA.
 In practice, most graphs must be simplified before they can be indexed.
