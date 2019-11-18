@@ -48,6 +48,7 @@ Standard alignment and variant calling methods typically work without issue on a
 
 Rather than collecting unique sequences that represent a collection of genomes, we can consider small variants between the collection and a reference genome.
 Such a model directly implies a directed acyclic graph, ordered along the reference genome, with bubbles at the sites of variation.
+\todo[inline]{SH: We did not introduce the concept of bubbles. Do we assume people know that?}
 It has been key to the first wave of precision pangenomic methods.
 %These ``reference and variant'' models cannot compactly represent complex structural variation (such as inversions and copy number amplifications).
 %But this has been largely irrelevant to the field.
@@ -164,7 +165,7 @@ To encode graphical pangenomes, the community frequently employs the GFA\footnot
 GFA was originally designed as an interchange format for assembly methods, but the equivalence between graphical pangenomes and the data structures used by assembly methods allowed it to be repurposed as a pangenomic interchange model.
 
 GFA provides no mechanism to express read alignments.
-The vg toolkit has developed the GAM format, which generalizes the data model of the SAM/BAM format to work on graphical reference systems, and this has been taken up by a number of other alignment tools.
+The vg toolkit has developed the GAM format, which generalizes the data model of the SAM/BAM \cite{Li_2009} format to work on graphical reference systems, and this has been taken up by a number of other alignment tools.
 However, it lacks a simple text-based equivalent.
 The recently-proposed GAF\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md#the-graph-alignment-format-gaf}} format (which generalizes PAF\footnote{\url{https://github.com/lh3/miniasm/blob/master/PAF.md}} to work on graphs) could serve this purpose.
 GAF is related to rGFA\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md}}, which is a proposed restricted specialization of GFA for reference graphs.
