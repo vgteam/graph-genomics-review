@@ -74,7 +74,7 @@ In precision medicine, we seek accurate inference of a given patient genome.
 Improving our prior model for what sequences we expect to see will reduce the time and cost required to infer a patient genome.
 This does not only help us when we are genotyping known variants.
 If most of the sequence and variation in any given individual is also found in the reference pangenome which we use, then we are left with a smaller set of sequences that do not map to the reference to consider when we attempt to infer novel variation.
-\todo{JAS: This last paragraph feels a bit misplaced. Maybe move to discussion or delete it to save space?}
+\todo{JAS: This last paragraph feels a bit misplaced. Maybe move the stuff about precision medicine to discussion?}
 
 \subsection{Pangenomic models}
 
@@ -102,6 +102,7 @@ dBGs have the advantage of representing the graph structure implicitly.
 A dBG contains an edge for each pair of $k$-mers where the last $k-1$ bp of the first $k$-mer matches the first $k-1$ bp of the second.
 They greatly simplify the process of pangenome construction, which can be built from any kind of input data, and typically require only the specification of a length $k$ and an abundance threshold required to retain a particular $k$-mer.
 However, they are lossy models that cannot reproduce their input, within which all repeated sequences shorter than $k$ are likely to collapse.
+\todo{JAS: Could the dBG paragraph be simplified and shorten? It seems a bit too detailed for an introduction.}
 
 %In contrast to $k$-mer based models, which represent links implicitly,
 \emph{Genome graphs} explicitly extend collections of linear sequences of arbitrary length with links that describe possible connections between sequences \cite{Paten_2017}.
