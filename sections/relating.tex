@@ -178,7 +178,7 @@ GraphAligner is notable in that it can also align to generic overlap graphs.
 
 The majority of these tools emphasize mapping short-read \emph{next-generation sequencing (NGS)} data. 
 %Most likely, the motivation for doing so is the same as why NGS remains the standard for conventional resequencing experiments; the price point currently favors it. 
-In this sense, pangenomic graph mappers essentially represent an incremental technical improvement over previous pipelines, albeit a very important one. 
+%In this sense, pangenomic graph mappers essentially represent an incremental technical improvement over previous pipelines, albeit a very important one. 
 To our knowledge, GraphAligner and V-MAP are the only graph mapping tools that explicitly targets high-error long read sequencing data \cite{Rautiainen_2019b, Vaddadi_2019}, although others are in development \cite{Li_2019}.
 V-MAP is also demonstrated on NGS reads, but GraphAligner's seeding strategy limits it to of long reads
 
@@ -209,8 +209,8 @@ BGREAT addresses the combinatorial complexity of the extension step by greedily 
 This is fast, but provides no optimality guarantees, and their algorithm does not support indels \cite{Limasset_2016}.
 Unfortunately, neither deBGA nor BGREAT compare their performance to any graph-based tools, and the somewhat unnatural context for the linear mappers they compare to makes their evaluations hard to interpret.
 BrownieAligner also exhaustively explores paths out from a seed, but it uses a branch-and-bound algorithm to prune the search space along the way.
-It also has a unique trick of choosing paths partially based on a Markov model trained on the reads.
-This is essentially a limited form of read-backed phasing.
+%It also has a unique trick of choosing paths partially based on a Markov model trained on the reads.
+%This is essentially a limited form of read-backed phasing.
 According to the authors' analysis, BrownieAligner is more accurate than deBGA and BGREAT, but BGREAT tends to be more memory efficient, and deBGA tends to be faster \cite{Heydari_2018}.
 Finally, GraphAligner is the only de Bruijn graph mapper to take advantage of recent research into graph alignment algorithms.
 It uses a banded alignment algorithm to achieve impressive speed aligning long reads to genome graphs, requiring around twice the runtime of minimap2 \cite{Rautiainen_2019b, Li_2018}.
@@ -219,8 +219,8 @@ While few of the de Bruijn graph mappers employ graph-based alignment algorithms
 One exception is GenomeMapper, which aligns to all paths out from a seed. 
 However, GenomeMapper also seems to be unmaintained since 2009, and it has heuristics that are better suited to earlier NGS technologies \cite{Schneeberger_2009}. 
 Seven Bridges' mapper, VG, and V-MAP all employ some version of partial order alignment \cite{Rakocevic_2019, Garrison_2019, Vaddadi_2019}. 
-Seven Bridges also tries to find a near-match using a potentially exponential depth-first search algorithm before resorting to costly alignment algorithms \cite{Rakocevic_2019}. 
-The HISAT2 alignment algorithm is a complex set of heuristics that lean heavily on the exact match seeds from its optimized index. 
+Seven Bridges also tries to find a near-match using a potentially exponential depth-first search algorithm before resorting to alignment algorithms that are more expensive when variation is sparse \cite{Rakocevic_2019}. 
+The HISAT2 alignment algorithm is a complex set of heuristics that lean heavily on the exact match queries from its optimized index. 
 This makes it exceptionally fast, although it also can hurt alignment quality around indels. 
 In general, VG compares favorably to other tools in terms of accuracy on NGS data. However, most comparisons point out that it is quite demanding on computer memory and often slower than the alternatives \cite{Kim_2019, Vaddadi_2019}. 
 V-MAP uses distance-based heuristics on acyclic graphs to efficiently cluster seeds. 
@@ -479,35 +479,44 @@ GraphAligner & Variation graph or overlap graph & Long read & Fast \\ \hline
 \subsection{Variation-aware transcriptomic mapping}
 
 Attempts to use pangenomic models to analyze transcriptomic sequencing data have generally received less attention than similar methods with whole genome sequencing data.
-However, certain downstream applications also benefit from incorporating information on genomic variation in transcriptomics.
+However, certain downstream applications in transcriptomics also benefit from incorporating information on genomic variation.
 Due to presence of splicing, mapping transcriptomic reads typically requires specialized algorithms.
-Thus, variation-aware mappers for transcript reads have largely been developed in parallel to mappers for genomic reads, although there is some overlap.
+Thus, variation-aware mappers for transcriptomic reads have largely been developed in parallel to mappers for genomic reads, although graphical methods have recently created some room for overlap.
 
-%Proper variant-aware mapping methods, on the other hand, do not require that the variants are phased beforehand.
-GSNAP was the first variant- and splicing-aware mapping method developed for RNA-seq data \cite{Wu2010-hv}. %\todo{JAS: We might want to add GSNAP introduction to the model section since it is general and also works for WGS}.
-It uses a $k$-mer-based approach where both the genome and a set of SNVs are indexed using hash tables.
-The current version uses a suffix array in addition to the hash table.
-GSNAP is still competitive contemporary mapping methods with regards to mapping accuracy, but it is generally much slower.
-Although not demonstrated in the initial publication, GSNAP does reduce reference bias around SNVs \cite{Castel2015-ef}.
-
-Another variant-aware method, ASElux, uses all heterozygous exonic SNVs in an individual to create a suffix array index of the alleles and their flanking sequences \cite{Miao2018-ps}. 
-This index is used to filter read pairs that does not overlap any SNVs with up to 2 mismatches. 
-The much smaller set of read pairs that pass this filter are then aligned to a different suffix array index consisting of exonic and intronic regions and pairs that align unique to a single gene are used for allele counting. 
-
+Several methods have been published that specifically focus on reducing mapping bias around SNVs for RNA-seq data. 
+GSNAP was the first such method \cite{Wu2010-hv}.
+It seeds mappings with a hash table of $k$-mers from both the genome and a set of SNVs.
+The current version uses a suffix array as well. 
+ASElux, uses an individual's heterozygous exonic SNVs to create a suffix array index of the alleles and their flanking sequences \cite{Miao2018-ps}, which is used to filter reads that do not closely match some allele.
+More expensive alignment algorithms are restricted to this smaller read set, which is all that is need for some transcriptomic applications.
 Similarly to ASElux, iMapSplice creates an index of SNV alleles and their flanking sequences \cite{Liu_2018}.
 The sequences are indexed using enhanced suffix arrays and reads are mapped to both this index and the reference genome simultaneously.
 The authors demonstrated that iMapSplice achieves higher mapping accuracy and lower reference bias compared to both a linear mapping method and HISAT2.
+GSNAP is still competitive contemporary mapping methods with regards to mapping accuracy, but it is generally much slower \cite{Castel2015-ef}.
+%Proper variant-aware mapping methods, on the other hand, do not require that the variants are phased beforehand.
+%GSNAP was the first variant- and splicing-aware mapping method developed for RNA-seq data \cite{Wu2010-hv}. %\todo{JAS: We might want to add GSNAP introduction to the model section since it is general and also works for WGS}.
+%It uses a $k$-mer-based approach where both the genome and a set of SNVs are indexed using hash tables.
+%The current version uses a suffix array in addition to the hash table.
+%GSNAP is still competitive contemporary mapping methods with regards to mapping accuracy, but it is generally much slower.
+%Although not demonstrated in the initial publication, GSNAP does reduce reference bias around SNVs \cite{Castel2015-ef}.
 
-GSNAP, ASElux and iMapSplice only support SNVs and are therefore not able to reduce reference bias around indels.
-HISAT2 was the first explicitly genome graph-based, non-SNV-variant-aware method for splicing-aware mapping of RNA-seq data \cite{Kim_2019}. 
-This method can use SNVs, deletions of any length, and insertions up to 20~bp.
-Its mapping algorithm for transcriptomic sequencing is the same as for genomic DNA (See above).
-In their benchmark for iMapSplice, \citeauthor{Liu_2018} showed a reduction in reference bias around SNVs for an early version of HISAT2. 
+%Another variant-aware method, ASElux, uses all heterozygous exonic SNVs in an individual to create a suffix array index of the alleles and their flanking sequences \cite{Miao2018-ps}. 
+%This index is used to filter read pairs that does not overlap any SNVs with up to 2 mismatches. 
+%The much smaller set of read pairs that pass this filter are then aligned to a different suffix array index consisting of exonic and intronic regions and pairs that align unique to a single gene are used for allele counting. 
 
-Recently, the ability to create spliced variation graphs was added to VG \cite{Garrison_2018}. 
-In these variation graphs, known splice junctions are added as edges, similar to the addition of a deletion event, while transcripts are embedded as paths through the graph. 
-This allows for existing algorithms in VG to also be used for variant-aware mapping of RNA-seq data. 
-VG supports any type of variation, but its splicing-awareness is limited to only known splice junctions, and it does not support generating supplementary alignments.
+%Similarly to ASElux, iMapSplice creates an index of SNV alleles and their flanking sequences \cite{Liu_2018}.
+%The sequences are indexed using enhanced suffix arrays and reads are mapped to both this index and the reference genome simultaneously.
+%The authors demonstrated that iMapSplice achieves higher mapping accuracy and lower reference bias compared to both a linear mapping method and HISAT2.
+
+GSNAP, ASElux and iMapSplice only support SNVs and are therefore unable to reduce reference bias around indels.
+In contrast, graph-based methods can easily model indels.
+HISAT2 can map RNA-seq data in addition to genomic DNA \cite{Kim_2019}.
+It is based on the RNA mapper HISAT \cite{Kim_2015}, and it retains the capacity for spliced alignment.
+HISAT2's mapping algorithm for transcriptomic sequencing is the same as for genomic DNA (See above).
+Others have documented a reduction in mapping bias around SNVs for an early version of HISAT2 \cite{Liu_2018}. 
+The ability to create spliced variation graphs has also been added to VG \cite{Garrison_2018}. 
+In these variation graphs, known splice junctions are added as edges, similar to the addition of a deletion event.
+VG supports any type of variation, but its splicing-awareness is limited to only known splice junctions.
 Thus, reads that span a novel splice junction will only map partially.
 
 %As with whole genome DNA sequencing data, variation-aware analysis of RNA-seq data is important for getting accurate results in highly polymorphic regions, such as the HLA genes in the human major histocompatibility complex region. 
