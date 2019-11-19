@@ -70,54 +70,51 @@ In particular, we might gain greater insight into the extent, placement and sign
 
 A \emph{pangenomic model} is a data structure that represents the genomic sequences of a population, a species, a clade, or even a metagenome \cite{computational2016computational}.
 The model serves as a central coordinating entity to describe the collection of sequences and genomes in the pangenome.
-It may be indexed to allow for fast access to attributes of interest, such as to enable the matching of new sequences into it, or the extraction of genomes that that it was built from.
-
+%It may be indexed to allow for fast access to attributes of interest, such as to enable the matching of new sequences into it, or the extraction of genomes that that it was built from.
 Pangenomic models may take many forms, including collections of unaligned sequences or learned sequence models, but in this review we will focus mostly on graphical pangenomic models.
 These support a discrete and precise representation of sequences and variation, and are a natural generalization of reference genome systems that have seen wide use in genomics.
-%Pangenomic models have many shapes, but in this review we will focus
 
-%These models can take linear forms.
-%A linear reference genome in FASTA format may be augmented with smaller variation represented in auxiliary VCF files to build a pangenomic model.
-%A similar pangenomic model is the multiple sequence alignment, which can be built for any syntenic region of a collection of genomes.
-%However, both approaches have difficulty when representing complex and structural variation, such as copy number changes or translocations, and they must be augmented with \textit{ad hoc} information to do so.
-%\todo{JME: I think we can cut the discussion of file formats here since it's covered in the next subsection}
+Our starting point is a sequence graph \cite{hein1989new} whose nodes are labeled\footnote{Such a graph can also be edge-labeled, with DNA sequences attached to its edges, but this is less common. For simplicity we will focus on the node-labeled model in this review.} with DNA sequences and whose edges represent linkages between successive nodes that are found in the set of sequences that the graph represents.
+Practically, a sequence graph serves to compress many redundant input sequences into a smaller data structure that is still representative of the full set.
+The model is thus useful for representing multiple sequence alignments \cite{hein1989new,Lee_2002}.
+In assembly, it is used to compress the full information in a set of sequencing reads (as in the \emph{string graph}) \cite{Myers_2005}, or fixed-length $k$-mers (as in the \emph{de Bruijn graph} / dBG) \cite{Pevzner_2001}.
 
-Graphical pangenome representations naturally handle all kinds of variation, both small and large.
-These models represent the pangenome with a graph where nodes are labeled with DNA sequences and edges represent linkages between successive nodes that occur in some set of the genomes.
-The most basic sequence graph is acyclic, directed, and does not allow edges that go between the forward and reverse complement of the graph.
-However, these restrictions must be relaxed to represent inversions and compact representation of copy number variations.
-A generic sequence graph thus allows us to encode genomes and any kind of variation that might occur between them.
-Assembly graphs represent the full information in a set of sequence reads \cite{Myers_2005}.
-The \emph{de Bruijn graph} (dBG) \cite{Pevzner_2001}of the $k$-mers (sequences of fixed length $k$) of a collection of genomes is a specialized example of such a graph that is frequently applied to assembly and pangenomic applications.
+\emph{Genome graphs} are sequence graphs used to represent whole genome relationships \cite{Paten_2017}.
+Walks through these graphs represent recombinations of the genomes included in the model.
+Regions of the graph where multiple paths connect a common head and tail node, often referred to as \emph{bubbles} \cite{paten2018superbubbles}, represent variation.
+\emph{Variation graphs} further structure this model by embedding the linear sequences of the pangenome as \emph{paths} \cite{Garrison_2018}.
+Paths provide a stable coordinate system that is unaffected by the manner in which the graph was built, and they make the model lossless and equivalent to the sequences from which it was built.
+
+%, and it makes the model lossless with respect to its input.
+%, or walks through the sequences of the graph \cite{Garrison_2018}, making them lossless with respect to their input.
+%We can maintain positional systems in the variation graphs by 
+
+%Doing so 
+%Sequence graphs are difficult to use as reference systems.
+%Walks through these graphs represent a collection of sequences, but in many cases, the vast majority of these represent recombinants that are unlike any of the input genomes.
+%Regions of the graph where multiple paths connect a common head and tail node, often referred to as \emph{bubbles} \cite{paten2018superbubbles}, represent variation, but the specific structure of bubbles in the graph is dependent on the way that the graph is constructed.
 
 
-%\footnote{It is the authors' opinion that ``de Bruijn'' should be written with a lower-case ``d'' when not starting a sentence, which seems to be the prevailing but not universal othrography in the literature.}
-%This graph may be annotated, or colored, with information of the presence or absence of particular sequences in different individuals or biosamples, forming a \emph{colored} dBG.
-%dBGs have the advantage of representing the graph structure implicitly.
-%A dBG contains an edge for each pair of $k$-mers where the last $k-1$ bp of the first $k$-mer matches the first $k-1$ bp of the second.
-%They greatly simplify the process of pangenome construction, which can be built from any kind of input data, and typically require only the specification of a length $k$ and an abundance threshold required to retain a particular $k$-mer.
-%However, they are lossy models that cannot reproduce their input, within which all repeated sequences shorter than $k$ are likely to collapse.
-%\todo{JAS: Could the dBG paragraph be simplified and shorten? It seems a bit too detailed for an introduction.}
+%To address such limitations and make genome graphs,
 
-%In contrast to $k$-mer based models, which represent links implicitly,
-\emph{Genome graphs} explicitly extend collections of linear sequences of arbitrary length with links that describe possible connections between sequences \cite{Paten_2017}.
-%These graphs can be seen as a kind of language model, in which each genome or sequence in the pangenome is a valid expression in the graph's language.
-%\todo{JAS: It took me couple of times to understand this sentence. Could the same thing be said without the language analogy?}
-%\todo{JME: I think most casual readers will be unfamiliar with automata and languages (in the theoretical CS sense) -- can we cut this sentence?}
-% EG: I think it's fine, they can handle some mystery
-The genomes that a genome graph was built from can be found as walks through the graph.
-But, because they lack information correlating these walks, simple genome graphs also include many sequences which are highly unlikely combinations of actual genomes.
-To provide further structure to genome graphs, \emph{variation graphs} explicitly embed the observed linear sequences of the pangenome in the graph as \emph{paths}, or walks through the sequences of the graph \cite{Garrison_2018}.
-Variation graphs are thus fully lossless pangenomic models that represent both a collection of sequences and their mutual alignment.
-They are capable of representing all other kinds of pangenomic models, and provide stable coordinate systems based on the genomic sequences embedded within them.
-\todo{JAS: Figure 1 is not referenced in the text.}
 
-\begin{figure}[h]
-    \includegraphics[width=1.0\textwidth]{figures/fig1.pdf}
-    \caption{\label{fig:models} Genomic versus pangenomic sequence analysis patterns.
+%Variation graphs are thus fully lossless pangenomic models that represent both a collection of sequences and their mutual alignment.
+%They are capable of representing all other kinds of pangenomic models, and provide stable coordinate systems based on the genomic sequences embedded within them.
+%\todo{JAS: Figure 1 is not referenced in the text.}
+
+\begin{figure}[h!]
+    \includegraphics[width=0.8\textwidth]{figures/gen_vs_pang.pdf}
+    \caption{\label{fig:genvpan} Genomic versus pangenomic sequence analysis patterns.
       Top left: In reference based genomic analyses, all genomes ($a \ldots f$) are compared to each other via their relationship to the reference genome $R$.
       Top right: In a pangenomic setting, we attempt to model direct relationships between all the genomes in our analysis, of which a particular reference $R$ is chosen arbitrarily.
       Bottom left: When extending our analysis with a new genome, $\Delta$, we add it to the genomic model by comparing it to reference $R$.
       Bottom right: In contrast, adding a new genome to a pangenomic analysis compares it directly with all other genomes in the model.
+    }
+\end{figure}
+
+\begin{figure}[h!]
+    \includegraphics[width=0.5\textwidth]{figures/data_structures.pdf}
+    \caption{\label{fig:models} Pangenomic models.
+      A collection of sequences representing a pangenome, their alignment, a acyclic sequence graph representing the linear alignment, and a generic sequence grpah including an inversion.
     }
 \end{figure}
