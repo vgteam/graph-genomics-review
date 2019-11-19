@@ -114,27 +114,26 @@ It remains an open problem to interactively visualize a comprehensive human pang
 
 \subsection{Graph alignment algorithms}
 
-As noted above, genomic sequence data often can only be interpreted in the context of other sequences. 
-For this reason, sequence comparison is at the core of many genomic analyses, and sequence alignment is the essential method for doing so. 
-However, classic alignment algorithms like Smith-Waterman \cite{Smith_1981} do not directly apply to genome graphs, which comprise the majority of pangenomic models. 
-Accordingly, the increasing prominence of genome graph methods has been enabled by fundamental algorithmic research in graph alignment, and it has also spurred further research.
+%As noted above, genomic sequence data often can only be interpreted in the context of other sequences. 
+Sequence comparison is at the core of many genomic analyses, and sequence alignment is the essential method for doing so. 
+However, classic algorithms like Smith-Waterman \cite{Smith_1981} do not directly apply to genome graphs. 
+The increasing prominence of genome graph methods has been predicated on fundamental algorithmic research in graph alignment, and it has also spurred further research.
 
 The trend in the graph alignment research is toward greater generality and faster run time. 
-The generality comes in two main forms. 
-First, algorithms apply to increasingly general classes of graphs. 
+First, the algorithms apply to increasingly general classes of graphs. 
 The first widely-used algorithm for aligning biological sequences to graphs, partial order alignment, applied only to graphs without cycles \cite{Lee_2002, Grasso_2004}. 
 More recent research has described algorithms that align to graphs with any shape \cite{Antipov_2015, Rautiainen_2017, Jain_2019a}. 
-Second, graph alignment researchers have developed algorithms that use increasingly general scoring functions. 
-Some earlier algorithms require restricted scoring functions to achieve efficiency \cite{Rautiainen_2017}, but recent contributions have used the less restricted scoring functions that are required to produce biologically meaningful alignments in many contexts \cite{Jain_2019a}.
+Second, the algorithms use increasingly general scoring functions. 
+Some earlier algorithms require restricted scoring functions to achieve efficiency \cite{Rautiainen_2017}, but recent contributions have used less restricted functions that produce more biologically meaningful alignments in some contexts \cite{Jain_2019a}.
 
-Graph alignment research also has improved the algorithms' run time. 
-Partial order alignment required acyclic graphs in order to run at comparable speed to linear sequence alignment algorithms \cite{Lee_2002}. 
+Graph alignment algorithms have also become faster.
+Partial order alignment had equivalent asymptotic run time to linear alignment but required acyclic graphs \cite{Lee_2002}. 
 Later optimizations simply ran slower on general graphs \cite{Kavya_2019}.
-It has now been shown that graph alignment can run at the same asymptotic speed as linear alignment \cite{Jain_2019a}.
-Further, there is a strong argument that this speed is essentially optimal \cite{Equi_2019}. 
+Algorithms are now known with equivalent run time even on general graphs \cite{Jain_2019a}.
+%Further, there is a strong argument that this speed is essentially optimal \cite{Equi_2019}. 
 In fact, these results were already known in other fields.
-Many of the recent advances in graph alignment came from rediscovering analogs to the graph alignment problem in the related areas of regular expressions and hypertext \cite{Myers_1989, Amir_1997, Navarro_2000}. % hein1989new, ?
-In addition to these theoretical results, researchers have also developed modified algorithms that run quickly the practical context of real-world computer architectures \cite{Suzuki_2018, Rautiainen_2019, Jain_2019b}.
+Many recent advances came from rediscovering analogs to the graph alignment problem in the related areas of regular expressions and hypertext \cite{Myers_1989, Amir_1997, Navarro_2000}. % hein1989new, ?
+In addition, researchers have developed modified algorithms that run quickly in the practical context of real-world computer architectures \cite{Suzuki_2018, Rautiainen_2019, Jain_2019b}.
 
 %From a practical standpoint, the primary benefit of the research in alignment algorithms has been in aiding the design of read mapping tools. 
 %Graph alignment algorithms are a central component of the graph mapping tools described below.
