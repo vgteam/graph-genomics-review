@@ -1,24 +1,25 @@
 \section{Building a pangenome}
 
-A collection of genomic sequences, either raw reads or assembled genomes, can itself provide a pangenomic model.
-But this model lacks a mechanism to define the relationships between the sequences.
-It cannot assert anything more than the presence of a given sequence in the pangenome.
-In practice, we need to know when a particular sequence is identical to another by descent from a common ancestor.
-This information suggests phylogenetic structures that result from evolutionary processes, which can in turn help support our understanding of 
+%A collection of genomic sequences, either raw reads or assembled genomes, can itself provide a pangenomic model.
+%But this model lacks a mechanism to define the relationships between the sequences.
+%It cannot assert anything more than the presence of a given sequence in the pangenome.
+%In practice, we need to know when a particular sequence is identical to another by descent from a common ancestor.
+%This information suggests phylogenetic structures that result from evolutionary processes, which can in turn help support our understanding of 
 
-Furthermore, the identity of sequences by descent provides a basis for the compact representation of pangenomes.
-Our model need not grow linearly with the number of genomes that it includes.
-Rather, we should obtain improved compression of individual genomes in the context of a pangenome.
-Shared segments of DNA only need to be represented once.
-If most DNA is shared, then this makes the unique sequences of the pangenome much smaller than the total sequences in the genomes that we use to build it, providing compression that is both practical and helpful for analyses.
+%Furthermore, the identity of sequences by descent provides a basis for the compact representation of pangenomes.
+%Our model need not grow linearly with the number of genomes that it includes.
+%Rather, we should obtain improved compression of individual genomes in the context of a pangenome.
+%Shared segments of DNA only need to be represented once.
+%If most DNA is shared, then this makes the unique sequences of the pangenome much smaller than the total sequences in the genomes that we use to build it, providing compression that is both practical and helpful for analyses.
 
 Methods to construct pangenomic data structures mirror the classes of pangenomic models.
 A pangenome may simply be a collection of sequences, in which case construction is similar to the genome or metagenome assembly problem.
-Or, it may include information about the alignment of sequences.
+Or, it may include information about the alignment of sequences or genomes within it.
 This alignment could be compressed into a set of variants found against a set of reference sequences.
-If this alignment is based on $k$-mers, then it implies a de Bruijn graph, and various methods exploit this to implement efficient or scalable pangenome model construction.
+If this alignment is based on $k$-mers, then it implies a de Bruijn graph. %, and various methods exploit this to implement efficient or scalable pangenome model construction.
 If the alignments is a complete, gapped alignment, covering small and large variation, then the pangenome model can be thought of as a whole genome alignment.
-Methods for pangenome construction often use a mixture of approaches, but in most cases their aim is to emulate the full all-to-all alignment of the base sequences.
+
+%Methods for pangenome construction often use a mixture of approaches, but in most cases their aim is to emulate the full all-to-all alignment of the base sequences.
 
 \subsection{Collecting sequences}
 
@@ -42,7 +43,6 @@ Standard alignment and variant calling methods typically work without issue on a
 
 Rather than collecting unique sequences that represent a collection of genomes, we can consider small variants between the collection and a reference genome.
 Such a model directly implies a directed acyclic graph, ordered along the reference genome, with bubbles at the sites of variation.
-\todo[inline]{SH: We did not introduce the concept of bubbles. Do we assume people know that?}
 It has been key to the first wave of precision pangenomic methods.
 %These ``reference and variant'' models cannot compactly represent complex structural variation (such as inversions and copy number amplifications).
 %But this has been largely irrelevant to the field.
