@@ -116,27 +116,24 @@ The resulting graph depends only on the input alignment set and sequences, allow
 
 \subsection{Positional systems in pangenomes}
 
-One of the most important uses of conventional reference genomes is to provide a positional system for genomic analyses.
-Researchers report many genomic features and annotations relative to positions on a reference genomes: variants, genes, binding sites, epigenetic profiles, homologies, and more.
-Despite the increasing prominence of pangenomic methods, there have been relatively few inroads into this particular domain, even though the need for such research has been long recognized \cite{computational2016computational}. 
+%One of the most important uses of conventional reference genomes is to provide a positional system for genomic analyses.
+%Researchers report many genomic features and annotations relative to positions on a reference genomes: variants, genes, binding sites, epigenetic profiles, homologies, and more.
+Reference genome sequences provide a coordinating system to catalog and exchange information about genes, protein binding sites, epigenetic profiles, variants, and homologies.
+In linear references, genomic coordinates are easily interpretable, and they unambiguously indicate both the layout of the sequence and the distance between bases, but this is not the case when these coordinates are embedded within a graph \cite{Rand_2017}.
 
-Part of the reason is certainly that pangenomic coordinate systems cannot provide all of the customary advantages that linear coordinate systems currently do.
-In linear references, genomic coordinates are easily interpretable, and they unambiguously indicate both the layout of the sequence and the distance between bases.
-Similar schemes cannot do the same on genome graphs \cite{Rand_2017} or in collections of sequences.
-We note, however, that positional systems in linear references have ambiguities of their own.
-In particular, any sequence missing from the reference has no positional system at all, except by ad hoc use of the reference's system.
-Yet, for the time being, this particular ambiguity seems to be counterbalanced by the relative informatic ease of comparing different data.
+It is possible to use reference coordinates in a graphical pangenome by embedding reference sequences inside the graph and labeling graph nodes with their relative positions in these paths \cite{Garrison_2018,Garrison_2019}.
+This has been extensively explored in variation graph based tools.
+However, several problems remain.
+The embedded coordinate systems may be incomplete, in that they may not fully cover the graph.
+Also, particular graph instantiations may induce ambiguity in reference positions.
+For instance, a copy number variant that is collapsed in the graph will have multiple reference path coordinates inside of it.
 
-Despite these challenges, some positional systems have been proposed.
-\citeauthor{Rand_2017} \citep{Rand_2017} propose some coordinate systems tailored for the GRCh38 alternative contigs that provide some (but not all) of the positive properties associated with linear coordinates.
-They also discuss some options for expressing genomic intervals.
-Unfortunately, these options all rely either on significantly more verbose representations or on heuristics to reduce the representation.
-
-Another proposal focuses only on genomic variation \cite{paten2018superbubbles}.
-This type of annotation is unique in the context of graphical pangenomics because, unlike other annotations, variation is expressed in the topology of the graph.
-Accordingly, these authors use the graph topology as a means to describe variation in a manner that is very general and free of reference bias.
-Essentially, the proposal is to use bubble-like structures in the graph, which had been recognized as indicative of variation for some time in genome assembly literature \cite{Iqbal_2012, Onodera_2013}.
-This solution is rigorous but also quite mathematically complex.
+These limitations have driven the development of complete coordinate systems for genome graphs.
+One solution is to build a hierarchy of graph components, based on a starting reference sequence, adding a new name and coordinate range for each non-reference sequence that is included \cite{Rand_2017}\footnote{minigraph uses a similar model}.
+%Some, like \citeauthor{Rand_2017} \citep{Rand_2017},  propose some coordinate systems tailored for the GRCh38 alternative contigs that provide some (but not all) of the positive properties associated with linear coordinates.
+Another technique is to build coordinates based solely on the topology in the graph \cite{paten2018superbubbles}.
+Genomic variation, represented in the form of a hierarchy of bubbles in the graph, is used to derive distance estimators.
+This decomposition of the graph has seen previous use in assembly based variant detection \cite{Iqbal_2012, Onodera_2013}, and has a rigorous, if complex, mathematical basis.
 
 
 \subsection{Pangenomic data formats}
