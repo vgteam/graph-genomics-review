@@ -139,13 +139,11 @@ This decomposition of the graph has seen previous use in assembly based variant 
 
 \subsection{Pangenomic data formats}
 
+A number of common data formats are used to exchange pangenomic models.
 Pangenomes can be stored as collections of sequences in FASTA format.
 Variant calls in VCF format may be added to such a collection to describe small or structural variants found in the pangenome.
-Collections of FASTA sequences and alignments between them also imply a pangenomic data structure, which can be viewed in the form of a ``dot plot'' in two dimensions.
-This approach breaks down when considering large numbers of related sequences, and is not commonly used as a way to convey a pangenome.
-
-To encode graphical pangenomes, the community frequently employs the GFA\footnote{\url{http://gfa-spec.github.io/GFA-spec/}} format for sequence graph exchange.
-GFA was originally designed as an interchange format for assembly methods, but the equivalence between graphical pangenomes and the data structures used by assembly methods allowed it to be repurposed as a pangenomic interchange model.
+However, to exchange graphical pangenomes, the community frequently uses a subset of the GFAv1\footnote{\url{http://gfa-spec.github.io/GFA-spec/}} assembly graph format.
+This has the benefit of allowing the application of tools that read GFA to pangenome graphs.
 
 GFA provides no mechanism to express read alignments.
 The vg toolkit has developed the GAM format, which generalizes the data model of the SAM/BAM \cite{Li_2009} format to work on graphical reference systems, and this has been taken up by a number of other alignment tools.
