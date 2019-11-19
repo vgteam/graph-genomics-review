@@ -1,30 +1,11 @@
 \section{Building a pangenome}
 
-A collection of genomic sequences, either raw reads or assembled genomes, can itself provide a pangenomic model.
-But this model lacks a mechanism to define the relationships between the sequences.
-It cannot assert anything more than the presence of a given sequence in the pangenome.
-In practice, we need to know when a particular sequence is identical to another by descent from a common ancestor.
-This information suggests phylogenetic structures that result from evolutionary processes, which can in turn help support our understanding of 
-
-Furthermore, the identity of sequences by descent provides a basis for the compact representation of pangenomes.
-Our model need not grow linearly with the number of genomes that it includes.
-Rather, we should obtain improved compression of individual genomes in the context of a pangenome.
-Shared segments of DNA only need to be represented once.
-If most DNA is shared, then this makes the unique sequences of the pangenome much smaller than the total sequences in the genomes that we use to build it, providing compression that is both practical and helpful for analyses.
-
 Methods to construct pangenomic data structures mirror the classes of pangenomic models.
 A pangenome may simply be a collection of sequences, in which case construction is similar to the genome or metagenome assembly problem.
-Or, it may include information about the alignment of sequences.
+Or, it may include information about the alignment of sequences or genomes within it.
 This alignment could be compressed into a set of variants found against a set of reference sequences.
-If this alignment is based on $k$-mers, then it implies a de Bruijn graph, and various methods exploit this to implement efficient or scalable pangenome model construction.
+If this alignment is based on $k$-mers, then it implies a de Bruijn graph.
 If the alignments is a complete, gapped alignment, covering small and large variation, then the pangenome model can be thought of as a whole genome alignment.
-Methods for pangenome construction often use a mixture of approaches, but in most cases their aim is to emulate the full all-to-all alignment of the base sequences.
-
-%The great majority of pangenome construction methods generate or use graphical models
-% new organization
-% 1) bags of sequences -- pantools comes close (collection of genes), HUPAN is similar with its core/accessory breakdown
-% 2) DBG based models (TwoPaCo, LOGAN, McCortex, Bifrost, PRG, Novograph?)
-% 3) alignment and match based systems (cactus, REVEAL, vg msga, seqwish)
 
 \subsection{Collecting sequences}
 
@@ -39,10 +20,10 @@ Recent work has focused on scaling these techniques to ever larger genomes.
 PanTools \cite{Sheikhizadeh_Anari_2018} detects and annotates homology groups in large collections of large genomes using a $k$-mer based approach.
 Its detailed graph database model connects the pan-proteome defined by homology groups to genomic annotations and sequences.
 HUPAN \citep{Duan_2019} extends the sequence collection model to human and large eukaryotic genomes, taking assembled genomes as input and finding non-reference sequences within them by comparison to a reference genome.
+Despite the availability of these toolkits, it appears that many published pangenomes are established with ad-hoc methods to determine and annotate novel sequences.
 
-Many published pangenomes are established with ad-hoc methods to determine novel sequences.
-These approaches typically apply assembly methods to determine contigs representative of the pangenome, and then align data from individual biosamples back to them to determine their significicance.
-Standard alignment and variant calling methods typically work without issue on a pangenome stored as a collection of sequences, and can be applied in custom pipelines tailored to particular species contexts.
+%These approaches typically apply assembly methods to determine contigs representative of the pangenome, and then align data from individual biosamples back to them to determine their significicance.
+%Standard alignment and variant calling methods typically work without issue on a pangenome stored as a collection of sequences, and can be applied in custom pipelines tailored to particular species contexts.
 
 \subsection{Adding variation}
 
@@ -57,128 +38,133 @@ It has been key to the first wave of precision pangenomic methods.
 These methods typically use a specialized or restricted version of the ``reference plus variation'' pangenome graph.
 GenomeMapper \cite{Schneeberger_2009} first introduced the linear \emph{genome graph} a reference system for resequencing.
 To facilitate its alignment model (which has exponential costs in the number of traversed bubbles), it breaks the graph into blocks of a fixed reference length (typically 256bp).
+The journaled string tree \cite{Rahn_2014} supports time and space-efficient windowed traversal over a large collection of similar sequences represented as phased series of small variants relative to a reference.
 The Population Reference Graph (PRG) model \cite{dilthey2015improved}, which was validated primarily in the human MHC region, takes a more curated approach to graph construction.
 Over multiple phases it builds an acyclic genome graph from $k$-mer based alignment of long haplotypes, additional gene alleles, and finally small variants.
-To support its alignment (which has exponential costs in the number of bubbles) and indexing systems, gramtools \cite{Maciuca_2016} combines variants found within a given window length (~30bp) into a single locus.
+To support its alignment (which has exponential costs in the number of bubbles) and indexing systems, gramtools \cite{Maciuca_2016} combines variants found within a given window length ($\approx$30bp) into a single locus.
 PanVC \cite{Valenzuela_2018} employs a gapped MSA as its pangenomic model, inferring underlying recombinant haplotype that may then be used as a reference for alignment and variant calling with standard tools.
 Seven Bridges' Graph Genome Pipeline \cite{Rakocevic_2019} was vetted on a graph with common variation and indels, which is used primarily to improve read alignment, with alignments reported against the linear reference.
 The variation graph toolkit, specifically \textit{vg construct} \cite{Garrison_2018}, can be applied to transform VCF files and reference sequences into genome graphs, which can be rendered into GFA format and are subsequently used by other tools for alignment and genome annotation.
+Deciding which variation should be added to a graph is non-trivial, and has encouraged studies of graph utility \cite{Novak_2017a} and algorithms to determine which variation is helpful \cite{Pritt_2018}.
 
-We observe out that most of these methods (excluding GenomeMapper and vg) produce reference-relative alignments or recombinant haplotypes inferred by matching a read set against their pangenomic model.
-Thus, their models are not pangenome graph references in the same sense as linear genome references.
+%We observe out that most of these methods (excluding GenomeMapper and vg) produce reference-relative alignments or recombinant haplotypes inferred by matching a read set against their pangenomic model.
+%Thus, their models are not pangenome graph references in the same sense as linear genome references.
 
-\subsection{Colored and linked de Bruijn graphs}
+%\subsection{Measuring model utility}
+
+%Briefly discuss the ``Genome graphs'' paper, \cite{Novak_2017a}, findings in the vg paper \cite{Garrison_2018}, and 
+%FORGe \cite{Pritt_2018}.
+
+\subsection{Colored, linked, and compacted de Bruijn graphs}
 
 De Bruijn graph based assemblers can be given a pangenomic quality through the addition of ``colors'' to their nodes ($k$-mers) or unitigs (unbranching components in the graph).
 Each color provides a mapping between a specific biosample and a subset of the graph.
 Efficiently storing such colors allows for population scale variant calling within the context of the graph, as was first demonstrated with Cortex assembler \cite{Iqbal_2012}.
 Recent improvements to colored DBG construction, such as Bifrost \cite{holley2019bifrost}, allow the construction of cDBGs from very large sequence sets (the authors build a pangenome of 118,000 \emph{Salmonella} genomes), and further support efficient update of these pangenomic models.
 The feature which makes these methods efficient, the fixed $k$ on which they are based, also limits their resolution of repetitive genomic features.
-They also struggle handle long noisy reads produce by third generation sequencing, and are lossy with respect to their input sequences.
-In response, several methods embed linking information within the DBG that can be used to reconstruct embedded haplotypes or reads \cite{Bolger_2017,Turner_2018}.
+It is not feasible to build them from noisy third-generation sequencing reads.
+Addressing these limitations, several methods embed linking information within the DBG that can be used to reconstruct embedded haplotypes or reads \cite{Bolger_2017,Turner_2018}.
 
-\subsection{Whole genome alignments}
+A number of methods use compacted DBG\footnote{Compacted here means that chains of $k$-mers which contain no internal furcations are merged into a single node in the graph represenation.} construction to elaborate pangenome graphs.
+SplitMEM \cite{Marcus_2014} uses a suffix tree with suffix skips to derive the set of maximal exact matches $\geq k$ between a set of genomes.
+Improving on this result in both time and space efficiency, \cite{Baier_2015} demonstrated two similar pangenome graph induction algorithms based on succinct representations of the suffix tree and the Burrows--Wheeler transform (BWT) \cite{Burrows_1994}.
+TwoPaCo \cite{Minkin_2016} applies a probabilistic data structure to narrow the set of candidate verticies in the compacted de Bruijn graph of a set of genomes, supporting the efficient generation of a pangenome graph from larger genomes than previous methods.
+Thus far, no implementations of methods like these which record each genome in the graph have matched the scalability of ``colored'' DBGs.
 
-% whole genome alignments
-Multiple sequence alignments (predecessor) POA and PO-POA \cite{Lee_2002,Grasso_2004} % only small graphs
+\subsection{Alignment-based sequence graphs}
 
-Alignment based pangenome models.
+The sequence graph model of multiple alignment has long served as a mechanism to reduce the complexity of many to many relationships required to develop parsimonious models for collections of related genomic sequences.
+As observed in its first description \cite{hein1989new}, by compressing ancestrally equivalent sequences into single entities in the graph, this model can accelerate alignment and other inference methods based on a pangenomic collection of sequences.
+This model was later used as the basis for the partial order alignment (POA) sequence to graph alignment and graph to graph aligner PO-POA \cite{Lee_2002,Grasso_2004}.
+It was generalized to represent \emph{whole genome alignments} by allowing cyclic and inverting structures in Cactus \cite{Paten_2011}, yielding superb results in evalution during the Alignathon competition \cite{earl2014alignathon}.
+The multiple sequence/graph aligner (vg msga) \cite{Novak_2017a,Garrison_2018,Garrison_2019} generalizes the progressive alignment model of POA to work on generic variation graphs, including cycles and inversions.
+Although it requires linear time in the number of sequences, it suffers from high memory and runtime for large sequences due to the expense of vg's indexing and alignment algorithms.
+It has found use where the number of sequences is small, or sequences are short, such as in viral pangenomic studies \cite{Baaijens2019-ng}
 
-% hein1989new, ?
-Cactus \cite{Paten_2011} as demonstrated in alignathon \cite{earl2014alignathon}
-jst \cite{Rahn_2014}
-SplitMEM \cite{Marcus_2014}
-cdbg \cite{Baier_2015}
-REVEAL \cite{linthorst2015scalable}
-TwoPaCo \cite{Minkin_2016}
-vg msga \cite{Novak_2017a,Garrison_2018,Garrison_2019}
-seq-seq-pan \cite{Jandrasits_2018}
-Novograph \cite{Biederstedt2018}
-Seqwish\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019}
+However, not all researchers have focused on generic graphs, with several arguing that complex structures are not relevant to many kinds of analyses, or computationally intractable. % to consider in a primary model of whole genome alignment.
+The recursive hierarchical alignment model in REVEAL \cite{linthorst2015scalable} finds a set of maximal exact unique matches of decreasing size between a pair of sequences (or graphs), and uses these and the flanking un-matched sequences to build a pangenome graph.
+%By applying the same alignment algorithm to the sequences in the nodes of the graph, REVEAL supports the alignment of sequences to graphs, or graphs to graphs, supporting the construction of pangenome graphs for human sized genomes.
+Its model is initially linear, but it can include inversions detected post-hoc by alignment of alternative paths through bubbles.
+The linear alignment-based pangenome model is further explored by NovoGraph \cite{Biederstedt2018}, seq-seq-pan \cite{Jandrasits_2018}, and GenGraph \cite{Ambler_2019}.
+NovoGraph follows a reference-guided approach, breaking a set of genomes into syntenic alignable blocks and deriving a multiple sequence alignment for each, and yielding a VCF file as its output.
+Similarly, seq-seq-pan employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the its input geomes.
+GenGraph realigns previously identified co-linear blocks yielding a genome graph from an MSA.
+
+Not all methods generate a pangenome model composed of all input sequences without bias.
+minigraph\footnote{\url{https://github.com/lh3/minigraph}} extends the minimap2 \cite{Li_2018} alignment chaining model to work on acyclic, non-inverting sequence graphs.
+It can be used to construct a graph based on an initial linear reference by progressively augmenting the graph with new sequences that are not covered by minimizer chains matching existing components of the graph.
+Although it does not embed the sequences (other than the first reference) which it was built from, the resulting graph should include representative versions of each genomic locus in the pangenome.
+It is thus useful for developing a single hierarchical coordinate system for a pangenome, or to extract a set of representative sequences from a collection of assembled genomes.
+
+Unlike most other pangenome graph construction methods, seqwish\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019} is a simplistic graph inducer.
+It generates the variation graph implied by a collection of sequences and alignments between them, using disk-backed implicit interval trees\footnote{See \url{https://github.com/lh3/cgranges} and \url{https://github.com/mlin/iitii}} to scale to large pangenome sizes.
+The resulting graph depends only on the input alignment set and sequences, allowing external configuration of the graph via changes in the way the alignments are generated or filtered.
+
+%It maps a set of sequences and alignments between them to the variation graph implied by the 
+%is a variation graph induction algorithm.
+%It 
+
+
+% syntenic by design
+% very similar to novograph, linear, based on whole genome alignments, generates locally collinear blocks
+% reference guided, linear alignments, MSA based, makes a linear variation graph, outputs VCF
+
+%Several unpublished methods extend previous approaches to
+%Most alignment based pangenome graph construction methods present a monolithic 
+
+
 
 
 \subsection{Positional systems in pangenomes}
 
-One of the most important uses of conventional reference genomes is to provide a positional system for genomic analyses.
-Researchers report many genomic features and annotations relative to positions on a reference genomes: variants, genes, binding sites, epigenetic profiles, homologies, and more.
-Despite the increasing prominence of pangenomic methods, there have been relatively few inroads into this particular domain, even though the need for such research has been long recognized \cite{computational2016computational}. 
+%One of the most important uses of conventional reference genomes is to provide a positional system for genomic analyses.
+%Researchers report many genomic features and annotations relative to positions on a reference genomes: variants, genes, binding sites, epigenetic profiles, homologies, and more.
+Reference genome sequences provide a coordinating system to catalog and exchange information about genes, protein binding sites, epigenetic profiles, variants, and homologies.
+In linear references, genomic coordinates are easily interpretable, and they unambiguously indicate both the layout of the sequence and the distance between bases, but this is not the case when these coordinates are embedded within a graph \cite{Rand_2017}.
 
-Part of the reason is certainly that pangenomic coordinate systems cannot provide all of the customary advantages that linear coordinate systems currently do.
-In linear references, genomic coordinates are easily interpretable, and they unambiguously indicate both the layout of the sequence and the distance between bases.
-Similar schemes cannot do the same on genome graphs \cite{Rand_2017} or in collections of sequences.
-We note, however, that positional systems in linear references have ambiguities of their own.
-In particular, any sequence missing from the reference has no positional system at all, except by ad hoc use of the reference's system.
-Yet, for the time being, this particular ambiguity seems to be counterbalanced by the relative informatic ease of comparing different data.
+It is possible to use reference coordinates in a graphical pangenome by embedding reference sequences inside the graph and labeling graph nodes with their relative positions in these paths \cite{Garrison_2018,Garrison_2019}.
+This has been extensively explored in variation graph based tools.
+However, several problems remain.
+The embedded coordinate systems may be incomplete, in that they may not fully cover the graph.
+Also, particular graph instantiations may induce ambiguity in reference positions.
+For instance, a copy number variant that is collapsed in the graph will have multiple reference path coordinates inside of it.
 
-Despite these challenges, some positional systems have been proposed.
-\citeauthor{Rand_2017} \citep{Rand_2017} propose some coordinate systems tailored for the GRCh38 alternative contigs that provide some (but not all) of the positive properties associated with linear coordinates.
-They also discuss some options for expressing genomic intervals.
-Unfortunately, these options all rely either on significantly more verbose representations or on heuristics to reduce the representation.
-
-Another proposal focuses only on genomic variation \cite{paten2018superbubbles}.
-This type of annotation is unique in the context of graphical pangenomics because, unlike other annotations, variation is expressed in the topology of the graph.
-Accordingly, these authors use the graph topology as a means to describe variation in a manner that is very general and free of reference bias.
-Essentially, the proposal is to use bubble-like structures in the graph, which had been recognized as indicative of variation for some time in genome assembly literature \cite{Iqbal_2012, Onodera_2013}.
-This solution is rigorous but also quite mathematically complex.
-
-\subsection{Measuring model utility}
-
-Briefly discuss the ``Genome graphs'' paper, \cite{Novak_2017a}, findings in the vg paper \cite{Garrison_2018}, and FORGe \cite{Pritt_2018}.
-
-
-\begin{comment}
-\subsection{Measuring and improving graph utility}
-
-Because \texttt{vg} provides an integrated toolkit for constructing, manipulating, and using genome graphs, it's a tool well-suited for comparing the efficacy of different genome graph construction techniques \cite{Novak_2017, Garrison_2018}.
-In the paper ``Genome Graphs'', \citeauthor{Novak_2017a}\ compared different graph constructions based on their utility in read mapping, variant calling, and general graph character \citep{Novak_2017a} \todo{Does it really make sense to lean so heavily on our own unreviewed, unpublished manuscript in a review?}.
-They found that genome graphs in general provide superior read mapping and variant calling to their linear counterparts, and that different construction approaches varied greatly even within each region of the genome.
-To quantify this variability, they proposed three normalized graph metrics.
- \emph{Graph compression} is the length of primary reference sequence divided by the sum of the length of the nodes in the graph.
-It essentially measures the quantity of alt path sequence represented in the graph with respect to the size of the reference.
-The \emph{(base) degree} of the graph measures how much branching occurs in the graph, and the \emph{cut width} measures apparent sequence rearrangement \todo{We don't have any evidence to support these being useful or accepted metrics, though.}.
-
-In the same study, \citeauthor{Novak_2017a}\ demonstrated that their graphs improved mapping precision when more polymorphisms were added to the graph.
-As they pointed out, this is a potentially surprising result: they originally thought that adding more sequences similar to the read's target would reduce the likelihood of the read mapping to the correct region.
-Instead, adding known variants helped the mapping algorithm distinguish their true mapping location from other, paralogous sequences \citep{Novak_2017a}.
-
-Adding more variants to the graph doesn't always improve mapping precision, however.
-FORGe is a tool for modeling the effects of adding a variant to the graph \cite{Pritt_2018}. 
-The primary benefit of adding a variant to the graph is that it increases the graph's representation of sequence diversity.
-Without variance in the graph, reads with significant sequence dissimilarity from the linear genome won't be mapped to the correct region, or won't be mapped at all.
-Sometimes, however, adding a variant can reduce alignment accuracy by increasing the ambiguity of similar sequences already in the graph.
-In addition, adding variants to the graph can increase the cost of storing and querying the genome index.
-To predict the effects of adding a variant, FORGe scores variants based on their frequency in a population, its proximity to other variants, and how it increases/decreases repetitive sequence in the genome.
-It can then output a list of top-scoring variants for use in a graph aligner.
-\todo{How do we square the results showing FORGe is needed with the results from our unpublished Graph Genomes manuscript? We don't do that work here.}
-\end{comment}
+These limitations have driven the development of complete coordinate systems for genome graphs.
+One solution is to build a hierarchy of graph components, based on a starting reference sequence, adding a new name and coordinate range for each non-reference sequence that is included \cite{Rand_2017}\footnote{minigraph uses a similar model}.
+%Some, like \citeauthor{Rand_2017} \citep{Rand_2017},  propose some coordinate systems tailored for the GRCh38 alternative contigs that provide some (but not all) of the positive properties associated with linear coordinates.
+Another technique is to build coordinates based solely on the topology in the graph \cite{paten2018superbubbles}.
+Genomic variation, represented in the form of a hierarchy of bubbles in the graph, is used to derive distance estimators.
+This decomposition of the graph has seen previous use in assembly based variant detection \cite{Iqbal_2012, Onodera_2013}, and has a rigorous, if complex, mathematical basis.
 
 
 \subsection{Pangenomic data formats}
 
+A number of common data formats are used to exchange pangenomic models.
 Pangenomes can be stored as collections of sequences in FASTA format.
 Variant calls in VCF format may be added to such a collection to describe small or structural variants found in the pangenome.
-Collections of FASTA sequences and alignments between them also imply a pangenomic data structure, which can be viewed in the form of a ``dot plot'' in two dimensions.
-This approach breaks down when considering large numbers of related sequences, and is not commonly used as a way to convey a pangenome.
-
-To encode graphical pangenomes, the community frequently employs the GFA\footnote{\url{http://gfa-spec.github.io/GFA-spec/}} format for sequence graph exchange.
-GFA was originally designed as an interchange format for assembly methods, but the equivalence between graphical pangenomes and the data structures used by assembly methods allowed it to be repurposed as a pangenomic interchange model.
+However, to exchange graphical pangenomes, the community frequently uses a subset of the GFAv1\footnote{\url{http://gfa-spec.github.io/GFA-spec/}} assembly graph format.
+This has the benefit of allowing the application of tools that read GFA to pangenome graphs.
 
 GFA provides no mechanism to express read alignments.
-The vg toolkit has developed the GAM format, which generalizes the data model of the SAM/BAM format to work on graphical reference systems, and this has been taken up by a number of other alignment tools.
+The vg toolkit has developed the GAM format, which generalizes the data model of the SAM/BAM \cite{Li_2009} format to work on graphical reference systems, and this has been taken up by a number of other alignment tools.
 However, it lacks a simple text-based equivalent.
 The recently-proposed GAF\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md#the-graph-alignment-format-gaf}} format (which generalizes PAF\footnote{\url{https://github.com/lh3/miniasm/blob/master/PAF.md}} to work on graphs) could serve this purpose.
 GAF is related to rGFA\footnote{\url{https://github.com/lh3/gfatools/blob/master/doc/rGFA.md}}, which is a proposed restricted specialization of GFA for reference graphs.
 
 
 \section{Indexing pangenomes} % was indexing genome graphs
+
+%\todo{JAS: Is a bit more introduction needed explaining what an index can be used for?}
+As pangenome graphs become large, providing random access to their topology, sequences, and embedded haplotypes becomes non-trivial.
+Succinct data strctures and careful encoding of these data are required to reliably fit large graphs into the main memory of commodity computing systems.
+These data structures act as self indexes of the graph, providing random access to the elements of the graph in minimial space.
+
 A \emph{text index} maps query strings to their occurrences in the indexed text.
 The occurrences are typically reported as a list of starting positions, from which one can easily determine the substrings matching the query.
-\todo{JAS: Is a bit more introduction needed explaining what an index can be used for?}
 
 Indexing the sequences encoded in a graph is more involved.
-The number of $k$~bp paths often grows exponentially in $k$, and the number of distinct $k$-mers encoded as path labels may also grow exponentially.
-Indexing or even enumerating all $k$-mers in the graph may be infeasible for reasonable values of $k$, and if the starting position of the occurrence reported by the index is in a complex region of the graph, there may be an exponential number of $k$~bp paths to investigate.
-\todo{JAS: The above paragraph could maybe be shorten a bit? Seems to state the same twice.}
+The number of $k$~bp paths often grows exponentially in $k$.
+Indexing or even enumerating all $k$-mers in the graph may be thus be infeasible for reasonable values of $k$, and if the starting position of the occurrence reported by the index is in a complex region of the graph, there may be an exponential number of $k$~bp paths to investigate.
 
 In practice, indexes for genome graphs must make trade-offs not encountered in text indexes.
 In order to limit the exponential growth, the index may only support relatively short query strings.
@@ -199,8 +185,9 @@ While the articles do not mention it, both \citeauthor{Huang_2010}\ and \citeaut
 
 One class of graph indexing methods supports only acyclic graphs, often represented as directed acyclic graphs (DAGs).
 This constraint can exist either because the acyclicity of the graph provides guarantees that simplify the problem, or because incedental features of the method's software implementation preclude use on cyclic graphs.
-One common class of DAGs, here called \emph{VCF graphs}, represents each contig as a mostly linear run of graph nodes, branching to allow only for substitutions and possibly insertions and deletions.
-\todo{``VCF graph'' is a placeholder; is there a better term for this shape?}
+Pangenome graphs built from VCFs represent each contig as a mostly linear run of graph nodes, branching to allow only for substitutions and possibly insertions and deletions.
+%One common class of DAGs, here called \emph{VCF graphs}, 
+%\todo{``VCF graph'' is a placeholder; is there a better term for this shape?}
 
 GenomeMapper \cite{Schneeberger_2009} was the first graph-based read aligner.
 It builds a VCF graph from a reference sequence and a set of variants.
@@ -210,17 +197,17 @@ GCSA \cite{Siren_2014} was the first attempt to use the BWT with graphs.
 It either takes a prebuilt DAG or generates one from a multiple alignment of sequences.
 GCSA then applies a number of graph transformations that preserve the language, or set of end-to-end sequences, until the nodes can be unambiguously sorted by the labels of the paths starting from the node.
 When the complexity of the graph is sufficiently low, these transformations are reasonably fast and do not increase the size of the graph significantly.
-However, a phase transition happens at a certain threshold, and the transformed graph quickly becomes too large to handle above the threshold.
-\todo{JME: threshold of what? variant density?}
+However, a phase transition happens at a certain threshold of variant density, above which the transformed graph quickly becomes too large to handle.
+%\todo{JME: threshold of what? variant density?}
 
-BWBBLE \cite{Huang_2013} is a BWT-based representation for VCF graphs.
+BWBBLE \cite{Huang_2013} is a BWT-based representation for VCF-based pangenome graphs.
 Simple substitutions are encoded in the sequence using IUPAC codes, and the sequence is indexed using a normal FM-index.
 Because each base can be encoded using 8 different characters, the search branches at every base to cover all possible characters which admit the base searched.
 In practice, most branches quickly run out of results and can be pruned from the search.
 Insertions and deletions produce separate sequences, with selected amount of context around the variant.
 The length of this context is an effective upper bound for query length.
 
-The vBWT \cite{Maciuca_2016} took another approach to using the BWT for indexing VCF graphs.
+The vBWT \cite{Maciuca_2016} took another approach to using the BWT for indexing VCF-based pangenome graphs.
 It encodes variants as \texttt{(ref|alt1|alt2|\dots)} in the sequence.
 When the search encounters a variant, it must branch to handle each allele separately.
 Both BWBBLE and vBWT trade faster index construction for slower queries.
@@ -238,7 +225,8 @@ If the graph transformations used in GCSA construction are stopped after $i$ ste
 This de~Bruijn graph can be used to approximate the original graph.
 There are no false negatives, but matches longer than $2^{i}$ may be false positives.
 By using this approach, GCSA2 \cite{Siren_2017} attempts to support fast queries in arbitrary graphs.
-\todo{JAS: Is the above paragraph too complicated for non-expert readers.}
+%\todo{JAS: Is the above paragraph too complicated for non-expert readers. SH: I had to read it 2 times to get it. Maybe just say that "If GCSA construction is stopped within / at a  transformation step, the resulting graph is equivalent to a de~Bruijn graph". Can we be so "inexact"?}
+% EG: this is pretty precise stuff, so I'm leaving it
 
 GCSA2 faces the same issues with complex graphs as GCSA.
 In practice, most graphs must be simplified before they can be indexed.
@@ -262,26 +250,23 @@ When a fully sensitive index is needed, PSI can reverse the role of the query st
 While complex graph regions may contain an excessive number of $k$-mers, the reads mapping to them only contain a limited number of $k$-mers.
 By indexing a batch of reads and searching for the complex regions in that index, all mappings of the query strings to the graph can be found with reasonable resources.
 
-
 \subsection{Indexing haplotypes and genomes in variation graphs}
-% Erik
 
-Outline progression from PBWT, gpBWT, to GBWT.
+Storing a set of genome embedded in a variation graph can allow us to develop positional system over the graph, which is important for practical use.
+However, it is not scalable to do so for every genome or haplotype which we have in a large pangenome.
+Recording each path as a series of steps through the graph would require space proportional to the length of all paths, which quickly becomes untenable.
+To store many haplotypes, we must exploit the repetitiveness of the haplotype set.
+This is feasible because haplotypes from individuals of the same species tend to be highly similar.
 
-%\subsubsection{de Bruijn}
-
-% BOSS: \cite{Bowe_2012} (\cite{Roedland_2013} is similar)
-
-%\subsubsection{VCFs / genotype calls / haplotypes / binary matrices}
-
-%\subsubsection{gPBWT, GBWT}
-
-% Jouni: We should at least include this
-
-
-%\subsubsection{Alignments / collections of strings}
-
-% Jouni: We probably don't have space for this.
+A series of results lead from a compact haplotype index for biallelic SNPs to a generic haplotype index for complex variation graphs.
+The positional BWT (PBWT) \cite{Durbin_2014} provides an efficient compressed representation of a set of haplotypes over biallelic variable sites.
+It does so by recording a series of permutations of haplotypes over the sites that, when executed, maintain the invariant that the haplotypes are sorted by their prefixes leading up to the site.
+The PBWT, like the BWT, supports efficient haplotype matching queries such as maximal exact match finding.
+Later work \cite{Gagie_2017} shows the PBWT to be equivalent to the wavelet matrix \cite{Claude_2015}, which is to date the most-effcient known encoding of strings with large alphabets supporting a variety of important random access queries.
+The graph positional BWT (gPBWT) \cite{Novak_2017} extends the PBWT model to haplotype walks embedded in complex sequence graphs.
+The graph BWT (GBWT) \cite{siren2018haplotype} builds on a number of assumptions that tend to hold for sequence variation graphs to improve runtime and memory costs relative to the gPBWT.
+Provided the variation graph on which they are built encodes the full complement of variation in the pangenome, both the gPBWT and GBWT are excellent, and in principle lossless, compressors of genomes.
+A GBWT for the 5008 haplotypes in the 1000 Genomes Project required 14.6 GB, or $\approx$1 bit per 1 kbp of encoded sequence.
 
 
 
