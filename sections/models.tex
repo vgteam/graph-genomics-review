@@ -20,10 +20,10 @@ Recent work has focused on scaling these techniques to ever larger genomes.
 PanTools \cite{Sheikhizadeh_Anari_2018} detects and annotates homology groups in large collections of large genomes using a $k$-mer based approach.
 Its detailed graph database model connects the pan-proteome defined by homology groups to genomic annotations and sequences.
 HUPAN \citep{Duan_2019} extends the sequence collection model to human and large eukaryotic genomes, taking assembled genomes as input and finding non-reference sequences within them by comparison to a reference genome.
+Despite the availability of these toolkits, it appears that many published pangenomes are established with ad-hoc methods to determine and annotate novel sequences.
 
-Many published pangenomes are established with ad-hoc methods to determine novel sequences.
-These approaches typically apply assembly methods to determine contigs representative of the pangenome, and then align data from individual biosamples back to them to determine their significicance.
-Standard alignment and variant calling methods typically work without issue on a pangenome stored as a collection of sequences, and can be applied in custom pipelines tailored to particular species contexts.
+%These approaches typically apply assembly methods to determine contigs representative of the pangenome, and then align data from individual biosamples back to them to determine their significicance.
+%Standard alignment and variant calling methods typically work without issue on a pangenome stored as a collection of sequences, and can be applied in custom pipelines tailored to particular species contexts.
 
 \subsection{Adding variation}
 
@@ -81,18 +81,18 @@ The multiple sequence/graph aligner (vg msga) \cite{Novak_2017a,Garrison_2018,Ga
 Although it requires linear time in the number of sequences, it suffers from high memory and runtime for large sequences due to the expense of vg's indexing and alignment algorithms.
 It has found use where the number of sequences is small, or sequences are short, such as in viral pangenomic studies \cite{Baaijens2019-ng}
 
-However, not all researchers have focused on generic graphs, with several arguing that complex structures are not relevant to many kinds of analyses, or computationally intractable to consider in a primary model of whole genome alignment.
-The recursive hierarchical alignment model in REVEAL \cite{linthorst2015scalable} finds a set of maximal exact unique matches of decreasing size between a pair of sequences, and uses these and the flanking un-matched sequences to build a sequence graph.
-By applying the same alignment algorithm to the sequences in the nodes of the graph, REVEAL supports the alignment of sequences to graphs, or graphs to graphs, supporting the construction of pangenome graphs for human sized genomes.
-Its pangenome model is linear, but supports the post-hoc detection of inversions by aligning sequences in bubbles in the alignment graph.
-The linear alignment-based pangenome model is further explored by NovoGraph \cite{Biederstedt2018}, and seq-seq-pan \cite{Jandrasits_2018}.
+However, not all researchers have focused on generic graphs, with several arguing that complex structures are not relevant to many kinds of analyses, or computationally intractable. % to consider in a primary model of whole genome alignment.
+The recursive hierarchical alignment model in REVEAL \cite{linthorst2015scalable} finds a set of maximal exact unique matches of decreasing size between a pair of sequences (or graphs), and uses these and the flanking un-matched sequences to build a pangenome graph.
+%By applying the same alignment algorithm to the sequences in the nodes of the graph, REVEAL supports the alignment of sequences to graphs, or graphs to graphs, supporting the construction of pangenome graphs for human sized genomes.
+Its model is initially linear, but it can include inversions detected post-hoc by alignment of alternative paths through bubbles.
+The linear alignment-based pangenome model is further explored by NovoGraph \cite{Biederstedt2018} and seq-seq-pan \cite{Jandrasits_2018}.
 NovoGraph follows a reference-guided approach, breaking a set of genomes into syntenic alignable blocks and deriving a multiple sequence alignment for each, and yielding a VCF file as its output.
 Similarly, seq-seq-pan employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the its input geomes.
 
 Not all methods generate a pangenome model composed of all input sequences without bias.
 minigraph\footnote{\url{https://github.com/lh3/minigraph}} extends the minimap2 \cite{Li_2018} alignment chaining model to work on acyclic, non-inverting sequence graphs.
 It can be used to construct a graph based on an initial linear reference by progressively augmenting the graph with new sequences that are not covered by minimizer chains matching existing components of the graph.
-Although it does not embed the sequences (other than the first reference) which it was built from, the resulting graph should include representative versions of each genomic locus in the collection.
+Although it does not embed the sequences (other than the first reference) which it was built from, the resulting graph should include representative versions of each genomic locus in the pangenome.
 It is thus useful for developing a single hierarchical coordinate system for a pangenome, or to extract a set of representative sequences from a collection of assembled genomes.
 
 Unlike most other pangenome graph construction methods, seqwish\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019} is a simplistic graph inducer.
