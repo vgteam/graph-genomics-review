@@ -62,8 +62,8 @@ Each color provides a mapping between a specific biosample and a subset of the g
 Efficiently storing such colors allows for population scale variant calling within the context of the graph, as was first demonstrated with Cortex assembler \cite{Iqbal_2012}.
 Recent improvements to colored DBG construction, such as Bifrost \cite{holley2019bifrost}, allow the construction of cDBGs from very large sequence sets (the authors build a pangenome of 118,000 \emph{Salmonella} genomes), and further support efficient update of these pangenomic models.
 The feature which makes these methods efficient, the fixed $k$ on which they are based, also limits their resolution of repetitive genomic features.
-They also struggle handle long noisy reads produce by third generation sequencing, and are lossy with respect to their input sequences.
-In response, several methods embed linking information within the DBG that can be used to reconstruct embedded haplotypes or reads \cite{Bolger_2017,Turner_2018}.
+It is not feasible to build them from noisy third-generation sequencing reads.
+Addressing these limitations, several methods embed linking information within the DBG that can be used to reconstruct embedded haplotypes or reads \cite{Bolger_2017,Turner_2018}.
 
 A number of methods use compacted DBG\footnote{Compacted here means that chains of $k$-mers which contain no internal furcations are merged into a single node in the graph represenation.} construction to elaborate pangenome graphs.
 SplitMEM \cite{Marcus_2014} uses a suffix tree with suffix skips to derive the set of maximal exact matches $\geq k$ between a set of genomes.
@@ -89,11 +89,11 @@ The linear alignment-based pangenome model is further explored by NovoGraph \cit
 NovoGraph follows a reference-guided approach, breaking a set of genomes into syntenic alignable blocks and deriving a multiple sequence alignment for each, and yielding a VCF file as its output.
 Similarly, seq-seq-pan employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the its input geomes.
 
-Not all methods generate a pangenome model that relates all of their input sequences.
+Not all methods generate a pangenome model composed of all input sequences without bias.
 minigraph\footnote{\url{https://github.com/lh3/minigraph}} extends the minimap2 \cite{Li_2018} alignment chaining model to work on acyclic, non-inverting sequence graphs.
 It can be used to construct a graph based on an initial linear reference by progressively augmenting the graph with new sequences that are not covered by minimizer chains matching existing components of the graph.
-Althoug it does not embed the sequences (other than the first reference) which it was built from, the resulting graph should include representative versions of each genomic locus in the collection.
-This may make it suitable as a technique to develop a single hierarchical coordinate system for a pangenome, or to extract a set of representative sequences from a collection of assembled genomes.
+Although it does not embed the sequences (other than the first reference) which it was built from, the resulting graph should include representative versions of each genomic locus in the collection.
+It is thus useful for developing a single hierarchical coordinate system for a pangenome, or to extract a set of representative sequences from a collection of assembled genomes.
 
 Unlike most other pangenome graph construction methods, seqwish\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019} is a simplistic graph inducer.
 It generates the variation graph implied by a collection of sequences and alignments between them, using disk-backed implicit interval trees\footnote{See \url{https://github.com/lh3/cgranges} and \url{https://github.com/mlin/iitii}} to scale to large pangenome sizes.
@@ -137,33 +137,6 @@ This type of annotation is unique in the context of graphical pangenomics becaus
 Accordingly, these authors use the graph topology as a means to describe variation in a manner that is very general and free of reference bias.
 Essentially, the proposal is to use bubble-like structures in the graph, which had been recognized as indicative of variation for some time in genome assembly literature \cite{Iqbal_2012, Onodera_2013}.
 This solution is rigorous but also quite mathematically complex.
-
-
-\begin{comment}
-\subsection{Measuring and improving graph utility}
-
-Because \texttt{vg} provides an integrated toolkit for constructing, manipulating, and using genome graphs, it's a tool well-suited for comparing the efficacy of different genome graph construction techniques \cite{Novak_2017, Garrison_2018}.
-In the paper ``Genome Graphs'', \citeauthor{Novak_2017a}\ compared different graph constructions based on their utility in read mapping, variant calling, and general graph character \citep{Novak_2017a} \todo{Does it really make sense to lean so heavily on our own unreviewed, unpublished manuscript in a review?}.
-They found that genome graphs in general provide superior read mapping and variant calling to their linear counterparts, and that different construction approaches varied greatly even within each region of the genome.
-To quantify this variability, they proposed three normalized graph metrics.
- \emph{Graph compression} is the length of primary reference sequence divided by the sum of the length of the nodes in the graph.
-It essentially measures the quantity of alt path sequence represented in the graph with respect to the size of the reference.
-The \emph{(base) degree} of the graph measures how much branching occurs in the graph, and the \emph{cut width} measures apparent sequence rearrangement \todo{We don't have any evidence to support these being useful or accepted metrics, though.}.
-
-In the same study, \citeauthor{Novak_2017a}\ demonstrated that their graphs improved mapping precision when more polymorphisms were added to the graph.
-As they pointed out, this is a potentially surprising result: they originally thought that adding more sequences similar to the read's target would reduce the likelihood of the read mapping to the correct region.
-Instead, adding known variants helped the mapping algorithm distinguish their true mapping location from other, paralogous sequences \citep{Novak_2017a}.
-
-Adding more variants to the graph doesn't always improve mapping precision, however.
-FORGe is a tool for modeling the effects of adding a variant to the graph \cite{Pritt_2018}. 
-The primary benefit of adding a variant to the graph is that it increases the graph's representation of sequence diversity.
-Without variance in the graph, reads with significant sequence dissimilarity from the linear genome won't be mapped to the correct region, or won't be mapped at all.
-Sometimes, however, adding a variant can reduce alignment accuracy by increasing the ambiguity of similar sequences already in the graph.
-In addition, adding variants to the graph can increase the cost of storing and querying the genome index.
-To predict the effects of adding a variant, FORGe scores variants based on their frequency in a population, its proximity to other variants, and how it increases/decreases repetitive sequence in the genome.
-It can then output a list of top-scoring variants for use in a graph aligner.
-\todo{How do we square the results showing FORGe is needed with the results from our unpublished Graph Genomes manuscript? We don't do that work here.}
-\end{comment}
 
 
 \subsection{Pangenomic data formats}
