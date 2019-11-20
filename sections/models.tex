@@ -45,6 +45,7 @@ To support its alignment (which has exponential costs in the number of bubbles) 
 PanVC \cite{Valenzuela_2018} employs a gapped MSA as its pangenomic model, inferring underlying recombinant haplotype that may then be used as a reference for alignment and variant calling with standard tools.
 Seven Bridges' Graph Genome Pipeline \cite{Rakocevic_2019} was vetted on a graph with common variation and indels, which is used primarily to improve read alignment, with alignments reported against the linear reference.
 The variation graph toolkit, specifically \textit{vg construct} \cite{Garrison_2018}, can be applied to transform VCF files and reference sequences into genome graphs, which can be rendered into GFA format and are subsequently used by other tools for alignment and genome annotation.
+\todo{JME: We haven't introduced GFA format at this point. Maybe formats should come before construction?}
 Deciding which variation should be added to a graph is non-trivial, and has encouraged studies of graph utility \cite{Novak_2017a} and algorithms to determine which variation is helpful \cite{Pritt_2018}.
 
 %We observe out that most of these methods (excluding GenomeMapper and vg) produce reference-relative alignments or recombinant haplotypes inferred by matching a read set against their pangenomic model.
