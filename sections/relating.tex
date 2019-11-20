@@ -14,8 +14,9 @@ Genome graph visualization tools can be considered in terms of their target appl
 Many tools support the interpretation of assembly graphs. 
 These tend to focus on the overall structure of the graph. 
 In contrast, tools designed to support pangenome graph (often variation graph) visualization must additionally describe the relationship between genomes and the graph in which they are embedded.
-An overview of tools features is given in Table \ref{table:Visualization_Features}.
+An overview of tools features is given in.
 \todo{JAS: Given that the manuscript is max 25 pages this table seems too big. Could it be compressed or some details removed?}
+\todo{Footnotes in the table do not appear in the output PDF.}
 
 \begin{table}[h!]
 \hyphenation{nucleotide complexity}
@@ -29,18 +30,19 @@ An overview of tools features is given in Table \ref{table:Visualization_Feature
  \textbf{Tool} & \textbf{Layout Paradigm} & \textbf{Target Use Case} & \textbf{Scale of Data} & \textbf{Technical Notes} \\
  \hline
  \hline
-Bandage & \multirow[c]{11}{=}{Force-directed} & Assembly graphs & $\sim 100$~Mbp variation graph, no nucleotide level & Interactive desktop app \\ \cline{1-1} \cline{3-5}
-GfaViz &  & Assembly graphs, variation graphs & \multirow{12}{=}{$\sim 1$~Mbp subgraph of a variation graph, no nucleotide level} & Interactive desktop app, GFA2 support, OGDF\cite{Chimani_2012_OGDF} \\ \cline{1-1} \cline{3-3} \cline{5-5}
+Bandage \cite{Wick_2015} & \multirow[c]{11}{=}{Force-directed} & Assembly graphs & $\sim 100$~Mbp variation graph, no nucleotide level & Interactive desktop app \\ \cline{1-1} \cline{3-5}
+GfaViz \cite{Gonnella_2018} &  & Assembly graphs, variation graphs & \multirow{12}{=}{$\sim 1$~Mbp subgraph of a variation graph, no nucleotide level} & Interactive desktop app, GFA2 support, OGDF\cite{Chimani_2012_OGDF} \\ \cline{1-1} \cline{3-3} \cline{5-5}
 SHIMMER Sketch Graph &  & Variation graphs &  & Command line tool, static images, GraphViz, Gephi \\ \cline{1-3} \cline{5-5}
-SGTK & \multirow{7}{=}{Force-directed, genome browser mode} & Scaffold graphs, assembly graphs, reads, reference sequences &  & Interactive web app, cytoscape.js \cite{Franz_2016_cytoscape} \\ \cline{1-1} \cline{3-5}
-AGB &  & Assembly graphs, reference sequences & Topological complexity: thousands of edges\footnote{\url{https://github.com/almiheenko/almiheenko.github.io/blob/8f4b2f8c7c498f04fa32f53f69b4bc59888a14f0/AGB/Flye_Human/data/repeat_graph.json}} & Interactive web app, d3-graphviz\footnote{\url{https://github.com/magjac/d3-graphviz}} \\\hline
-Sequence Tube Map & Pseudo-linear tubemap & \multirow{18}{=}{Variation graphs} & From nucleotides to kilobases & Interactive web app, unique layout \\ \cline{1-2} \cline{4-5}
-MoMI-G & Pseudo-linear tubemap, circos, linear annotation &  & Gigabase circos, from nucleotides to kilobases & Interactive web app, multiple views \\ \cline{1-2} \cline{4-5}
-vg view & Force-directed &  & 10 kilobase subgraph of a variation graph, nucleotide resolution & Command line tool, static image, GraphViz\\ \cline{1-2} \cline{4-5}
-vg viz & \multirow{7}{=}{rectangular sorted matrix} &  & 100 kilobase subgraph of a variation graph & Command line tool, static image \\ \cline{1-1} \cline{4-5}
-odgi viz &  &  & From nucleotide resolution to gigabase genomes & Command line tool, static image, binning \\\hline
+SGTK \cite{Kunyavskaya_2018} & \multirow{7}{=}{Force-directed, genome browser mode} & Scaffold graphs, assembly graphs, reads, reference sequences &  & Interactive web app, cytoscape.js \cite{Franz_2016_cytoscape} \\ \cline{1-1} \cline{3-5}
+AGB  \cite{Mikheenko_2019} &  & Assembly graphs, reference sequences & Topological complexity: thousands of edges\footnote{\url{https://github.com/almiheenko/almiheenko.github.io/blob/8f4b2f8c7c498f04fa32f53f69b4bc59888a14f0/AGB/Flye_Human/data/repeat_graph.json}} & Interactive web app, d3-graphviz\footnote{\url{https://github.com/magjac/d3-graphviz}} \\\hline
+Sequence Tube Map \cite{Beyer_2019} & Pseudo-linear tubemap & \multirow{18}{=}{Variation graphs} & From nucleotides to kilobases & Interactive web app, unique layout \\ \cline{1-2} \cline{4-5}
+MoMI-G \cite{yokoyama_momi-g:_2019} & Pseudo-linear tubemap, circos, linear annotation &  & Gigabase circos, from nucleotides to kilobases & Interactive web app, multiple views \\ \cline{1-2} \cline{4-5}
+\texttt{vg view} \cite{Garrison_2018} & Force-directed &  & 10 kilobase subgraph of a variation graph, nucleotide resolution & Command line tool, static image, GraphViz\\ \cline{1-2} \cline{4-5}
+\texttt{vg viz} \cite{Garrison_2019} & \multirow{7}{=}{Rectangular sorted matrix} &  & 100 kilobase subgraph of a variation graph & Command line tool, static image \\ \cline{1-1} \cline{4-5}
+\texttt{odgi viz} &  &  & From nucleotide resolution to gigabase genomes & Command line tool, static image, binning \\\hline
 \end{tabularx}
 \end{table}
+
 
 Bandage \cite{Wick_2015}, GfaViz \cite{Gonnella_2018}, SGTK \cite{Kunyavskaya_2018} and AGB \cite{Mikheenko_2019} were designed to explore assembly graphs.
 Bandage is the oldest and most widely used, supporting a wide range of formats and graph  paradigms, however it does not currently support GFA2 \citep{Mikheenko_2019}.
@@ -49,17 +51,16 @@ Force-directed graph layouts present an aesthetically pleasing way to layout a g
 For this reason, SGTK and AGB offer a more traditional genome browser mode as well.
 Except for GfaViz, they do not have the ability to structure the display using known linearization information. 
 
-When choosing a tool, one also must consider the advantages of web applications versus local computation.  
-Web apps have the option to serve precomputed content to any user, lowering end-user system requirements.
-Local applications can benefit from institution specific resources including HPC and private data (see Table \ref{table:Visualization_Features} Technical Notes).
-\todo{JAS: In the interest of manuscript length I think the above paragraph could maybe be shorten or removed.}
+%When choosing a tool, one also must consider the advantages of web applications versus local computation.  
+%Web apps have the option to serve precomputed content to any user, lowering end-user system requirements.
+%Local applications can benefit from institution specific resources including HPC and private data (see Table \ref{table:Visualization_Features} Technical Notes).
 
-For variation graphs, SequenceTubemap \cite{Beyer_2019} displays regions using a visual language inspired by transit system maps.
+For variation graphs, Sequence Tube Map \cite{Beyer_2019} displays regions using a visual language inspired by transit system maps.
 This tool is useful for visualizing precise base-scale variation and short read mapping locations in human-chromosome-scale graphs.
 However, its limited graph simplification tools make it difficult to use on larger regions.
 
 There is a difference in scale when moving from an assembly or scaffold graph to a comprehensive variation graph of a species pangenome.
-While tools like SGTK and AGB have been demonstrated on graphs with tens of thousands of entities, the 1000 Genomes Project dataset contains 88 million known human variants \citep{1000_2015}, which gives a comprehensive variation graph with tens to hundreds of millions of elements---a much larger graph than those that SGTK and AGB have been shown to work with.
+While tools like SGTK and AGB have been demonstrated on graphs with tens of thousands of entities, the 1000 Genomes Project dataset contains 88 million known human variants \citep{1000_2015}, which induce a comprehensive variation graph of tens to hundreds of millions of elements---a much larger graph than those that SGTK and AGB have been shown to work with.
 %a density over the 3 billion base human genome of about 34 bases per variant, and
 Moreover, to achieve visualization output file sizes on the scale of megabytes given hundred megabase- to gigabase-scale assemblies, these tools necessarily hide sequence information.
 
@@ -75,7 +76,7 @@ Moreover, to achieve visualization output file sizes on the scale of megabytes g
 %AGB is built around the idea of splitting up an assembly graph and visualizing portions of it, and features many ways to do this, including linear reference based and minimum edge cut based approaches.
 
 MoMI-G is a multi-scale genome graph browser currently under development \cite{yokoyama_momi-g:_2019}. 
-It employs SequenceTubemap at nucleotide scale and integrates it into a framework along side a Circos \cite{Krzywinski_2009_Circos} plot for chromosome scale connections. 
+It employs Sequence Tube Map at nucleotide scale and integrates it into a framework along side a Circos \cite{Krzywinski_2009_Circos} plot for chromosome scale connections. 
 The integration of multiple visualizations brings their strengths to bear on different areas. 
 MoMI-G is currently the only tool that can visualize long reads to show structural variants against multiple haplotypes in a graph genome.
 
@@ -84,7 +85,7 @@ The tool is designed around a base-level visual representation of the graph, and
 It can be difficult to understand high level or nonlinear structures in such a linearized layout. 
 \texttt{ODGI viz}\footnote{\url{https://github.com/vgteam/odgi}} uses a layout very similar to \texttt{vg viz} and addresses scalability by binning hundreds of adjacent nodes together, thus reducing the resolution and making it possible to render the overall structure of gigabase pangenomes in a single image.
 
-Figure~\ref{fig:visualization} provides a visual overview of the visualization methods surveyed here.
+Figure~\ref{fig:visualization} provides a visual overview of some of the visualization methods surveyed here, while Table~\ref{table:Visualization_Features} compares them.
 It remains an open problem to interactively visualize a comprehensive human pangenome graph, potentially including interchromosomal connections, at a variety of zoom levels to enable precision pangenomics at any scale.
 
 \begin{figure}[h]
