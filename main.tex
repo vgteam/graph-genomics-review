@@ -20,6 +20,14 @@
 \usepackage{comment}
 \usepackage{tabularx}
 
+% Define a way to rotate table headings. See
+% <https://tex.stackexchange.com/a/98439>
+\newcommand*\rot{\rotatebox{90}}
+
+% Define a way to cram two lines into a non-paragraph cell
+% See <https://tex.stackexchange.com/a/132661>
+\newcommand{\twoline}[2]{\vtop{\hbox{\strut #1}\hbox{\strut #2}}}
+
 \listfiles
 
 \setcounter{secnumdepth}{4}
