@@ -54,8 +54,8 @@ Intuitively, pangenomic methods should provide greater benefit to genotyping, an
 Multiple methods taken the approach of using a pangenome model to create a single linear sequence that is close to a sample's genome sequence.   
 This sequence can then be used as a reference in conventional variant calling methods. 
 Generally speaking, these methods show improved accuracy over conventional methods alone.
-Gramtools \cite{Maciuca_2016} and PanVC \cite{Valenzuela_2018} both use specialized pangenome indexes to map reads for this purpose.
-PRG uses read $k$-mers from reads to choose paths through a graph to extract as sequences \cite{dilthey2015improved}.
+\textsc{Gramtools} \cite{Maciuca_2016} and \textsc{PanVC} \cite{Valenzuela_2018} both use specialized pangenome indexes to map reads for this purpose.
+\textsc{PRG} uses read $k$-mers from reads to choose paths through a graph to extract as sequences \cite{dilthey2015improved}.
 
 \subsubsection{Small variants}
 
@@ -64,21 +64,21 @@ NGS read lengths are sufficient to span their entirety, and the associated varia
 However, reference bias in mapping can be a source of small variant calling error, and pangenome models provide an opportunity to mitigate these biases.
 
 One strategy for genotyping small variants consists of realigning reads to graphs of known variation after mapping to a linear reference.
-This approach was pioneered in the 1000 Genomes Project by the GLIA software for use on indels and complex regions \cite{1000_2015}.
-More recently, Graphtyper expanded the scale of this approach and incorporated pangenomic data sets.
+This approach was pioneered in the 1000 Genomes Project by the \textsc{GLIA} software for use on indels and complex regions \cite{1000_2015}.
+More recently, \textsc{Graphtyper} expanded the scale of this approach and incorporated pangenomic data sets.
 It has competitive accuracy with state-of-the-art conventional pipelines but better computational efficiency, and incorporating known variation modestly improves its accuracy \cite{eggertsson2017graphtyper}.
 
 Another set of pangenomic variant callers are based on colored de Bruijn graphs.
-Cortex first developed this approach \cite{Iqbal_2012}.
-Cortex calls variants based on coverage in bubble structures in a colored de Bruijn graph, which is constructed from multiple read sets and/or reference genomes.
+\textsc{Cortex} first developed this approach \cite{Iqbal_2012}.
+\textsc{Cortex} calls variants based on coverage in bubble structures in a colored de Bruijn graph, which is constructed from multiple read sets and/or reference genomes.
 This approach permits both pangenomic and reference-free variant calling.
 %constructs a colored de Bruijn graph which can include data of multiple samples and additional sources of sequence information, like a reference genome or known alleles. 
 %Variants are detected by identifying bubble structures in the graph and  genotyped based on the samples' coverage of allele specific kmers.
 %The approach efficiently handles simultaneous analysis of multiple genomes and enables accurate variant detection in a reference-free manner.
-Bubbleparse extended the Cortex's model to improve SNP discovery \cite{Leggett_2013}.
+\textsc{Bubbleparse} extended the \textsc{Cortex}'s model to improve SNP discovery \cite{Leggett_2013}.
 %Candidate variants are produced by a bubble calling algorithm and a heuristic is presented which uses a classification and ranking system to controls the specificity of reported SNP calls \cite{Leggett_2013}.
 
-Seven Bridges' Graph Genome Pipeline includes a variant calling module that itself is minimally pangenomic beyond its use of graph-based read mappings.
+Seven Bridges' \textsc{Graph Genome Pipeline} includes a variant calling module that itself is minimally pangenomic beyond its use of graph-based read mappings.
 Rather, it is broadly similar to existing local assembly methods based on the linear reference \cite{Poplin_2017, Rimmer_2014} except in that it prioritizes haplotypes that are found in a genome graph \cite{Rakocevic_2019}.
 %This can be seen as an example of a statistical prior on variation expressed in the pangenome; simply knowing where one should look for variants is informative.
 It shows advantages over conventional pipelines in variant recall, especially for indels.
@@ -102,11 +102,11 @@ Some pangenomic genotyping tools have specifically targeted these regions.
 
 Much of this research has focused on the human leukocyte antigen (HLA) genes.
 These medically important immune-related genes are under strong selection for diversity.
-HLA*PRG \cite{dilthey2018hla}, its optimized successor HLA*LA \cite{dilthey2019hla}, Kourami \cite{lee2018kourami}, and HISAT-genotype \cite{Kim_2019} have all demonstrated techniques for genotyping HLA genes by aligning NGS reads to a graph encoding various HLA alleles.
+\textsc{HLA*PRG} \cite{dilthey2018hla}, its optimized successor \textsc{HLA*LA} \cite{dilthey2019hla}, \textsc{Kourami} \cite{lee2018kourami}, and \textsc{HISAT-genotype} \cite{Kim_2019} have all demonstrated techniques for genotyping HLA genes by aligning NGS reads to a graph encoding various HLA alleles.
 Their results rival gold-standard Sanger sequencing methods in accuracy.
 Short tandem repeats (STRs) have been another target.
 Their high diversity is driven by high mutation rates, and the low-complexity sequence adds further difficulty.
-ExpansionHunter \cite{dolzhenko2019expansionhunter} and HISAT-genotype \cite{Kim_2019} used similar methodologies to those employed in HLA to achieve comparable or better accuracy than existing methods for STRs.
+\textsc{ExpansionHunter} \cite{dolzhenko2019expansionhunter} and \textsc{HISAT-genotype} \cite{Kim_2019} used similar methodologies to those employed in HLA to achieve comparable or better accuracy than existing methods for STRs.
 %%These genes are critical components of the immune system, which produces a strong selective pressure for diversity and many dramatically distinct alleles.
 %%Determining an individual's HLA alleles is often of great medical importance.
 %
@@ -156,12 +156,12 @@ SVs are difficult to call with NGS reads because they are large relative to the 
 Long read sequencing does not share this difficulty, but this technology remains prohibitively expensive for population-scale studies or routine use.
 This represents an opportunity for pangenomic methods, which can represent SVs naturally represented in genome graphs.
 
-Bayestyper \cite{sibbesen2018accurate} compares the distribution of $k$-mers from sequencing reads to the distribution of $k$-mers along paths in the graph.
+\textsc{Bayestyper} \cite{sibbesen2018accurate} compares the distribution of $k$-mers from sequencing reads to the distribution of $k$-mers along paths in the graph.
 It calls structural variants with high accuracy almost irrespective of the size of the variant.
 However, it has a high memory footprint, and later analysis has also suggested that its reliance on long exact matches makes it fragile to breakpoint uncertainty \cite{hickey2019genotyping}.
 
-In constrast, Paragraph \cite{chen2019paragraph} and VG's genotyper \cite{hickey2019genotyping} are both based on aligning reads to graphs.
-The largest difference is that Paragraph maps to a linear reference and then realigns to local graphs (much like Graphtyper \cite{eggertsson2017graphtyper}), whereas VG maps reads directly to a graph.
+In constrast, \textsc{Paragraph} \cite{chen2019paragraph} and \textsc{VG}'s genotyper \cite{hickey2019genotyping} are both based on aligning reads to graphs.
+The largest difference is that \textsc{Paragraph} maps to a linear reference and then realigns to local graphs (much like \textsc{Graphtyper} \cite{eggertsson2017graphtyper}), whereas VG maps reads directly to a graph.
 Both methods use read coverage to determine the genotype.
 Further, both methods were shown to significantly outperform similar methods based on the linear reference.
 
@@ -184,7 +184,7 @@ Further, both methods were shown to significantly outperform similar methods bas
 Determining the two genome sequences of diploid organisms per chromosome is important in order to correctly understand allele-specific expression and compound heterozygosity, and in order to carry out many analyses in the genetics of common diseases and in population genetics \cite{tewhey2011importance}. 
 However, current assembly approaches often generate mixed haplotype assembly and, therefore, fail to capture the diploid nature of the organism under study. 
 
-WHdenovo \cite{garg2019trio, garg2018graph} is the first tool that leverages information of short and long-reads to generate happlotype-resolved assembly. 
+\textsc{WHdenovo} \cite{garg2019trio, garg2018graph} is the first tool that leverages information of short and long-reads to generate happlotype-resolved assembly. 
 The basic idea is to work in the space of assembly graph (without collapses halotypes) to perform phasing. 
 This method was applied to genomes of moderate sizes with low to high heterozygosity rates. 
 Furthermore, we have shown that we can detect and phase structural variants.
@@ -193,7 +193,7 @@ Furthermore, we have shown that we can detect and phase structural variants.
 % Glenn
 
 CHiP-seq data, reads that bind to specific transcription factors, can be mapped back to the reference genome in order to locate binding sites.
-Graph Peak Caller is based on \texttt{vg} and is the first tool to use a genome graph for this process \cite{Grytten_2019}.
+\textsc{Graph Peak Caller} is based on \texttt{vg} and is the first tool to use a genome graph for this process \cite{Grytten_2019}.
 It was shown to find binding sites more enriched for known DNA binding motifs than linear methods on \emph{A. thaliana}.
 It was also applied to human data to discover novel sites for enhancers in the human genome \cite{groza2019personalized}. 
 
@@ -209,23 +209,23 @@ Using variation information during mapping can help ameliorate this and improve 
 
 The simplest approach to using variation data in mapping involves creating a personalized diploid genome or transcriptome, which is then used as the reference for a standard linear mapping method \cite{Rozowsky_2011,Raghupathy2018-sd}.
 Methods using this approach have been shown to reduce reference bias and improve estimation of ASE, relative to traditional single reference genome methods, but they are generally limited by requiring phased haplotypes of either the whole genome or the individual genes for the individuals under study.
-Variant-aware mappers like GSNAP \cite{Wu2010-hv}, iMapSplice \cite{Liu_2018} and HISAT2 \cite{Kim_2019} remove this necessity.
+Variant-aware mappers like \textsc{GSNAP} \cite{Wu2010-hv}, \textsc{iMapSplice} \cite{Liu_2018} and \textsc{HISAT2} \cite{Kim_2019} remove this necessity.
 Indeed, all three have shown to reduce reference bias by using known SNVs during mapping \cite{Castel2015-ef,Liu_2018}.
-ASElux takes a different approach and only aligns reads that overlaps heterozygous exonic SNVs \cite{Miao2018-ps}.
+\textsc{ASElux} takes a different approach and only aligns reads that overlaps heterozygous exonic SNVs \cite{Miao2018-ps}.
 It create a suffix array index of the alleles and their flanking sequences, which is used to filter reads that do not closely match an allele.
 Allelic read count for each heterozygous SNV is then estimated using alignments of this smaller read set.
-The authors demonstrate that ASElux is able to improve estimation of ASE compared to similar pipelines based on linear mapping methods.
+The authors demonstrate that \textsc{ASElux} is able to improve estimation of ASE compared to similar pipelines based on linear mapping methods.
 
 Variation-aware analysis of RNA-seq data is important for accurately analyzing highly polymorphic regions.
 As with variant calling, the specific region that has generated the most interest is the HLA genes in the human MHC. 
-AltHapAlignR \cite{Lee_2018} and HLApers \cite{Aguiar2019-fy} both compare reads against a collection of known HLA haplotypes rather than the linear reference, and both have demonstrated improved estimation of HLA expression.
+\textsc{AltHapAlignR} \cite{Lee_2018} and \textsc{HLApers} \cite{Aguiar2019-fy} both compare reads against a collection of known HLA haplotypes rather than the linear reference, and both have demonstrated improved estimation of HLA expression.
 
 Even intronic variation can be helpful for analyzing RNA-seq data. 
 Intronic variation can disrupt existing splice-site motifs or create new ones, resulting in intron retention or novel splicing, respectively. 
 Many mappers factor canonical splice-site motifs into alignment scores across splice junctions
 Thus, mappers that are aware of changes to the motifs can give more accurate mapping results on the modified splice-junctions. 
 Indeed, by using a personalized genome approach, \citeauthor{Stein_2015} \cite{Stein_2015} were able to identify 506 personal splice junctions in 75 individuals, of which 437 were novel.
-Even more novel junctions were later found in the same individuals by \citeauthor{Liu_2018} using iMapSplice \cite{Liu_2018}.
+Even more novel junctions were later found in the same individuals by \citeauthor{Liu_2018} using \textsc{iMapSplice} \cite{Liu_2018}.
 
 %ASElux is significantly faster than GSNAP, but GSNAP reduces reference bias slightly more \cite{Miao2018-ps}.
 
@@ -261,10 +261,10 @@ Even more novel junctions were later found in the same individuals by \citeautho
 Most of the methods mentioned in this review has focused on the analyses of human data, however, the benefits of using graphs as a non-linear pangenomic reference structure have also been demonstrated for other species.
 This is especially true for bacterial metagenomics and viral quasispecies where the sequencing data consists of a mixture of closely related sequences (e.g. strains).
 A graph with sequence paths here provides a natural representation of the data and methods have been developed that specifically take advantage of this. 
-Mykrobe predictor \cite{Bradley2015-kl} and GROOT \cite{Rowe2018-bg} uses graph-based structures of bacterial genomes and gene sets to predict antibody resistance in sequencing samples.
-Virus-VG \cite{Baaijens2019-ng} builds a variation graph from assembled viral contigs in order to construct haplotypes and predict associated abundances in viral quasispecies from sequencing reads.
-Their method was later improved in VG-Flow \cite{Baaijens2019-ha} which can scale to much larger genomes, such as bacteria.  
-MetaKallisto \cite{Schaeffer2017-fh} performs taxonomical classification and quantification of metagenomic sequencing data using a database of known sequences represented as colored de Bruijn graphs.
+\textsc{Mykrobe} predictor \cite{Bradley2015-kl} and \textsc{GROOT} \cite{Rowe2018-bg} uses graph-based structures of bacterial genomes and gene sets to predict antibody resistance in sequencing samples.
+\textsc{Virus-VG} \cite{Baaijens2019-ng} builds a variation graph from assembled viral contigs in order to construct haplotypes and predict associated abundances in viral quasispecies from sequencing reads.
+Their method was later improved in \textsc{VG-Flow} \cite{Baaijens2019-ha} which can scale to much larger genomes, such as bacteria.  
+\textsc{MetaKallisto} \cite{Schaeffer2017-fh} performs taxonomical classification and quantification of metagenomic sequencing data using a database of known sequences represented as colored de Bruijn graphs.
 
 %Mykrobe predictor uses reference de Bruijn graphs to estimate antibody resistance from \textit{S. aureus} and \textit{M. Tuberculosis} sequencing data \cite{Bradley2015-kl}.
 %The graphs are constructed from known resistant relevant alleles and genes and compared to a whole-genome de Bruijn graph built from the sample's sequencing reads.

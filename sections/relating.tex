@@ -18,22 +18,22 @@ An overview of tools features is given in.
 \todo{JAS: Given that the manuscript is max 25 pages this table seems too big. Could it be compressed or some details removed?}
 \todo{Footnotes in the table do not appear in the output PDF.}
 
-Bandage \cite{Wick_2015}, GfaViz \cite{Gonnella_2018}, SGTK \cite{Kunyavskaya_2018} and AGB \cite{Mikheenko_2019} were designed to explore assembly graphs.
+\textsc{Bandage} \cite{Wick_2015}, \textsc{GfaViz} \cite{Gonnella_2018}, \textsc{SGTK} \cite{Kunyavskaya_2018} and \textsc{AGB} \cite{Mikheenko_2019} were designed to explore assembly graphs.
 Bandage is the oldest and most widely used, supporting a wide range of formats and graph  paradigms, however it does not currently support GFA2 \citep{Mikheenko_2019}.
 Force-directed graph layouts, which use a physics simulation to allow graph elements to lay themselves out in two dimensions, can present a graph in an aesthetically pleasing way, but their reliance on only local information in the layout process can make displaying annotations challenging.
-For this reason, SGTK and AGB offer a more traditional genome browser mode as well.
-Except for GfaViz, they do not have the ability to structure the display using known linearization information. 
+For this reason, \textsc{SGTK} and \textsc{AGB} offer a more traditional genome browser mode as well.
+Except for \textsc{GfaViz}, they do not have the ability to structure the display using known linearization information. 
 
 %When choosing a tool, one also must consider the advantages of web applications versus local computation.  
 %Web apps have the option to serve precomputed content to any user, lowering end-user system requirements.
 %Local applications can benefit from institution specific resources including HPC and private data (see Table \ref{table:Visualization_Features} Technical Notes).
 
-For variation graphs, Sequence Tube Map \cite{Beyer_2019} displays regions using a visual language inspired by transit system maps.
+For variation graphs, \textsc{Sequence Tube Map} \cite{Beyer_2019} displays regions using a visual language inspired by transit system maps.
 This tool is useful for visualizing precise base-scale variation and short read mapping locations in human-chromosome-scale graphs.
 However, its limited graph simplification tools make it difficult to use on larger regions.
 
 There is a difference in scale when moving from an assembly or scaffold graph to a comprehensive variation graph of a species pangenome.
-While tools like SGTK and AGB have been demonstrated on graphs with tens of thousands of entities, the 1000 Genomes Project dataset contains 88 million known human variants \citep{1000_2015}, which induce a comprehensive variation graph of tens to hundreds of millions of elements---a much larger graph than those that SGTK and AGB have been shown to work with.
+While tools like \textsc{SGTK} and \textsc{AGB} have been demonstrated on graphs with tens of thousands of entities, the 1000 Genomes Project dataset contains 88 million known human variants \citep{1000_2015}, which induce a comprehensive variation graph of tens to hundreds of millions of elements---a much larger graph than those that SGTK and AGB have been shown to work with.
 %a density over the 3 billion base human genome of about 34 bases per variant, and
 Moreover, to achieve visualization output file sizes on the scale of megabytes given hundred megabase- to gigabase-scale assemblies, these tools necessarily hide sequence information.
 
@@ -48,15 +48,15 @@ Moreover, to achieve visualization output file sizes on the scale of megabytes g
 %It is relatively tightly tied to the assembly graph use case, requiring each (sequence-bearing) edge to be classifiable as ``unique'' or ``repetitive'' based on assembler annotation or sequencing coverage \citep{Mikheenko_2019}.
 %AGB is built around the idea of splitting up an assembly graph and visualizing portions of it, and features many ways to do this, including linear reference based and minimum edge cut based approaches.
 
-MoMI-G is a multi-scale genome graph browser currently under development \cite{yokoyama_momi-g:_2019}. 
-It employs Sequence Tube Map at nucleotide scale and integrates it into a framework along side a Circos \cite{Krzywinski_2009_Circos} plot for chromosome scale connections. 
+\textsc{MoMI-G} is a multi-scale genome graph browser currently under development \cite{yokoyama_momi-g:_2019}. 
+It employs \textsc{Sequence Tube Map} at nucleotide scale and integrates it into a framework along side a \textsc{Circos} \cite{Krzywinski_2009_Circos} plot for chromosome scale connections. 
 The integration of multiple visualizations brings their strengths to bear on different areas. 
-MoMI-G is currently the only tool that can visualize long reads to show structural variants against multiple haplotypes in a graph genome.
+\textsc{MoMI-G} is currently the only tool that can visualize long reads to show structural variants against multiple haplotypes in a graph genome.
 
-\texttt{vg viz} can render graphs of arbitrary size and complexity in linear time by sorting the sequence-bearing nodes of the graph into a one-dimensional layout \citep{Garrison_2019}. 
+\textsc{vg viz} can render graphs of arbitrary size and complexity in linear time by sorting the sequence-bearing nodes of the graph into a one-dimensional layout \citep{Garrison_2019}. 
 The tool is designed around a base-level visual representation of the graph, and optimized for comparing long embedded paths in the graph, on the basis of which nodes they do or do not visit. 
 It can be difficult to understand high level or nonlinear structures in such a linearized layout. 
-\texttt{ODGI viz}\footnote{\url{https://github.com/vgteam/odgi}} uses a layout very similar to \texttt{vg viz} and addresses scalability by binning hundreds of adjacent nodes together, thus reducing the resolution and making it possible to render the overall structure of gigabase pangenomes in a single image.
+\textsc{odgi viz}\footnote{\url{https://github.com/vgteam/odgi}} uses a layout very similar to \textsc{vg viz} and addresses scalability by binning hundreds of adjacent nodes together, thus reducing the resolution and making it possible to render the overall structure of gigabase pangenomes in a single image.
 
 Figure~\ref{fig:visualization} provides a visual overview of some notable visualization methods, while Table~\ref{table:Visualization_Features} compares these and some additional methods on criteria including layout approach and implementation scalability.
 It remains an open problem to interactively visualize a comprehensive human pangenome graph, potentially including interchromosomal connections, at a variety of zoom levels to enable precision pangenomics at any scale.
@@ -140,30 +140,30 @@ As this description suggests, a mapping tool's features are in large part determ
 
 One major point of distinction between mapping tools is the type of graphs they were designed for. 
 Several tools apply only to acyclic variation graphs formed by adding variants to a linear reference.
-Examples include GenomeMapper (an early forerunner) \cite{Schneeberger_2009}, Seven Bridge's Graph Genome Aligner \cite{Rakocevic_2019}, HISAT2 \cite{Kim_2019}, V-MAP \cite{Vaddadi_2019}.
+Examples include \textsc{GenomeMapper} (an early forerunner) \cite{Schneeberger_2009}, Seven Bridge's \textsc{Graph Genome Aligner} \cite{Rakocevic_2019}, \textsc{HISAT2} \cite{Kim_2019}, \textsc{V-MAP} \cite{Vaddadi_2019}.
 %Another set of tools target DBGs: BGREAT \cite{Limasset_2016}, deBGA \cite{Liu_2016}, and BrownieAligner \cite{Heydari_2018}.
 %These were developed in parallel to recent pangenomics research with motivations in genome assembly. 
-VG \cite{Garrison_2019} and GraphAligner \cite{Rautiainen_2019b} appear to be the only tools with open ambitions of mapping to arbitrary variation graphs, including complex local and global topologies.
-GraphAligner can also align to generic overlap graphs and DBGs.
+\textsc{VG} \cite{Garrison_2019} and \textsc{GraphAligner} \cite{Rautiainen_2019b} appear to be the only tools with open ambitions of mapping to arbitrary variation graphs, including complex local and global topologies.
+\textsc{GraphAligner} can also align to generic overlap graphs and DBGs.
 This gives it a second role in a related literature of mapping to DBGs for genome assembly and error correction \cite{Heydari_2018, Fu2019ErrorCorrectionSurvey}.
 
 The majority of these tools emphasize mapping short-read \emph{next-generation sequencing (NGS)} data. 
 %Most likely, the motivation for doing so is the same as why NGS remains the standard for conventional resequencing experiments; the price point currently favors it. 
 %In this sense, pangenomic graph mappers essentially represent an incremental technical improvement over previous pipelines, albeit a very important one. 
-To our knowledge, GraphAligner and V-MAP are the only graph mapping tools that explicitly targets long read sequencing data \cite{Rautiainen_2019b, Vaddadi_2019}.
-V-MAP is also demonstrated on NGS reads, but GraphAligner's seeding strategy limits it to long reads.
+To our knowledge, \textsc{GraphAligner} and \textsc{V-MAP} are the only graph mapping tools that explicitly targets long read sequencing data \cite{Rautiainen_2019b, Vaddadi_2019}.
+\textsc{V-MAP} is also demonstrated on NGS reads, but \textsc{GraphAligner}'s seeding strategy limits it to long reads.
 
 The actual algorithms that each tool employs vary greatly. 
 For indexing, most graph mapping tools have opted for some variation of a $k$-mer table. 
 %In the case of DBG mappers, this is an especially attractive option since the $k$-mers also implicitly define the edges of the graph. 
 %This may be why 
 %In fact, all of the DBG mappers listed above use this strategy \cite{Holley_2012, Limasset_2016, Liu_2016, Heydari_2018, Rautiainen_2019b}. 
-Additionally, GraphAligner, GenomeMapper, Seven Bridge's mapper, and V-MAP seed with $k$-mer tables \cite{Rautiainen_2019b, Schneeberger_2009, Rakocevic_2019, Vaddadi_2019}. 
+\textsc{GraphAligner}, \textsc{GenomeMapper}, Seven Bridge's mapper, and \textsc{V-MAP} all use this strategy \cite{Rautiainen_2019b, Schneeberger_2009, Rakocevic_2019, Vaddadi_2019}. 
 The remaining mappers use succinct text indexes.
-VG uses the GCSA2 \cite{Siren_2017} and a longest-common-prefix array, which enable very specific queries at the expense of high memory utilization \cite{Garrison_2019}.
-HISAT2 uses a modified GCSA \cite{Siren_2014} that also encodes the graph structure itself.
-This helps give HISAT2 an impressively low memory footprint but a somewhat more limited set of queries \cite{Kim_2019}.
-GraphAligner also has the option of seeding with a full text index of the node sequences of the graph, but the memory savings of its indexes are offset by data structures that support its alignment algorithm \cite{Rautiainen_2019b}.
+\textsc{VG} uses the GCSA2 \cite{Siren_2017} and a longest-common-prefix array, which enable very specific queries at the expense of high memory utilization \cite{Garrison_2019}.
+\textsc{HISAT2} uses a modified GCSA \cite{Siren_2014} that also encodes the graph structure itself.
+This helps give \textsc{HISAT2} an impressively low memory footprint but a somewhat more limited set of queries \cite{Kim_2019}.
+\textsc{GraphAligner} also has the option of seeding with a full text index of the node sequences of the graph, but the memory savings of its indexes are offset by data structures that support its alignment algorithm \cite{Rautiainen_2019b}.
 
 %Most DBG mappers have used searches through the graph to make alignments.
 %deBGA and BrownieAligner exhaustively enumerate paths from seeds. 
@@ -178,19 +178,19 @@ GraphAligner also has the option of seeding with a full text index of the node s
 %According to the authors' analysis, BrownieAligner is more accurate than deBGA and BGREAT, but BGREAT tends to be more memory efficient, and deBGA tends to be faster \cite{Heydari_2018}.
 
 
-While few of the DBG mappers employ graph-based alignment algorithms, most variation graph mappers do. 
-The exceptions are GenomeMapper, which aligns to all paths out from a seed, and HISAT2.
-The HISAT2 alignment algorithm is a complex set of heuristics that lean heavily on its optimized exact match index.  
+The majority of graph mappers employ graph-based alignment algorithms. 
+The exceptions are \textsc{GenomeMapper}, which aligns to all paths out from a seed, and \textsc{HISAT2}.
+The \textsc{HISAT2} alignment algorithm is a complex set of heuristics that lean heavily on its optimized exact match index.  
 This makes it exceptionally fast, although it also can hurt alignment quality around indels. 
 %However, GenomeMapper also seems to be unmaintained since 2009, and its heuristics appear better suited to earlier NGS technologies \cite{Schneeberger_2009}. 
-Seven Bridges' mapper, VG, and V-MAP all employ some version of partial order alignment \cite{Rakocevic_2019, Garrison_2019, Vaddadi_2019}. 
+Seven Bridges' mapper, \textsc{VG}, and \textsc{V-MAP} all employ some version of partial order alignment \cite{Rakocevic_2019, Garrison_2019, Vaddadi_2019}. 
 %Seven Bridges also tries to find a near-match using a potentially exponential depth-first search algorithm before resorting to alignment algorithms that are more expensive when variation is sparse \cite{Rakocevic_2019}. 
 %The HISAT2 alignment algorithm is a complex set of heuristics that lean heavily on its optimized exact match index. 
-In general, VG compares favorably to other tools in terms of accuracy on NGS data. 
+In general, \textsc{VG} compares favorably to other tools in terms of accuracy on NGS data. 
 However, most comparisons point out that it is quite demanding on computer memory and often slower than the alternatives \cite{Kim_2019, Vaddadi_2019}. 
 %V-MAP uses distance-based heuristics on acyclic graphs to efficiently cluster seeds. 
-V-MAP's fast clustering heuristics allow it to align long reads faster than VG, but there is no published comparison to GraphAligner \cite{Vaddadi_2019}.
-GraphAligner is the only mapper to incorporate the most recent research into graph alignment algorithms.
+\textsc{V-MAP}'s fast clustering heuristics allow it to align long reads faster than \textsc{VG}, but there is no published comparison to \textsc{GraphAligner} \cite{Vaddadi_2019}.
+\textsc{GraphAligner} is the only mapper to incorporate the most recent research into graph alignment algorithms.
 It uses a banded alignment algorithm to achieve impressive speed aligning long reads to genome graphs \cite{Rautiainen_2019b}.
 %\todo{JAS: Are the last two paragraph too detailed? Could they be shorten? The whole mapping section seems a bit long compared to some of the other sections.}
 \todo{JAS: In table 2 only VG is described as accurate. Is that true and what is meant by accurate? I think it could be misunderstood. \\ JME: I agree. I'm not quite sure what level of detail we should leave in the table now that we're removing detail from the text.}
@@ -422,20 +422,20 @@ Due to the presence of splicing, mapping transcriptomic reads typically requires
 Thus, variation and splicing-aware mappers for transcriptomic reads have largely been developed in parallel to mappers for genomic reads, although graphical methods have recently created some room for overlap.
 
 Several methods have been published that specifically focus on reducing mapping bias for RNA-seq data around SNVs. 
-GSNAP was the first such method \cite{Wu2010-hv}.
+\textsc{GSNAP} was the first such method \cite{Wu2010-hv}.
 It seeds mappings with a hash table of $k$-mers from both the genome and a set of SNVs.
 The current version uses a suffix array as well. 
-Similar, iMapSplice creates an enhanced suffix array of a set of SNV alleles and their flanking sequences \cite{Liu_2018}.
+Similar, \textsc{iMapSplice} creates an enhanced suffix array of a set of SNV alleles and their flanking sequences \cite{Liu_2018}.
 The reads are then mapped to the SNV index and the reference genome allowing for spliced alignments.
 Both methods, however, only support SNVs and are therefore unable to reduce reference bias around indels.
 
 In contrast, graph-based methods can easily model indels.
-HISAT2 can map RNA-seq data in addition to genomic DNA \cite{Kim_2019}.
-It is based on the RNA mapper HISAT \cite{Kim_2015}, and it retains the capacity for spliced alignment.
+\textsc{HISAT2} can map RNA-seq data in addition to genomic DNA \cite{Kim_2019}.
+It is based on the RNA mapper \textsc{HISAT} \cite{Kim_2015}, and it retains the capacity for spliced alignment.
 Otherwise, its mapping algorithm for transcriptomic sequencing is the same as for genomic DNA (See above).
 The ability to create spliced variation graphs has also been added to VG \cite{Garrison_2018}. 
 In these variation graphs, known splice junctions are added as edges, similar to the addition of a deletion event.
-VG supports any type of variation, but its splicing-awareness is limited to only known splice junctions.
+\textsc{VG} supports any type of variation, but its splicing-awareness is limited to only known splice junctions.
 Thus, reads that span a novel splice junction will only map partially.
 
 
