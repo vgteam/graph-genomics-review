@@ -17,16 +17,15 @@ The advent of pangenomics represents an opportunity to improve this methodology 
 These strategies can be coarsely divided into two umbrella approaches.
 First, known variation can inform inference by providing a statistical prior.
 Second, known variation can help applications avoid algorithmic artifacts that frustrate inference.
-Together, these advantages are helping pangenomics expand the limits of what variation current technology can detect and how accurately it can do so.
+%Together, these advantages are helping pangenomics expand the limits of what variation current technology can detect and how accurately it can do so.
 
 In many ways, the spiritual predecessors of pangenomic variant calling are multi-sample calling methods. 
 Many of these were developed alongside major population sequencing projects like the 1000 Genomes Project \cite{1000_2015}.
-They co-call variants on a group of samples in a single, shared inference process \cite{Li_2011,Garrison_2012}.
+They co-call variants on a group of samples in a single, shared inference process.
 The motivation for doing so mirrors the motivation for pangenomic variant calling: increased statistical power via a shared prior and reduced algorithmic bias.
 The main difference today is the abundance of data available.
-It is no longer necessary, or even advisable, to restrict inference to the samples obtained in one project.
-Increasingly large databases of variation are publicly available to guide future analyses.
-The benefits of multi-sample calling can now be brought to bear even on individual samples.
+It is no longer necessary to restrict inference to the samples from one project.
+With public databases of variation, the benefits of multi-sample calling can now be brought to bear even on individual samples.
 
 In pangenomics, it is useful to distinguish between \emph{variant calling} and \emph{genotyping}.
 Genotyping consists of determining whether a previously observed variant is present in a new sample, whereas variant calling involves detecting yet unobserved variation.
