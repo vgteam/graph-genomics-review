@@ -12,6 +12,7 @@ Our starting point is a sequence graph \cite{hein1989new} whose nodes are labele
 Practically, a sequence graph serves to compress many redundant input sequences into a smaller data structure that is still representative of the full set.
 The model is thus useful for representing multiple sequence alignments \cite{hein1989new,Lee_2002}.
 In assembly, it is used to compress the full information in a set of sequencing reads (as in the \emph{string graph}) \cite{Myers_2005}, or fixed-length $k$-mers (as in the \emph{de Bruijn graph} (DBG)) \cite{Pevzner_2001}.
+\todo{JME: should we have a more complete description of these data structures here?}
 
 \emph{Genome graphs} are sequence graphs used to represent whole genome relationships \cite{Paten_2017}.
 Walks through these graphs represent recombinations of the genomes included in the model.
@@ -90,15 +91,17 @@ It has been key to the first wave of precision pangenomic methods.
 %A number of methods have been developed around this pangenomic model, but typically they use a specialized or limited version of the model as in internal data structure to drive improvements in read alignment and genome inference.
 These methods typically use a specialized or restricted version of the ``reference plus variation'' pangenome graph.
 GenomeMapper \cite{Schneeberger_2009} first introduced the linear \emph{genome graph} a reference system for resequencing.
-To facilitate its alignment model (which has exponential costs in the number of traversed bubbles), it breaks the graph into blocks of a fixed reference length (typically 256bp).
+%To facilitate its alignment model (which has exponential costs in the number of traversed bubbles), it breaks the graph into blocks of a fixed reference length (typically 256bp).
 The journaled string tree \cite{Rahn_2014} supports time and space-efficient windowed traversal over a large collection of similar sequences represented as phased series of small variants relative to a reference.
-The Population Reference Graph (PRG) model \cite{dilthey2015improved}, which was validated primarily in the human MHC region, takes a more curated approach to graph construction.
-Over multiple phases it builds an acyclic genome graph from $k$-mer based alignment of long haplotypes, additional gene alleles, and finally small variants.
-To support its alignment (which has exponential costs in the number of bubbles) and indexing systems, gramtools \cite{Maciuca_2016} combines variants found within a given window length ($\approx$30bp) into a single locus.
-PanVC \cite{Valenzuela_2018} employs a gapped MSA as its pangenomic model, inferring underlying recombinant haplotype that may then be used as a reference for alignment and variant calling with standard tools.
+%JME: I cover these methods in a section in variant calling. i think they fit better there since that's the authors' emphasis. i do get the argument for considering a pangenome construction method though
+%The Population Reference Graph (PRG) model \cite{dilthey2015improved}, which was validated primarily in the human MHC region, takes a more curated approach to graph construction.
+%Over multiple phases it builds an acyclic genome graph from $k$-mer based alignment of long haplotypes, additional gene alleles, and finally small variants.
+%To support its alignment (which has exponential costs in the number of bubbles) and indexing systems, gramtools \cite{Maciuca_2016} combines variants found within a given window length ($\approx$30bp) into a single locus.
+%PanVC \cite{Valenzuela_2018} employs a gapped MSA as its pangenomic model, inferring underlying recombinant haplotype that may then be used as a reference for alignment and variant calling with standard tools.
 Seven Bridges' Graph Genome Pipeline \cite{Rakocevic_2019} was vetted on a graph with common variation and indels, which is used primarily to improve read alignment, with alignments reported against the linear reference.
+\todo{JME: these alignment results are covered in the mapping section, we don't need to go into this kind of detail here, IMO.}
 The variation graph toolkit, specifically \textit{vg construct} \cite{Garrison_2018}, can be applied to transform VCF files and reference sequences into genome graphs, which can be rendered into GFA format and are subsequently used by other tools for alignment and genome annotation.
-\todo{JME: We haven't introduced GFA format at this point. Maybe formats should come before construction?}
+%\todo{JME: We haven't introduced GFA format at this point. Maybe formats should come before construction?}
 Deciding which variation should be added to a graph is non-trivial, and has encouraged studies of graph utility \cite{Novak_2017a} and algorithms to determine which variation is helpful \cite{Pritt_2018}.
 
 %We observe out that most of these methods (excluding GenomeMapper and vg) produce reference-relative alignments or recombinant haplotypes inferred by matching a read set against their pangenomic model.
