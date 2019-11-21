@@ -400,11 +400,11 @@ End of customized bst file
 % pre-edn,%: Publisher after edition
 %--------------------
 %ISBN NUMBER:
-  isbn,%: Include ISBN
+%  isbn,%: Include ISBN
 %   %: (def) No ISBN
 %--------------------
 %ISSN NUMBER:
-  issn,%: Include ISSN
+%  issn,%: Include ISSN
 %   %: (def) No ISSN
 %--------------------
 %DOI NUMBER:
@@ -469,7 +469,7 @@ End of customized bst file
 %--------------------
 %FINAL PUNCTUATION:
     %: (def) Period at very end
-% fin-bare,%: No period at end
+fin-bare,%: No period at end
 %--------------------
 %ABBREVIATE WORD `PAGES' (if not using external language file)
     %: (def) `Page(s)'

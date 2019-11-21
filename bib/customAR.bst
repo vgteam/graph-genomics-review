@@ -4,7 +4,7 @@
 %%
 %% The original source files were:
 %%
-%% merlin.mbs  (with options: `nm-rvx,ed-rev,jnrlst,nmlm,x6,m5,num-xser,isbn,issn,doi,xedn,nfss,')
+%% merlin.mbs  (with options: `nm-rvx,ed-rev,jnrlst,nmlm,x6,m5,num-xser,doi,fin-bare,xedn,nfss,')
 %% ----------------------------------------
 %% *** for annual reviews in genomics and human genetics ***
 %% 
@@ -46,8 +46,6 @@ ENTRY
     eid
     howpublished
     institution
-    isbn
-    issn
     journal
     key
     month
@@ -107,8 +105,10 @@ FUNCTION {output.check}
   if$
 }
 FUNCTION {fin.entry}
-{ add.period$
-  write$
+{ duplicate$ empty$
+    'pop$
+    'write$
+  if$
   newline$
 }
 
@@ -460,26 +460,6 @@ FUNCTION {format.editors}
     }
   if$
 }
-FUNCTION {format.isbn}
-{ isbn "isbn" bibinfo.check
-  duplicate$ empty$ 'skip$
-    {
-      new.block
-      "ISBN " swap$ *
-    }
-  if$
-}
-
-FUNCTION {format.issn}
-{ issn "issn" bibinfo.check
-  duplicate$ empty$ 'skip$
-    {
-      new.block
-      "ISSN " swap$ *
-    }
-  if$
-}
-
 FUNCTION {format.doi}
 { doi empty$
     { "" }
@@ -932,7 +912,6 @@ FUNCTION {article}
       format.pages output
     }
   if$
-  format.issn output
   format.doi output
   new.block
   format.note output
@@ -966,7 +945,6 @@ FUNCTION {book}
   if$
   format.edition output
   format.date "year" output.check
-  format.isbn output
   format.doi output
   new.block
   format.note output
@@ -981,7 +959,6 @@ FUNCTION {booklet}
   howpublished "howpublished" bibinfo.check output
   address "address" bibinfo.check output
   format.date output
-  format.isbn output
   format.doi output
   new.block
   format.note output
@@ -1019,10 +996,6 @@ FUNCTION {inbook}
   if$
   format.edition output
   format.date "year" output.check
-  crossref missing$
-    { format.isbn output }
-    'skip$
-  if$
   format.doi output
   new.block
   format.note output
@@ -1044,7 +1017,6 @@ FUNCTION {incollection}
       format.publisher.address output
       format.edition output
       format.date "year" output.check
-      format.isbn output
     }
     { format.incoll.inproc.crossref output.nonnull
       format.chapter.pages output
@@ -1074,8 +1046,6 @@ FUNCTION {inproceedings}
         }
       if$
       format.date "year" output.check
-      format.isbn output
-      format.issn output
     }
     { format.incoll.inproc.crossref output.nonnull
       format.pages output
@@ -1205,8 +1175,6 @@ FUNCTION {proceedings}
      }
   if$
       format.date "year" output.check
-  format.isbn output
-  format.issn output
   format.doi output
   new.block
   format.note output
