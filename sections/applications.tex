@@ -205,7 +205,7 @@ Using variation information during mapping can help ameliorate this and improve 
 The simplest approach to using variation data in mapping involves creating a personalized diploid genome or transcriptome, which is then used as the reference for a standard linear mapping method \cite{Turro2011-op,Rozowsky_2011,Bray_2016,Raghupathy2018-sd}.
 Methods using this approach have been shown to reduce reference bias and improve estimation of ASE, relative to traditional single reference genome methods, but they are generally limited by requiring phased haplotypes of either the whole genome or the individual genes for the individuals under study.
 Variant-aware mappers like GSNAP \cite{Wu2010-hv}, iMapSplice \cite{Liu_2018} and HISAT2 \cite{Kim_2019} remove this necessity.
-Indeed, all three have all shown to reduce reference bias by using known SNVs during mapping \cite{Castel2015-ef,Liu_2018}.
+Indeed, all three have shown to reduce reference bias by using known SNVs during mapping \cite{Castel2015-ef,Liu_2018}.
 ASElux takes a different approach and only aligns reads that overlaps heterozygous exonic SNVs \cite{Miao2018-ps}.
 It create a suffix array index of the alleles and their flanking sequences, which is used to filter reads that do not closely match an allele.
 Allelic read count for each heterozygous SNV is then estimated using alignments of this smaller read set.
