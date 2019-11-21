@@ -499,20 +499,28 @@ GraphAligner & Variation graph or overlap graph & Long read & Fast \\ \hline
 \subsection{Variation-aware transcriptomic mapping}
 
 Attempts to use pangenomic models to analyze transcriptomic sequencing data have generally received less attention than similar methods with whole genome sequencing data.
-However, certain downstream applications in transcriptomics also benefit from incorporating information on genomic variation.
-Due to presence of splicing, mapping transcriptomic reads typically requires specialized algorithms.
-Thus, variation-aware mappers for transcriptomic reads have largely been developed in parallel to mappers for genomic reads, although graphical methods have recently created some room for overlap.
+However, reference-bias can also affect downstream applications in transcriptomics.
+Due to the presence of splicing, mapping transcriptomic reads typically requires specialized algorithms.
+Thus, variation and splicing-aware mappers for transcriptomic reads have largely been developed in parallel to mappers for genomic reads, although graphical methods have recently created some room for overlap.
 
 Several methods have been published that specifically focus on reducing mapping bias for RNA-seq data around SNVs. 
 GSNAP was the first such method \cite{Wu2010-hv}.
 It seeds mappings with a hash table of $k$-mers from both the genome and a set of SNVs.
 The current version uses a suffix array as well. 
-ASElux, uses an individual's heterozygous exonic SNVs to create a suffix array index of the alleles and their flanking sequences \cite{Miao2018-ps}, which is used to filter reads that do not closely match some allele.
-More expensive alignment algorithms are restricted to this smaller read set, which is all that is need for some transcriptomic applications.
-Similarly to ASElux, iMapSplice creates an index of SNV alleles and their flanking sequences \cite{Liu_2018}.
-The sequences are indexed using enhanced suffix arrays, and reads are mapped to both this index and the reference genome simultaneously.
-The authors demonstrated that iMapSplice achieves higher mapping accuracy and lower reference bias compared to both a linear mapping method and HISAT2.
-GSNAP is still competitive the later mapping methods with regards to mapping accuracy, but it is generally much slower \cite{Castel2015-ef}.
+Similar, iMapSplice creates an enhanced suffix array of a set of SNV alleles and their flanking sequences \cite{Liu_2018}.
+The reads are then mapped to the SNV index and the reference genome allowing for spliced alignments.
+Both methods, however, only support SNVs and are therefore unable to reduce reference bias around indels.
+
+In contrast, graph-based methods can easily model indels.
+HISAT2 can map RNA-seq data in addition to genomic DNA \cite{Kim_2019}.
+It is based on the RNA mapper HISAT \cite{Kim_2015}, and it retains the capacity for spliced alignment.
+Otherwise, its mapping algorithm for transcriptomic sequencing is the same as for genomic DNA (See above).
+The ability to create spliced variation graphs has also been added to VG \cite{Garrison_2018}. 
+In these variation graphs, known splice junctions are added as edges, similar to the addition of a deletion event.
+VG supports any type of variation, but its splicing-awareness is limited to only known splice junctions.
+Thus, reads that span a novel splice junction will only map partially.
+
+
 %Proper variant-aware mapping methods, on the other hand, do not require that the variants are phased beforehand.
 %GSNAP was the first variant- and splicing-aware mapping method developed for RNA-seq data \cite{Wu2010-hv}. %\todo{JAS: We might want to add GSNAP introduction to the model section since it is general and also works for WGS}.
 %It uses a $k$-mer-based approach where both the genome and a set of SNVs are indexed using hash tables.
@@ -527,17 +535,6 @@ GSNAP is still competitive the later mapping methods with regards to mapping acc
 %Similarly to ASElux, iMapSplice creates an index of SNV alleles and their flanking sequences \cite{Liu_2018}.
 %The sequences are indexed using enhanced suffix arrays and reads are mapped to both this index and the reference genome simultaneously.
 %The authors demonstrated that iMapSplice achieves higher mapping accuracy and lower reference bias compared to both a linear mapping method and HISAT2.
-
-GSNAP, ASElux and iMapSplice only support SNVs and are therefore unable to reduce reference bias around indels.
-In contrast, graph-based methods can easily model indels.
-HISAT2 can map RNA-seq data in addition to genomic DNA \cite{Kim_2019}.
-It is based on the RNA mapper HISAT \cite{Kim_2015}, and it retains the capacity for spliced alignment.
-Otherwise, its mapping algorithm for transcriptomic sequencing is the same as for genomic DNA (See above).
-Others have documented a reduction in mapping bias around SNVs for an early version of HISAT2 \cite{Liu_2018}. 
-The ability to create spliced variation graphs has also been added to VG \cite{Garrison_2018}. 
-In these variation graphs, known splice junctions are added as edges, similar to the addition of a deletion event.
-VG supports any type of variation, but its splicing-awareness is limited to only known splice junctions.
-Thus, reads that span a novel splice junction will only map partially.
 
 %As with whole genome DNA sequencing data, variation-aware analysis of RNA-seq data is important for getting accurate results in highly polymorphic regions, such as the HLA genes in the human major histocompatibility complex region. 
 %AltHapAlignR and HLApers have both demonstrated improvements in the estimation of HLA gene/transcript expression as a result of comparing the reads against a collection of known HLA haplotypes, instead of using the linear reference \cite{Lee_2018,Aguiar2019-fy}.
