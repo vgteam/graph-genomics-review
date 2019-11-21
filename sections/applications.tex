@@ -252,31 +252,34 @@ Even more novel junctions were later found in the same individuals by \citeautho
 %Thus, reads that span a novel splice junction will only map partially.
 
 \subsection{Metagenomics and quasispecies}
-\todo{JAS: In the interest of space and given that this review focuses mainly on humans I think we should delete this section. Instead, I think we should add a sentence or two about metagenomics and quasispecies in the discussion}
-Most of the methods mentioned in this review has focused on the analyses of human data, however, the benefits of using graphs as a non-linear reference structure have also been demonstrated for other species.
+\todo{JAS: Alternative, this subsection could also be further reduced and moved to discussion.}
+Most of the methods mentioned in this review has focused on the analyses of human data, however, the benefits of using graphs as a non-linear pangenomic reference structure have also been demonstrated for other species.
 This is especially true for bacterial metagenomics and viral quasispecies where the sequencing data consists of a mixture of closely related sequences (e.g. strains).
 A graph with sequence paths here provides a natural representation of the data and methods have been developed that specifically take advantage of this. 
+Mykrobe predictor \cite{Bradley2015-kl} and GROOT \cite{Rowe2018-bg} uses graph-based structures of bacterial genomes and gene sets to predict antibody resistance in sequencing samples.
+Virus-VG \cite{Baaijens2019-ng} builds a variation graph from assembled viral contigs in order to construct haplotypes and predict associated abundances in viral quasispecies from sequencing reads.
+This appraoch was later improved by Baaijens \textit{et al.} in VG-Flow \cite{Baaijens2019-ha} allowing it to scale to much larger genomes, such as bacteria.  
+MetaKallisto \cite{Schaeffer2017-fh} performs taxonomical classification and quantification of metagenomic sequencing data using a database of known sequences represented as colored de Bruijn graphs.
 
-Mykrobe predictor uses reference de Bruijn graphs to estimate antibody resistance from \textit{S. aureus} and \textit{M. Tuberculosis} sequencing data \cite{Bradley2015-kl}.
-The graphs are constructed from known resistant relevant alleles and genes and compared to a whole-genome de Bruijn graph built from the sample's sequencing reads.
-The frequency of alleles and genes are predicted using read coverages on the intersecting graphs.
-Using this approach the authors demonstrated accurate resistance prediction within minutes on a laptop.  
-
-GROOT \cite{Rowe2018-bg}
-
-Virus-VG uses variation graphs to estimate virus haplotypes within a viral quasispecies.
-Virus-VG first constructs a variation graph from assembled contigs to which the sequencing reads are mapped using the vg toolkit.
-Maximal-length candidate haplotype paths are then enumerated by merging overlapping contigs in a breadth-first search type procedure and their abundances estimated using an optimization algorithm that minimize the difference between predicted abundances and the mapped read coverage. 
-Baaijens \textit{et al.} demonstrated more accurate abundance estimates and longer haplotypes compared to reference-based approaches.
-Later, Baaijens \textit{et al.}, extended this method to allow it to scale to larger genomes, such as bacteria \cite{Baaijens2019-ha}.
-VG-flow, similar to Virus-VG, builds a variation graph from the assembled contigs, however, here a min-cost flow optimization algorithm is used in the candidate haplotype path enumeration step.
-This algorithm scales much better with contig number and genome size, and they showed that it also slightly improves accuracy for the smaller viral genomes compared to Virus-VG. 
-
-One major metagenomics analysis pipeline involves the taxonomical classification and quantification of sequencing data or assembled contigs using a database of known sequences, such as bacterial and viral genomes. 
-While most methods do not use graph structures for this analysis they do for the most part rely on a compressed representation of the reference sequences using for example a k-mer index or FM-index (see Breitwieser \textit{et al.} for review on classification methods \cite{Breitwieser2017-yp}). 
-One method that uses a graph representation is MetaKallisto \cite{Schaeffer2017-fh}. 
-This method is based on the algorithm originally developed for RNA-seq analysis, Kallisto, and uses a colored de Bruijn graphs to represent the database of known genomes \cite{Bray_2016}. 
-Read are aligned to these graphs using pseudoalignment and abundances estimated from the aligned reads using an expectation-maximization algorithm. 
-The authors demonstrated superior performance compared to state-of-the-art metagenomic abundance methods using simulated reads on a filtered set of 1027 bacterial genomes.
-One area where graph based methods have been used extensively, is in metagenomic assembly, however, since this review mainly focuses on non-linear representations of reference structures we will not go into detail about them here. 
-For more details on metagenomic assembly see Breitwieser \textit{et al.} review on assembly methods \cite{Breitwieser2017-yp}. 
+%Mykrobe predictor uses reference de Bruijn graphs to estimate antibody resistance from \textit{S. aureus} and \textit{M. Tuberculosis} sequencing data \cite{Bradley2015-kl}.
+%The graphs are constructed from known resistant relevant alleles and genes and compared to a whole-genome de Bruijn graph built from the sample's sequencing reads.
+%The frequency of alleles and genes are predicted using read coverages on the intersecting graphs.
+%Using this approach the authors demonstrated accurate resistance prediction within minutes on a laptop.  
+%
+%GROOT \cite{Rowe2018-bg}
+%
+%Virus-VG uses variation graphs to estimate virus haplotypes within a viral quasispecies.
+%Virus-VG first constructs a variation graph from assembled contigs to which the sequencing reads are mapped using the vg toolkit.
+%Maximal-length candidate haplotype paths are then enumerated by merging overlapping contigs in a breadth-first search type procedure and their abundances estimated using an optimization algorithm that minimize the difference between predicted abundances and the mapped read coverage. 
+%Later, Baaijens \textit{et al.}, extended this method to allow it to scale to larger genomes, such as bacteria \cite{Baaijens2019-ha}.
+%VG-flow, similar to Virus-VG, builds a variation graph from the assembled contigs, however, here a min-cost flow optimization algorithm is used in the candidate haplotype path enumeration step.
+%This algorithm scales much better with contig number and genome size, and they showed that it also slightly improves accuracy for the smaller viral genomes compared to Virus-VG. 
+%
+%One major metagenomics analysis pipeline involves the taxonomical classification and quantification of sequencing data or assembled contigs using a database of known sequences, such as bacterial and viral genomes. 
+%While most methods do not use graph structures for this analysis they do for the most part rely on a compressed representation of the reference sequences using for example a k-mer index or FM-index (see Breitwieser \textit{et al.} for review on classification methods \cite{Breitwieser2017-yp}). 
+%One method that uses a graph representation is MetaKallisto \cite{Schaeffer2017-fh}. 
+%This method is based on the algorithm originally developed for RNA-seq analysis, Kallisto, and uses a colored de Bruijn graphs to represent the database of known genomes \cite{Bray_2016}. 
+%Read are aligned to these graphs using pseudoalignment and abundances estimated from the aligned reads using an expectation-maximization algorithm. 
+%The authors demonstrated superior performance compared to state-of-the-art metagenomic abundance methods using simulated reads on a filtered set of 1027 bacterial genomes.
+%One area where graph based methods have been used extensively, is in metagenomic assembly, however, since this review mainly focuses on non-linear representations of reference structures we will not go into detail about them here. 
+%For more details on metagenomic assembly see Breitwieser \textit{et al.} review on assembly methods \cite{Breitwieser2017-yp}. 
