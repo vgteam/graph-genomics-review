@@ -201,13 +201,13 @@ It was also applied to human data to discover novel sites for enhancers in the h
 
 \subsection{Transcriptomics}
 
-Some transcriptomic analyses are strongly affected by reference bias \cite{Degner2009-vw,stevenson2013sources}.
-Chief among these is allele-specific expression (ASE) \cite{Castel2015-ef}.
+Some transcriptomic analyses are strongly affected by reference bias.
+Chief among these is allele-specific expression (ASE) \cite{Degner2009-vw,stevenson2013sources,Castel2015-ef}.
 ASE analysis estimates the expression levels of genes or transcripts on each allele separately by comparing the number of RNA sequencing (RNA-seq) reads mapped to the two different alleles of heterozygous variants.
 A mapping bias in favor of one of the alleles can therefore create illusory differences in expression between the alleles.
 Using variation information during mapping can help ameliorate this and improve estimates of ASE \cite{Castel2015-ef,Miao2018-ps}.
 
-The simplest approach to using variation data in mapping involves creating a personalized diploid genome or transcriptome, which is then used as the reference for a standard linear mapping method \cite{Turro2011-op,Rozowsky_2011,Bray_2016,Raghupathy2018-sd}.
+The simplest approach to using variation data in mapping involves creating a personalized diploid genome or transcriptome, which is then used as the reference for a standard linear mapping method \cite{Rozowsky_2011,Raghupathy2018-sd}.
 Methods using this approach have been shown to reduce reference bias and improve estimation of ASE, relative to traditional single reference genome methods, but they are generally limited by requiring phased haplotypes of either the whole genome or the individual genes for the individuals under study.
 Variant-aware mappers like GSNAP \cite{Wu2010-hv}, iMapSplice \cite{Liu_2018} and HISAT2 \cite{Kim_2019} remove this necessity.
 Indeed, all three have shown to reduce reference bias by using known SNVs during mapping \cite{Castel2015-ef,Liu_2018}.
@@ -283,7 +283,7 @@ MetaKallisto \cite{Schaeffer2017-fh} performs taxonomical classification and qua
 %One major metagenomics analysis pipeline involves the taxonomical classification and quantification of sequencing data or assembled contigs using a database of known sequences, such as bacterial and viral genomes. 
 %While most methods do not use graph structures for this analysis they do for the most part rely on a compressed representation of the reference sequences using for example a k-mer index or FM-index (see Breitwieser \textit{et al.} for review on classification methods \cite{Breitwieser2017-yp}). 
 %One method that uses a graph representation is MetaKallisto \cite{Schaeffer2017-fh}. 
-%This method is based on the algorithm originally developed for RNA-seq analysis, Kallisto, and uses a colored de Bruijn graphs to represent the database of known genomes \cite{Bray_2016}. 
+%This method is based on the algorithm originally developed for RNA-seq analysis, Kallisto, and uses a colored de Bruijn graphs to represent the database of known genomes. 
 %Read are aligned to these graphs using pseudoalignment and abundances estimated from the aligned reads using an expectation-maximization algorithm. 
 %The authors demonstrated superior performance compared to state-of-the-art metagenomic abundance methods using simulated reads on a filtered set of 1027 bacterial genomes.
 %One area where graph based methods have been used extensively, is in metagenomic assembly, however, since this review mainly focuses on non-linear representations of reference structures we will not go into detail about them here. 
