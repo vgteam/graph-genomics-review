@@ -4,28 +4,28 @@
 
 \begin{table}[p]
 \centering
-\caption{\label{table:Visualization_Features} An overview of graph visualization tools. \textbf{FD}~=~Force-directed layout, \textbf{SM}~=~Sorted-matrix layout, \textbf{A}~=~Assembly graph, \textbf{S}~=~Scaffold graph, \textbf{V}~=~Variation graph, \textbf{B}~=~Base-level view, \textbf{L}~=~Linear view, \textbf{UI}~=~User interface, \textbf{App}~=~native application, \textbf{Web}~=~browser-based interface, \textbf{CLI}~=~command-line tool.}
+\caption{\label{table:Visualization_Features} An overview of graph visualization tools. \textbf{FD}~=~Force-directed layout, \textbf{Rank}~=~GraphViz-style rank-based layout, \textbf{SM}~=~Sorted-matrix layout, \textbf{A}~=~Assembly graph, \textbf{S}~=~Scaffold graph, \textbf{V}~=~Variation graph, \textbf{B}~=~Base-level view, \textbf{L}~=~Linear view, \textbf{UI}~=~User interface, \textbf{App}~=~native application, \textbf{Web}~=~browser-based interface, \textbf{CLI}~=~command-line tool.}
 \vspace{4mm}
 \begin{minipage}{1.0\textwidth}
-\begin{tabular}{|l|c|c|c|c|c|p{2.2cm}|}
+\begin{tabular}{|l|c|c|c|c|c|p{2.1cm}|}
 \hline
 \textbf{Tool} & \textbf{Layout} & \textbf{\twoline{Graph}{Type}} & \textbf{\twoline{Proven}{Scale}} & \textbf{\twoline{Extra}{Views}} & \textbf{UI} & \textbf{Backend} \\
 \hline
-Bandage \cite{Wick_2015} & FD & A & 100~Mbp & & App & \\
+Bandage \citep{Wick_2015} & FD & A & 100~Mbp & & App & \\
 \hline
-GfaViz \cite{Gonnella_2018} & FD & A, V & 1~Mbp & & App & OGDF \cite{Chimani_2012_OGDF} \\
+GfaViz \citep{Gonnella_2018} & FD & A, V & 1~Mbp & & App & OGDF \citep{Chimani_2012_OGDF} \\
 \hline
-SGTK \cite{Kunyavskaya_2018} & FD & A, S & 1~Mbp & B, L & Web &  \texttt{cytoscape.js} \cite{Franz_2016_cytoscape} \\
+SGTK \citep{Kunyavskaya_2018} & FD & A, S & 1~Mbp & B, L & Web &  \texttt{cytoscape.js} \citep{Franz_2016_cytoscape} \\
 \hline
-AGB  \cite{Mikheenko_2019} & Rank & A & 10k edges\footnote{\url{https://github.com/almiheenko/almiheenko.github.io/blob/8f4b2f8c/AGB/Flye_Human/data/repeat_graph.json}} & L & Web & \texttt{d3-graphviz}\footnote{\url{https://github.com/magjac/d3-graphviz}} \\
+AGB  \citep{Mikheenko_2019} & Rank & A & 10k edges\footnote{\url{https://github.com/almiheenko/almiheenko.github.io/blob/8f4b2f8c/AGB/Flye_Human/data/repeat_graph.json}} & L & Web & \texttt{d3-graphviz}\footnote{\url{https://github.com/magjac/d3-graphviz}} \\
 \hline
-\twoline{Sequence Tube}{Map \cite{Beyer_2019}} & Tube & V & 100~Mbp & B, L & Web & \\
+\twoline{Sequence Tube}{Map \citep{Beyer_2019}} & Tube & V & 100~Mbp & B, L & Web & \\
 \hline
-MoMI-G \cite{yokoyama_momi-g:_2019} & \twoline{Tube\cite{Beyer_2019},}{Circos\cite{Krzywinski_2009_Circos}}  & V & 1~Gbp & B, L & Web & Sequence Tube Map, Circos \\
+MoMI-G \cite{yokoyama_momi-g:_2019} & \twoline{Tube,}{Circos}  & V & 1~Gbp & B, L & Web & Sequence Tube Map \citep{Beyer_2019}, Circos \citep{Krzywinski_2009_Circos} \\
 \hline
-\texttt{vg view} \cite{Garrison_2018} & Rank & V & 10~Kbp & B & CLI & GraphViz \\
+\texttt{vg view} \citep{Garrison_2018} & Rank & V & 10~Kbp & B & CLI & GraphViz \\
 \hline
-\texttt{vg viz} \cite{Garrison_2019} & SM & V & 100~Kbp & B, L & CLI & \\
+\texttt{vg viz} \citep{Garrison_2019} & SM & V & 100~Kbp & B, L & CLI & \\
 \hline
 \texttt{odgi viz} & SM & V & 1~Gbp & B, L & CLI & \\
 \hline
