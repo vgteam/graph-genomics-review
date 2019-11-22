@@ -12,9 +12,9 @@
 
 \todo[inline]{EG: this section must be reduced dramatically}
 
-In the era of resequencing, variant calling emerged as an essential methodology for genome inference in many species.
-The advent of pangenomics represents an opportunity to improve this methodology in multiple ways, all related to the theme of leveraging prior data in the form of known variation.
-These strategies can be coarsely divided into two umbrella approaches.
+In the era of resequencing, variant calling emerged as an essential methodology for genome inference.
+The advent of pangenomics promises to improve this methodology by leveraging prior data in the form of known variation.
+The strategies to do so can be coarsely divided into two umbrella approaches.
 First, known variation can inform inference by providing a statistical prior.
 Second, known variation can help applications avoid algorithmic artifacts that frustrate inference.
 %Together, these advantages are helping pangenomics expand the limits of what variation current technology can detect and how accurately it can do so.
@@ -22,8 +22,8 @@ Second, known variation can help applications avoid algorithmic artifacts that f
 In many ways, the spiritual predecessors of pangenomic variant calling are multi-sample calling methods. 
 These were designed to co-call the samples from major population sequencing projects, like the 1000 Genomes Project \cite{1000_2015}, in a single, shared inference process.
 The motivation for doing so mirrors the motivation for pangenomic variant calling: increased statistical power via a shared prior and reduced algorithmic bias.
-It is no longer necessary to restrict inference to the samples from one project.
-With increasingly large public databases of variation, the benefits of multi-sample calling can now be brought to bear even on individual samples.
+However, it is no longer necessary to restrict inference to the samples from one project.
+With increasingly large public databases of variation, pangenomics is bringing the benefits of multi-sample calling to bear even on individual samples.
 
 In pangenomics, it is useful to distinguish between \emph{variant calling} and \emph{genotyping}.
 Genotyping consists of determining whether a previously observed variant is present in a new sample, whereas variant calling involves detecting yet unobserved variation.
@@ -48,8 +48,9 @@ Intuitively, pangenomic methods should provide greater benefit to genotyping, an
 
 \subsubsection{Sample-specific references}
 
-Multiple methods taken the approach of using a pangenome model to create a single linear sequence that is close to a sample's genome sequence.   
-This sequence can then be used as a reference in conventional variant calling methods. 
+Some tools use a pangenome model to create a linear sequence that is similar to a sample's genome sequence. 
+The sequence can then serve as a reference in conventional variant calling methods.
+This represents an incremental use of pangenomic methods that takes advantage of the mature ecosystem of tools for conventional resequencing.
 Generally speaking, these methods show improved accuracy over conventional methods alone.
 \textsc{Gramtools} \cite{Maciuca_2016} and \textsc{PanVC} \cite{Valenzuela_2018} both use specialized pangenome indexes to map reads for this purpose.
 \textsc{PRG} uses read $k$-mers from reads to choose paths through a graph to extract as sequences \cite{dilthey2015improved}.
@@ -60,7 +61,7 @@ In many ways, small variants stand to benefit the least from pangenomic variant 
 NGS read lengths are sufficient to span their entirety, and the associated variant calling algorithms are quite mature.
 However, reference bias in mapping can be a source of small variant calling error, and pangenome models provide an opportunity to mitigate these biases.
 
-One strategy for genotyping small variants consists of realigning reads to graphs of known variation after mapping to a linear reference.
+One strategy consists of realigning reads to graphs of known variation after mapping to a linear reference.
 This approach was pioneered in the 1000 Genomes Project by the \textsc{GLIA} software for use on indels and complex regions \cite{1000_2015}.
 More recently, \textsc{Graphtyper} expanded the scale of this approach and incorporated pangenomic data sets.
 It has competitive accuracy with state-of-the-art conventional pipelines but better computational efficiency, and incorporating known variation modestly improves its accuracy \cite{eggertsson2017graphtyper}.
@@ -75,11 +76,11 @@ This approach permits both pangenomic and reference-free variant calling.
 \textsc{Bubbleparse} extended the \textsc{Cortex}'s model to improve SNP discovery \cite{Leggett_2013}.
 %Candidate variants are produced by a bubble calling algorithm and a heuristic is presented which uses a classification and ranking system to controls the specificity of reported SNP calls \cite{Leggett_2013}.
 
-Seven Bridges' \textsc{Graph Genome Pipeline} includes a variant calling module that itself is minimally pangenomic beyond its use of graph-based read mappings.
-Rather, it is broadly similar to existing local assembly methods based on the linear reference \cite{Poplin_2017, Rimmer_2014} except in that it prioritizes haplotypes that are found in a genome graph \cite{Rakocevic_2019}.
+%Seven Bridges' \textsc{Graph Genome Pipeline} includes a variant calling module that itself is minimally pangenomic beyond its use of graph-based read mappings.
+%Rather, it is broadly similar to existing local assembly methods based on the linear reference \cite{Poplin_2017, Rimmer_2014} except in that it prioritizes haplotypes that are found in a genome graph \cite{Rakocevic_2019}.
 %This can be seen as an example of a statistical prior on variation expressed in the pangenome; simply knowing where one should look for variants is informative.
-It shows advantages over conventional pipelines in variant recall, especially for indels.
-Interestingly, the authors' analysis suggests that the graph-based read mappings contribute a minority of the effect.
+%It shows advantages over conventional pipelines in variant recall, especially for indels.
+%Interestingly, the authors' analysis suggests that the graph-based read mappings contribute a minority of the effect.
 
 %GraphTyper \cite{eggertsson2017graphtyper} is a popular genome-graph-based caller.
 %It begins with a pangenome graph created from variants in dbSNP, and iteratively updates it with variants discovered in input reads.
@@ -89,21 +90,11 @@ Interestingly, the authors' analysis suggests that the graph-based read mappings
 %A more recent approach, Graph Genome Pipeline, \cite{Rakocevic_2019}, uses a genome graph derived from the 1000 Genomes Project to improve calling accuracy.
 %It has been shown to be able to find variants absent from common benchmarks such as GIAB, raising the question of whether these datasets, commonly used as truth sets in the evaluation of new methods, should be updated.
 
-\subsubsection{Challenging genomic regions}
+%\subsubsection{Challenging genomic regions}
 
 %\todo[inline]{JME: this is the variant calling section that I'd like to cut down on the most}
 
-Certain genomic regions give disproportionate trouble to conventional variant calling methods. 
-The cause is often high genomic diversity, which accentuates reference bias. 
-Some pangenomic genotyping tools have specifically targeted these regions.
 
-Much of this research has focused on the human leukocyte antigen (HLA) genes.
-These medically important immune-related genes are under strong selection for diversity.
-\textsc{HLA*PRG} \cite{dilthey2018hla}, its optimized successor \textsc{HLA*LA} \cite{dilthey2019hla}, \textsc{Kourami} \cite{lee2018kourami}, and \textsc{HISAT-genotype} \cite{Kim_2019} have all demonstrated techniques for genotyping HLA genes by aligning NGS reads to a graph encoding various HLA alleles.
-Their results rival gold-standard Sanger sequencing methods in accuracy.
-Short tandem repeats (STRs) have been another target.
-Their high diversity is driven by high mutation rates, and the low-complexity sequence adds further difficulty.
-\textsc{ExpansionHunter} \cite{dolzhenko2019expansionhunter} and \textsc{HISAT-genotype} \cite{Kim_2019} used similar methodologies to those employed in HLA to achieve comparable or better accuracy than existing methods for STRs.
 %%These genes are critical components of the immune system, which produces a strong selective pressure for diversity and many dramatically distinct alleles.
 %%Determining an individual's HLA alleles is often of great medical importance.
 %
@@ -148,7 +139,7 @@ Their high diversity is driven by high mutation rates, and the low-complexity se
 
 \subsubsection{Genotyping structural variation}
 
-The study of structural variants (SVs)---typically defined as variants affecting at least 50 bp---has also benefited from using genome graphs.
+The study of structural variants (SVs)---typically defined as variants affecting at least 50 bp---appears to have more to gain from using genome graphs.
 SVs are difficult to call with NGS reads because they are large relative to the read length.
 Long read sequencing does not share this difficulty, but this technology remains prohibitively expensive for population-scale studies or routine use.
 This represents an opportunity for pangenomic methods, which can represent SVs naturally represented in genome graphs.
@@ -157,10 +148,18 @@ This represents an opportunity for pangenomic methods, which can represent SVs n
 It calls structural variants with high accuracy almost irrespective of the size of the variant.
 However, it has a high memory footprint, and later analysis has also suggested that its reliance on long exact matches makes it fragile to breakpoint uncertainty \cite{hickey2019genotyping}.
 
-In constrast, \textsc{Paragraph} \cite{chen2019paragraph} and \textsc{VG}'s genotyper \cite{hickey2019genotyping} are both based on aligning reads to graphs.
+In contrast, \textsc{Paragraph} \cite{chen2019paragraph} and \textsc{VG}'s genotyper \cite{hickey2019genotyping} are both based on aligning reads to graphs.
 The largest difference is that \textsc{Paragraph} maps to a linear reference and then realigns to local graphs (much like \textsc{Graphtyper} \cite{eggertsson2017graphtyper}), whereas VG maps reads directly to a graph.
 Both methods use read coverage to determine the genotype.
 Further, both methods were shown to significantly outperform similar methods based on the linear reference.
+
+Some pangenomic methods have sought improved accuracy and efficiency by focusing on specific regions where reference bias makes inference challenging. 
+The highly polymorphic and medically important human leukocyte antigen (HLA) genes have received an especially large amount of attention.
+\textsc{HLA*LA} \cite{dilthey2019hla}, \textsc{Kourami} \cite{lee2018kourami}, and \textsc{HISAT-genotype} \cite{Kim_2019} have all demonstrated techniques for genotyping HLA genes by aligning NGS reads to a graph encoding various HLA alleles.
+Their results rival gold-standard Sanger sequencing methods in accuracy.
+Short tandem repeats (STRs) have been another target.
+High mutation rates drive high diversity in STRs, and the low-complexity sequence adds further difficulty.
+\textsc{ExpansionHunter} \cite{dolzhenko2019expansionhunter} and \textsc{HISAT-genotype} \cite{Kim_2019} used similar methodologies to those employed in HLA to achieve comparable or better accuracy than existing methods for STRs.
 
 % is a SV genotyper with strategy that is similar to Graphtyper's \cite{eggertsson2017graphtyper}.
 %For each variant, Paragraph constructs a graph of the affected genomic region and realigns reads that are nearby, as determined by mapping to a linear reference.
@@ -194,7 +193,7 @@ CHiP-seq data, reads that bind to specific transcription factors, can be mapped 
 It was shown to find binding sites more enriched for known DNA binding motifs than linear methods on \emph{A. thaliana}.
 It was also applied to human data to discover novel sites for enhancers in the human genome \cite{groza2019personalized}. 
 
-\todo[inline]{Do we need a real epigenomics section about DNA base or histone modification?}
+\todo[inline]{Do we need a real epigenomics section about DNA base or histone modification?\\ JME: what about merging this with transcriptomics and callings it "Functional Genomics"?}
 
 \subsection{Transcriptomics}
 
