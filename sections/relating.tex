@@ -6,57 +6,58 @@
 % Josiah
 
 
-Visualization of pangenome graphs presents novel challenges, because their data structure is complex, multidimensional, and nonlinear.
-Traditional genome browsers neatly organize into a 2D rectangular shape, with 1D linear sequence on the x-axis and annotations on the y-axis.
-In contrast, graph genomes follow network topology which requires three dimensions to render without overlapping lines.
-Annotation tracks add another dimension, forcing all graph visualizations to involve some degree of flattening.  
-Genome graph visualization tools can be considered in terms of their target applications. 
-Many tools support the interpretation of assembly graphs. 
-These tend to focus on the overall structure of the graph. 
-In contrast, tools designed to support pangenome graph (often variation graph) visualization must additionally describe the relationship between genomes and the graph in which they are embedded.
-An overview of tools features is given in.
+Visualization of pangenome graphs presents significant challenges, and these challenges have spawned a variety of proposed solutions to the problem, each representing a different point in design space. An overview of available tools is presented in Table~\ref{table:Visualization_Features}, while Figure~\ref{fig:visualization} provides a tour of different visual languages for representing graphs.
 
-Bandage \cite{Wick_2015}, GfaViz \cite{Gonnella_2018}, SGTK \cite{Kunyavskaya_2018} and AGB \cite{Mikheenko_2019} were designed to explore assembly graphs.
-Bandage is the oldest and most widely used, supporting a wide range of formats and graph  paradigms, however it does not currently support GFA2 \citep{Mikheenko_2019}.
-Force-directed graph layouts, which use a physics simulation to allow graph elements to lay themselves out in two dimensions, can present a graph in an aesthetically pleasing way, but displaying annotations in this layout is challenging.
-For this reason, SGTK and AGB offer a more traditional genome browser mode as well.
+Complex, nonlinear graph structures are difficult to present in a convenient number of dimensions.
+Traditional genome browsers lay out information in a 2D rectangle, with a linear reference's sequence space providing the horizontal dimension, and a stack of annotations plotted in the vertical dimension.
+When visualizing a graph, there are two basic approaches: attempt to mimic linear browsers and compress the graph into one dimension, or give the graph two dimensions and represent annotations creatively.
+Either option is challenging, as pangenome graphs are often \textbf{nonplanar}, requiring at least three dimensions to draw without overlapping lines.
+Force-directed layout, a physics simulation that allows graph elements to organize themselves in two dimensions, is a popular approach in the second category, but displaying annotations in this layout is challenging.
 
+In addition to dividing them by whether they can linearize a graph, visualization tools can also be divided by the kinds of graphs they are intended to display. 
+Many tools, including the popular and venerable Bandage \citep{Wick_2015} (Figure~\ref{fig:visualization}A) and competitor GfaViz \cite{Gonnella_2018} (Figure~\ref{fig:visualization}B), are designed for interpreting assembly graphs. 
+These tools tend to focus on displaying the overall, rather than base-level, structure of the graph, and do not always understand the graph as being pangenomic and representing multiple individuals.
+
+Tools initially designed for variation graph visualization, on the other hand, tend to focus more on base-level structure and pangenomic relationships.
+For example, Sequence Tube Map \cite{Beyer_2019} (Figure~\ref{fig:visualization}E) displays precise base-scale variation, haplotypes, and short read mapping locations, using a visual language inspired by transit system maps.
+
+
+%Bandage \cite{Wick_2015}, GfaViz \cite{Gonnella_2018}, SGTK \cite{Kunyavskaya_2018} and AGB \cite{Mikheenko_2019} were designed to explore assembly graphs.
+%Bandage is the oldest and most widely used, supporting a wide range of formats and graph  paradigms, however it does not currently support GFA2 \citep{Mikheenko_2019}.
+%For this reason, SGTK and AGB offer a more traditional genome browser mode as well.
 %When choosing a tool, one also must consider the advantages of web applications versus local computation.  
 %Web apps have the option to serve precomputed content to any user, lowering end-user system requirements.
 %Local applications can benefit from institution specific resources including HPC and private data (see Table \ref{table:Visualization_Features} Technical Notes).
 
-For variation graphs, Sequence Tube Map \cite{Beyer_2019} displays regions using a visual language inspired by transit system maps.
-This tool is useful for visualizing precise base-scale variation and short read mapping locations in human-chromosome-scale graphs.
-However, its limited graph simplification tools make it difficult to use on larger regions.
-
-There is a difference in scale when moving from an assembly or scaffold graph to a comprehensive variation graph of a species pangenome.
-While tools like SGTK and AGB have been demonstrated on graphs with tens of thousands of entities, the 1000 Genomes Project dataset contains 88 million known human variants \citep{1000_2015}, which induce a comprehensive variation graph of tens to hundreds of millions of elements---a much larger graph than those that SGTK and AGB have been shown to work with.
+There is a difference in scale when moving from an assembly or scaffold graph to a comprehensive variation graph of a species pangenome, and this scale difference also separates different visualization tools.
+The 1000 Genomes Project dataset contains 88 million known human variants \citep{1000_2015}, which induce a comprehensive variation graph of tens to hundreds of millions of elements spanning gigabases of sequence.
+High-level assembly-graph tools like Assembly Graph Browser (AGB) \citep{Mikheenko_2019} (Figure~\ref{fig:visualization}D), and low-level variation graph tools like \texttt{vg view} \cite{Garrison_2018} and Sequence Tube Map, struggle with graphs that have both genomic scale and pangenomic detail.
+%While tools like SGTK \cite{Kunyavskaya_2018} and AGB \cite{Mikheenko_2019} have been demonstrated on graphs with tens of thousands of entities
+%a much larger graph than those that SGTK and AGB have been shown to work with.
 %a density over the 3 billion base human genome of about 34 bases per variant, and
 %Moreover, to achieve visualization output file sizes on the scale of megabytes given hundred megabase- to gigabase-scale assemblies, these tools necessarily hide sequence information.
-
 %Bandage currently only supports GFA1. GfaViz has full support for newer GFA2 features, such as gaps for representing scaffold graphs in addition to assembly graphs \citep{Gonnella_2018}.
-
 %Two recent graph visualization tools, \texttt{SGTK} and \texttt{AGB}, are web applications in which the visualization is precomputed, lowering end-user system requirements \citep{Kunyavskaya_2018,Mikheenko_2019}.
 %SGTK is designed for visualizing scaffold graphs, which can have negative-overlap gaps between sequenced segments, and is based around the in-browser Cytoscape.js graph layout library \citep{Kunyavskaya_2018}.
 %It includes a potentially highly interpretable, ``browser'' layout structured around a reference sequence.  
 %Though its presentation is less purpose built than the bands of Bandage.
-
 %AGB has a similar overall design to SGTK, but makes different implementation choices.
 %It is relatively tightly tied to the assembly graph use case, requiring each (sequence-bearing) edge to be classifiable as ``unique'' or ``repetitive'' based on assembler annotation or sequencing coverage \citep{Mikheenko_2019}.
 %AGB is built around the idea of splitting up an assembly graph and visualizing portions of it, and features many ways to do this, including linear reference based and minimum edge cut based approaches.
+One tool which works well at both large scale and high detail is MoMI-G \cite{yokoyama_momi-g:_2019}. 
+Designed as a ``multi-scale'' graph browser, it presents both a Sequence Tube Map of base-level differences and a Circos \cite{Krzywinski_2009_Circos} plot of chromosomal-scale connections, and can uniquely visualize long reads in the context of pangenomic haplotypes \cite{yokoyama_momi-g:_2019}.
+%\texttt{vg viz} can render graphs of arbitrary size and complexity in linear time by sorting the sequence-bearing nodes of the graph into a one-dimensional layout \citep{Garrison_2019}. 
+%The tool is designed around a base-level visual representation of the graph, and optimized for comparing long embedded paths in the graph, on the basis of which nodes they do or do not visit. 
+Another particularly scalabel tool, \texttt{odgi viz}\footnote{\url{https://github.com/vgteam/odgi}}, achieves its scalability by binning hundreds of adjacent nodes together.
+This makes it possible to render the overall structure of gigabase pangenomes in a single image of manageable resolution.
+It uses a very computationally efficient linearized layout technique developed for \texttt{vg viz} \citep{Garrison_2019} (Figure~\ref{fig:visualization}F), and shares that tool's distinctive visual language.
 
-MoMI-G is a multi-scale genome graph browser currently under development \cite{yokoyama_momi-g:_2019}. 
-It employs Sequence Tube Map at nucleotide scale and integrates it into a framework along side a Circos \cite{Krzywinski_2009_Circos} plot for chromosome scale connections. 
-The integration of multiple visualizations brings their strengths to bear on different areas. 
-MoMI-G is currently the only tool that can visualize long reads to show structural variants against multiple haplotypes in a graph genome.
+%See  for examples of some notable visualization methods and Table~\ref{table:Visualization_Features} for a feature comparison of all available tools.
 
-vg viz can render graphs of arbitrary size and complexity in linear time by sorting the sequence-bearing nodes of the graph into a one-dimensional layout \citep{Garrison_2019}. 
-The tool is designed around a base-level visual representation of the graph, and optimized for comparing long embedded paths in the graph, on the basis of which nodes they do or do not visit. 
-Odgi viz\footnote{\url{https://github.com/vgteam/odgi}} uses a layout very similar to vg viz and addresses scalability by binning hundreds of adjacent nodes together, thus reducing the resolution and making it possible to render the overall structure of gigabase pangenomes in a single image.
+%The perfect pangenome graph visualization tool would support both linearized and two-dimensional graph layouts with annotation, idiomatically display both structural assembly-graph information and base-level variation-graph information with pangenomic context, and efficiently handle gigabases of sequence over hundreds of millions of variants.
+%Such a perfect tool does not and will never exist, but we look forward to at least some of its properties being realized in the next generation of visualization software.
 
-
-See Figure~\ref{fig:visualization} for examples of some notable visualization methods and Table~\ref{table:Visualization_Features} for a feature comparison of all available tools.
-It remains an open problem to interactively visualize a comprehensive human pangenome graph, interchromosomal connections, at a variety of zoom levels to enable precision pangenomics at any scale.
+Interactively visualizing human-genome-scale, human-pangenome-detail graphs coherently across zoom levels remains an open problem.
 
 %\citep{Wick_2015} : Bandage
 %\citep{Gonnella_2018} : GfaViz
