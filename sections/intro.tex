@@ -33,13 +33,14 @@ Even different graph-based pangenomic models are not necessarily equivalent and 
 
 \subsection{Resequencing scales genome inference}
 
-Our understanding of biological systems depends on our ability to see the relationships between genomes.
-In the early days of genomics, when the cost of sequencing was high, expensive algorithms would be applied to relate all sequences in a given experiment to all others, typically yielding multiple sequence alignments.
-These analyses were thus effectively pangenomic, in their unified representation of all the genomic information in the analysis.
-
+Genomics research depends on our ability to see the relationships between genomes.
+In an earlier era, it was feasible to relate all of an experiment's sequences to each other, typically using multiple sequence alignment.
+These analyses were effectively pangenomic. 
+%In the early days of genomics, when the cost of sequencing was high, expensive algorithms would be applied to relate all sequences in a given experiment to all others, typically yielding multiple sequence alignments.
+%These analyses were thus effectively pangenomic, in their unified representation of all the genomic information in the analysis.
 Increasing data scales have made such approaches prohibitively costly.
-The arrival of high-quality reference genomes and low-cost short read sequencing has encouraged the use of \emph{resequencing}, wherein reads from each sample are aligned to a single common reference genome.
-State of the art implementations of this process scale to support the combined analysis of tens of thousands of genomes \cite{Poplin_2017}, but they can only do so by relating each genome to a single common reference sequence.
+Instead, high-quality genome assemblies and high-throughput sequencing have encouraged \emph{resequencing} methodologies, wherein reads from each sample are aligned to a single reference genome.
+State of the art resequencing pipelines can analyze tens of thousands of genomes \cite{Poplin_2017}, but only by relating each genome to a single common reference sequence.
 
 \subsection{Resequencing implies reference bias}
 
