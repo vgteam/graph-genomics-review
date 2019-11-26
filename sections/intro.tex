@@ -45,11 +45,11 @@ State of the art resequencing pipelines can analyze tens of thousands of genomes
 \subsection{Resequencing implies reference bias}
 
 Although efficient and conceptually simple, resequencing has a significant limitation.
-The relationships between genomes are only visible for those sequences that are already close enough to those in the reference genome to be alignable.
+The relationships between genomes are only visible for those sequences that are similar enough to the reference genome to be alignable.
 %Significant variation between a new genome and the reference genome may be rendered invisible, or apparently less frequent, by the reference bias inherent in alignment.
-The extent that sequence information from a given sample cannot be aligned to the reference causes \emph{reference bias}.
-This effect is certainly strongest for structural variation or sequences that are absent from the reference system \cite{sudmant2015integrated}, but it can be relevant even for SNPs, which causes problems in alleles specific expression (ASE) quantification \cite{stevenson2013sources,Castel2015-ef} and in the analysis of ancient DNA \cite{zhou2017antcaller}.
-Given that this bias shapes the very genomic inference methods that we use to establish models of the truth \cite{zook2014integrating}, it is pervasive and will be difficult to evaluate without paradigmatic change in our sequencing and analysis techniques.
+This effect is known as \emph{reference bias}.
+It is certainly strongest for structural variation or sequences that are absent from the reference system \cite{sudmant2015integrated}, but it can be relevant even for SNPs, which cause problems in alleles specific expression (ASE) quantification \cite{Castel2015-ef} and in the analysis of ancient DNA \cite{zhou2017antcaller}.
+Given that this bias shapes the methods that we use to establish models of the truth \cite{zook2014integrating}, it will be difficult to evaluate without paradigmatic change in our analysis techniques.
 %JME: This sentence seems basically redundant with the one two sentences back. I see that you're citing pangenomic methods instead of traditional ones, but you seem to be making basically the same point. 
 %Recent studies have applied variation-aware sequence alignment methods to show that this bias affects even the detection of small variation \cite{eggertsson2017graphtyper,Garrison_2018,Kim_2019}, and that these methods can be used to mitigate its effect on the study of ancient DNA \cite{martiniano2019removing} and RNA sequencing data \cite{Miao2018-ps,Liu_2018}.
 
