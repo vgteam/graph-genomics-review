@@ -209,17 +209,17 @@ As pangenome graphs become large, providing random access to their topology, seq
 Succinct data structures and careful encoding of these data are required to reliably fit large graphs into the main memory of commodity computing systems.
 These data structures act as self indexes of the graph, providing random access to the elements of the graph in minimal space.
 
-With linear references, \emph{text indexes} are used to map query strings to their occurrences in the indexed text.
+%The set of sequences represented by a genome graph is larger than the set of sequences attached to its nodes.
+%With linear references, \emph{text indexes} are used to map query strings to their occurrences in the indexed text.
 %The occurrences are typically reported as a list of starting positions, from which one can easily determine the substrings matching the query.
-Indexing the sequences encoded in a graph is more involved.
-The number of $k$~bp paths often grows exponentially in $k$.
-Indexing or even enumerating all $k$-mers in the graph may be thus be infeasible for reasonable values of $k$.
+Building \emph{text indexes} for sequences encoded in a graph is more involved than for linear references.
+The number of $k$-bp paths often grows exponentially in $k$, often rendering their complete enumeration intractable even for low values of $k$.
+%Indexing or even enumerating all $k$-mers in the graph may be thus be infeasible for reasonable values of $k$.
 %, and if the starting position of the occurrence reported by the index is in a complex region of the graph, there may be an exponential number of $k$~bp paths to investigate.
-
-In practice, indexes for genome graphs must make trade-offs not encountered in text indexes.
+%A practical result of this effect is that indexes for genome graphs must make trade-offs not encountered in text indexes.
 In order to limit the exponential growth, the index may only support relatively short query strings.
-Some indexes (e.g.\ \cite{Siren_2014}) support longer queries by doing extensive preprocessing.
-In other indexes (e.g.\ \cite{Thachuk_2013,Huang_2013,Maciuca_2016}), queries mapping to complex graph regions can be slow.
+Some indexes \cite{Siren_2014} support longer queries by doing extensive preprocessing.
+In others \cite{Thachuk_2013,Huang_2013,Maciuca_2016}, queries mapping to complex graph regions can be slow.
 Instead of indexing the entire graph, the index may only contain $k$-mers from a simplified graph, or from specific paths of the graph.
 %While finding the path matching the query may be expensive in some cases, indexes typically save space by only reporting the starting position of the match.
 
