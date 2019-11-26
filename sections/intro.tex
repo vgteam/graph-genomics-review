@@ -1,15 +1,15 @@
 \section{Introduction}
 
-A \emph{pangenome} models the full set of genomic elements in a given species or clade \cite{sigaux2000cancer}.
+A \emph{pangenome} models the full set of genomic elements in a given species or clade.
 Pangenomics thus stands in contrast to standard genomics by emphasizing the sum total of available genomic information over a particular consensus model of the genome.
 By considering the pangenome during bioinformatic analyses, researchers can hope to remove bias towards any specific genome or haploid genome model that might occur during diverse stages of data processing.
 %, analyse also minor alleles inevitably missing from such linear models, and incorporate information about genomic variation directly into their study.
 %Pangenomic reference systems thus e single canonical version of the genome of a given species, but a widely-represenative collection of sequences.
 
-This concept has been essential to microbiology, where genomic plasticity and diversity have made a pangenomic perspective indispensable \cite{tettelin2005genome,medini2005microbial}.
+This concept has been essential to microbiology, where genomic plasticity and diversity have made a pangenomic perspective indispensable \cite{Vernikos2015}.
 Usually, these analyses focus on the presence or absence of genes from given strains and the determination of a core (commonly present) and accessory (frequently absent) pangenome \cite{page2015roary}.
-Pangenomic techniques have also been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,brohammer2018maize,Ou_2018}.
-In recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{li2010building,sudmant2010,sudmant2015integrated,Hehir-Kwa2016-hb,chaisson2018multi,Audano_2019,Yang_2019}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}.
+Pangenomic techniques have also been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,Ou_2018}.
+In recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{sudmant2015integrated,Hehir-Kwa2016-hb,chaisson2018multi,Audano_2019}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}.
 
 %These trends encourage the application of pangenomic methods to settings where more than one individual is being analyzed
 These observations have yet to result in a major change to standard approaches to genomics.
@@ -33,29 +33,30 @@ Even different graph-based pangenomic models are not necessarily equivalent and 
 
 \subsection{Resequencing scales genome inference}
 
-Our understanding of biological systems depends on our ability to see the relationships between genomes.
-In the early days of genomics, when the cost of sequencing was high, expensive algorithms would be applied to relate all sequences in a given experiment to all others, typically yielding multiple sequence alignments.
-These analyses were thus effectively \emph{pangenomic}, in their unified representation of all the genomic information in the analysis.
-
+Genomics research depends on our ability to see the relationships between genomes.
+In an earlier era, it was feasible to relate all of an experiment's sequences to each other, typically using multiple sequence alignment.
+These analyses were effectively pangenomic. 
+%In the early days of genomics, when the cost of sequencing was high, expensive algorithms would be applied to relate all sequences in a given experiment to all others, typically yielding multiple sequence alignments.
+%These analyses were thus effectively pangenomic, in their unified representation of all the genomic information in the analysis.
 Increasing data scales have made such approaches prohibitively costly.
-The arrival of high-quality reference genomes and low-cost short read sequencing has encouraged the use of \emph{resequencing}, wherein reads from each sample are aligned to a single common reference genome.
-State of the art implementations of this process scale to support the combined analysis of tens of thousands of genomes \cite{Poplin_2017}, but they can only do so by relating each genome to a single common reference sequence.
+Instead, high-quality genome assemblies and high-throughput sequencing have encouraged \emph{resequencing} methodologies, wherein reads from each sample are aligned to a single reference genome.
+State of the art resequencing pipelines can analyze tens of thousands of genomes \cite{Poplin_2017}, but only by relating each genome to a single common reference sequence.
 
 \subsection{Resequencing implies reference bias}
 
 Although efficient and conceptually simple, resequencing has a significant limitation.
-The relationships between genomes are only visible for those sequences that are already close enough to those in the reference genome to be alignable.
+The relationships between genomes are only visible for those sequences that are similar enough to the reference genome to be alignable.
 %Significant variation between a new genome and the reference genome may be rendered invisible, or apparently less frequent, by the reference bias inherent in alignment.
-The extent that sequence information from a given sample cannot be aligned to the reference causes \emph{reference bias}.
-This effect is certainly strongest for structural variation or sequences that are absent from the reference system \cite{sudmant2015integrated}, but it can be relevant even for SNPs, which causes problems in alleles specific expression (ASE) quantification \cite{Degner2009-vw,stevenson2013sources,Castel2015-ef} and in the analysis of ancient DNA \cite{zhou2017antcaller}.
-Given that this bias shapes the very genomic inference methods that we use to establish models of the truth \cite{zook2014integrating}, it is pervasive and will be difficult to evaluate without paradigmatic change in our sequencing and analysis techniques.
+This effect is known as \emph{reference bias}.
+It is certainly strongest for structural variation or sequences that are absent from the reference system \cite{sudmant2015integrated}, but it can be relevant even for SNPs, which cause problems in alleles specific expression (ASE) quantification \cite{Castel2015-ef} and in the analysis of ancient DNA \cite{zhou2017antcaller}.
+Given that this bias shapes the methods that we use to establish models of the truth \cite{zook2014integrating}, it will be difficult to evaluate without paradigmatic change in our analysis techniques.
 %JME: This sentence seems basically redundant with the one two sentences back. I see that you're citing pangenomic methods instead of traditional ones, but you seem to be making basically the same point. 
 %Recent studies have applied variation-aware sequence alignment methods to show that this bias affects even the detection of small variation \cite{eggertsson2017graphtyper,Garrison_2018,Kim_2019}, and that these methods can be used to mitigate its effect on the study of ancient DNA \cite{martiniano2019removing} and RNA sequencing data \cite{Miao2018-ps,Liu_2018}.
 
 \subsection{Human pangenomics}
 
 Estimates based on short read sequencing data have placed the human pangenome at between 1\% \cite{li2010building} and 10\% \cite{sherman2019assembly} larger than the the GRCh38 human reference assembly.
-Others have demonstrated up to several Mbp of sequence are present in each new individual and not in the reference \cite{li2010building,Hehir-Kwa2016-hb,Steinberg_2016,Audano_2019}.
+Others have demonstrated up to several Mbp of sequence are present in each new individual and not in the reference \cite{Hehir-Kwa2016-hb,Steinberg_2016,Audano_2019}.
 Although these estimates vary based on the author's definition of what constitutes novel sequence or allelic variation, we should expect them to rise as we consider larger cohorts of humans and improve our ability to ascertain variants in repeat-rich genomic regions.
 In particular, we might gain greater insight into the extent, placement and significance of novel sequences when they are discovered in whole genome telomere-to-telomere assemblies constructed from long single-molecule sequencing data \cite{miga2019telomere,Langley_2019}.
 
