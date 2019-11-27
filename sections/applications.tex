@@ -232,6 +232,7 @@ The path of the alignment through the graph is taken as the corrected read.
 
 %Genomic function manifests itself first in processes that lead to the expression of genomic information.
 The effect of reference bias on analyses of allele-specific protein binding and transcription have led to ample interest in pangenomic techniques.
+It may also affect our ability to associate genome with phenoytpe in association mapping.
 Here, we consider ways in which pangenomic models can improve the accuracy of such assays into genome function.
 %Much of this work focuses on RNA sequencing (RNA-seq) analyses, but 
 
@@ -253,10 +254,21 @@ Using variation information during mapping can help ameliorate this and improve 
 The simplest approach to using variation data in mapping involves creating a personalized diploid genome or transcriptome, which is then used as the reference for a standard linear mapping method \cite{Rozowsky_2011,Raghupathy2018-sd}.
 %Methods using this approach have been shown to reduce reference bias and improve estimation of ASE, relative to traditional single reference genome methods, but they are generally limited by requiring phased haplotypes of either the whole genome or the individual genes for the individuals under study.
 Methods using this approach have been shown to reduce reference bias, but they require diploid reconstruction of the genome in question.
-Variant-aware mappers like \textsc{GSNAP} \cite{Wu2010-hv}, \textsc{iMapSplice} \cite{Liu_2018} and \textsc{HISAT2} \cite{Kim_2019} remove this necessity, and have been shown to reduce reference bias at known SNVs during mapping \cite{Castel2015-ef,Liu_2018}.
-\textsc{ASElux} takes a different approach and only aligns reads that overlaps heterozygous exonic SNVs \cite{Miao2018-ps}, but to similar effect as other variant-aware mappers.
+Variant-aware mappers like \textsc{GSNAP} \cite{Wu2010-hv}, \textsc{iMapSplice} \cite{Liu_2018}, \textsc{ASElux} \cite{Miao2018-ps}, and \textsc{HISAT2} \cite{Kim_2019} remove this necessity, and have been shown to reduce reference bias at known SNVs during mapping \cite{Castel2015-ef,Liu_2018}.
+%\textsc{ASElux} takes a different approach and only aligns reads that overlaps heterozygous exonic SNVs \cite{Miao2018-ps}, but to similar effect as other variant-aware mappers.
 Variation-aware analysis of RNA-seq data is also important for accurately analyzing highly polymorphic regions, such as HLA.
 \textsc{AltHapAlignR} \cite{Lee_2018} and \textsc{HLApers} \cite{Aguiar2019-fy} compare reads against a collection of known HLA haplotypes yielding improved estimation of HLA expression.
+
+\subsubsection{Pangenomic association studies}
+
+Pangenome-wide association studies (PWAS) generalize the genome-wide association (GWAS) concept to pangenomes.
+This new area has primarily focused on traditional pangenome definitions from microbiology \cite{Brynildsrud_2016}.
+Recent work focuses more specifically PWAS in pangenome graphs.
+In the frequented region (FR) technique, a syntenic region finding algorithm similar to those used in whole genome alignment (section \ref{sec:constructionWGA}) detects regions of a compacted DBG that are shared between many individuals \cite{cleary2018exploring}, and these are employed as features in PWAS \cite{Manuweera_2019}.
+When tested in 100 yeast strains, this approach marginally improves on standard GWAS techniques, but for some phenotypes provides a dramatic improvement in performance.
+
+%connecting to the precision pangenomic models discussed in section \ref{sec:models}.
+
 
 % I like this, but it's a little too far afield for this review -EG
 %Even intronic variation can be helpful for analyzing RNA-seq data. 
