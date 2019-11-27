@@ -68,23 +68,24 @@ This reduces bias during genotyping, and in principle can reduce the amount of n
 
 \subsubsection{Sample-specific references}
 
-Some tools use a pangenome model to create a linear sequence that is similar to a sample's genome sequence. 
-The sequence can then serve as a reference in conventional variant calling methods.
-This represents an incremental use of pangenomic methods that takes advantage of the mature ecosystem of tools for conventional resequencing.
-Generally speaking, these methods show improved accuracy over conventional methods alone.
+Rather than implementing genotyping or variant calling over a pangenome model, the model can be used to infer a likely haploid version of a new sample's sequence, which is used as a reference genome for variant calling.
+These methods show incremental improvements in accuracy over conventional methods.
 \textsc{Gramtools} \cite{Maciuca_2016} and \textsc{PanVC} \cite{Valenzuela_2018} both use specialized pangenome indexes to map reads for this purpose.
-\textsc{PRG} uses read $k$-mers from reads to choose paths through a graph to extract as sequences \cite{dilthey2015improved}.
+\textsc{PRG} uses read $k$-mers from reads to choose likely haplotype paths through a graph \cite{dilthey2015improved}.
 
 \subsubsection{Small variants}
 
 In many ways, small variants stand to benefit the least from pangenomic variant calling and genotyping.
 NGS read lengths are sufficient to span their entirety, and the associated variant calling algorithms are quite mature.
-However, reference bias in mapping can be a source of small variant calling error, and pangenome models provide an opportunity to mitigate these biases.
+However, reference bias in mapping can be a source of small variant calling error, particularly for indels. %, and pangenome models provide an opportunity to mitigate these biases.
 
 One strategy consists of realigning reads to graphs of known variation after mapping to a linear reference.
-This approach was pioneered in the 1000 Genomes Project by the \textsc{GLIA} software for use on indels and complex regions \cite{1000_2015}.
-More recently, \textsc{Graphtyper} expanded the scale of this approach and incorporated pangenomic data sets.
-It has competitive accuracy with state-of-the-art conventional pipelines but better computational efficiency, and incorporating known variation modestly improves its accuracy \cite{eggertsson2017graphtyper}.
+This approach was pioneered in the 1000 Genomes Project, which applied \textsc{glia} to establish genotype likelihoods for indels and complex alleles \cite{1000_2015}.
+\textsc{GraphTyper} refines this approach to achive competitive accuracy in genotyping with very low computational costs, and demonstrates improved accuracy at variation \cite{eggertsson2017graphtyper}.
+
+
+%\textsc{Graphtyper} expands the scalability and performance of this approach, achieving competitive accuracy in genotyping, 
+%It achieves accuracy competitive with conventional methods with better computational efficiency and benefits from considering known variation 
 
 Another set of pangenomic variant callers are based on colored de Bruijn graphs.
 \textsc{Cortex} first developed this approach \cite{Iqbal_2012}.
