@@ -1,32 +1,37 @@
 \section{Introduction}
 
 A \emph{pangenome} models the full set of genomic elements in a given species or clade.
-Pangenomics thus stands in contrast to standard genomics by emphasizing the sum total of available genomic information over a particular consensus model of the genome.
-By considering the pangenome during bioinformatic analyses, researchers can hope to remove bias towards any specific genome or haploid genome model that might occur during diverse stages of data processing.
+Pangenomics thus stands in contrast to standard genomics, which focuses on a particular consensus model of the genome.
+%by emphasizing the sum total of available genomic information over a particular consensus model of the genome.
+By working with a pangenome during bioinformatic analyses, researchers can mitigate bias towards any specific genome or haploid genome model that might occur during diverse stages of data processing.
 %, analyse also minor alleles inevitably missing from such linear models, and incorporate information about genomic variation directly into their study.
 %Pangenomic reference systems thus e single canonical version of the genome of a given species, but a widely-represenative collection of sequences.
 
 This concept has been essential to microbiology, where genomic plasticity and diversity have made a pangenomic perspective indispensable \cite{Vernikos2015}.
 Usually, these analyses focus on the presence or absence of genes from given strains and the determination of a core (commonly present) and accessory (frequently absent) pangenome \cite{page2015roary}.
 Pangenomic techniques have also been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,Ou_2018}.
-In recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{sudmant2015integrated,Hehir-Kwa2016-hb,chaisson2018multi,Audano_2019}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}.
+In recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{sudmant2015integrated,Hehir-Kwa2016-hb,chaisson2018multi,Audano_2019}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}. %, fostering general interest in pangenomics.
 
-%These trends encourage the application of pangenomic methods to settings where more than one individual is being analyzed
-These observations have yet to result in a major change to standard approaches to genomics.
-Although there is wide interest in generalizing basic bioinformatic operations to use a pangenomic reference model \cite{computational2016computational}, today, most ``high-throughput'' analyses of large genomes still depend on comparison to a single reference genome.
+These observations have generated wide interest in extending bioinformatic operations to use a pangenomic reference model \cite{computational2016computational}.
+But today, most ``high-throughput'' analyses of large genomes still depend on comparison to a single reference genome.
 This expedient and conservative approach has its merits, but will become untenable with the development of true pangenomic references for humans \cite{Church2015-vt} and other model organisms.
-%But, to be a true replacement for resequencing, methods based on reference pangenomes must provide precise resolution of variants of all scales. %, and they must support efficient pangenomic generalizations of many standard bioinformatic approaches.
+%To be a true replacement for resequencing, methods based on reference pangenomes must provide precise resolution of variants of all scales. %, and they must support efficient pangenomic generalizations of many standard bioinformatic approaches.
 
 Here, we consider a new class of methods that approach the pangenome with precision, often at the resolution of single base pairs.
-Unlike widely-applied pangenomic methods that consider genes as their fundamental unit, these precise pangenomic methods support the interrogation of collections of genomes and their relationships at any level of resolution.
-They envision pangenomic analyses based on the full complement of DNA in the individuals under analysis, and aim to support downstream inference over variants of all types and scales.
+%Unlike widely-applied pangenomic methods that consider genes as their fundamental unit,
+These precise pangenomic methods support the interrogation of collections of genomes and their relationships at any level of resolution.
+They envision pangenomic analyses based on the full complement of DNA in the individuals under analysis, without limits to the type or scale of variation that is considered.
+%and aim to support downstream inference over variants of all types and scales.
 %, including small variation such as SNPs and indels in the same context as large structural variants gene gain or loss.
 
 Scaling such techniques to operate on eukaryotic pangenomes has required significant effort in the development of new data models and algorithms.
 Solutions to this problem are varied, but they often rely on graph data structures that both compress a collection of genomes and express relationships between them.
-Not all methods expose this data structure as a coherent reference system.
-They may instead use it internally to improve performance of a standard bioinformatic operation.
-Even different graph-based pangenomic models are not necessarily equivalent and may have distinct strengths and weaknesses in terms of representing certain kinds of genomic variation.
+In this review, we survey precision pangenomic methods, with an emphasis on those based on graphical models of the genome.
+%Mounting results suggest that such models provide a strong basis for the next phase of genome studies.
+
+%Not all methods expose this data structure as a coherent reference system.
+%They may instead use it internally to improve performance of a standard bioinformatic operation.
+%Even different graph-based pangenomic models are not necessarily equivalent and may have distinct strengths and weaknesses in terms of representing certain kinds of genomic variation.
 
 %Although these limitations have appeared necessary to scale precision pangenomics to eukaryotic genomes, new algorithms and approaches for the construction and interrogation of pangenome graphs demonstrate that generic models can be scalable.
 %These results imply the possibility of simplifying and even expediting many bioinformatic analyses through the use of pangenomic reference systems and algorithms.
@@ -45,7 +50,7 @@ State of the art resequencing pipelines can analyze tens of thousands of genomes
 \subsection{Resequencing implies reference bias}
 
 Although efficient and conceptually simple, resequencing has a significant limitation.
-The relationships between genomes are only visible for those sequences that are similar enough to the reference genome to be alignable.
+The relationships between genomes are only visible for those sequences that are similar enough to the reference genome to be alignable (figure \ref{fig:models}).
 %Significant variation between a new genome and the reference genome may be rendered invisible, or apparently less frequent, by the reference bias inherent in alignment.
 This effect is known as \emph{reference bias}.
 It is certainly strongest for structural variation or sequences that are absent from the reference system \cite{sudmant2015integrated}, but it can be relevant even for SNPs, which cause problems in alleles specific expression (ASE) quantification \cite{Castel2015-ef} and in the analysis of ancient DNA \cite{zhou2017antcaller}.
@@ -57,8 +62,9 @@ Given that this bias shapes the methods that we use to establish models of the t
 
 Estimates based on short read sequencing data have placed the human pangenome at between 1\% \cite{li2010building} and 10\% \cite{sherman2019assembly} larger than the the GRCh38 human reference assembly.
 Others have demonstrated up to several Mbp of sequence are present in each new individual and not in the reference \cite{Hehir-Kwa2016-hb,Steinberg_2016,Audano_2019}.
-Although these estimates vary based on the author's definition of what constitutes novel sequence or allelic variation, we should expect them to rise as we consider larger cohorts of humans and improve our ability to ascertain variants in repeat-rich genomic regions.
-In particular, we might gain greater insight into the extent, placement and significance of novel sequences when they are discovered in whole genome telomere-to-telomere assemblies constructed from long single-molecule sequencing data \cite{miga2019telomere,Langley_2019}.
+%Although these estimates vary based on the author's definition of what constitutes novel sequence or allelic variation, we should expect them to rise as we consider larger cohorts of humans and improve our ability to ascertain variants in repeat-rich genomic regions.
+%We expect to gain greater insight into the extent, placement and significance of novel sequences when they are discovered in
+We expect that whole genome telomere-to-telomere assemblies constructed from long single-molecule sequencing data will provide greater insight into the extent, placement, and significance of these novel sequences \cite{miga2019telomere,Langley_2019}.
 
 %Efficiently relating new sequences to such rich data resources will require the application of new kinds of resequencing and new models for bioinformatic analysis that support the inference of sensitive all-to-all relationships between large collections of large genomes.
 %The genomics community is today working to determine what kinds of data models will allow researchers to fully exploit pangenomic data from humans and other species.

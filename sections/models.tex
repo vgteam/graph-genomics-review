@@ -1,26 +1,27 @@
 \section{Pangenomic models}
 \label{sec:models}
 
-A \emph{pangenomic model} is a data structure that represents the genomic sequences of a population, a species, a clade, or even a metagenome \cite{computational2016computational}.
+A \emph{pangenomic model} (figure \ref{fig:models}) is a data structure that represents the genomic sequences of a population, a species, a clade, or even a metagenome \cite{computational2016computational}.
 The model serves as a central coordinating entity to describe the collection of sequences and genomes in the pangenome.
 %It may be indexed to allow for fast access to attributes of interest, such as to enable the matching of new sequences into it, or the extraction of genomes that that it was built from.
-Pangenomic models may take many forms, including collections of unaligned sequences or learned sequence models, but in this review we will focus mostly on graphical pangenomic models.
+Pangenomic models may take many forms, including collections of unaligned sequences or learned sequence models, but in this review we will focus mostly on graphical ones.
+%We provide a visual summary of these models and their use in figure \ref{fig:models}.
 %These support a discrete and precise representation of sequences and variation, and are a natural generalization of reference genome systems that have seen wide use in genomics.
 
 \subsection{Graphical models}
 
-Our starting point is a sequence graph \cite{hein1989new} whose nodes are labeled\footnote{Such a graph can also be edge-labeled, with DNA sequences attached to its edges.} with DNA sequences and whose edges represent linkages between successive nodes that are found in the set of sequences that the graph represents.
+Our starting point is a \emph{sequence graph} \cite{hein1989new} whose nodes are labeled\footnote{Such a graph can also be edge-labeled, with DNA sequences attached to its edges.} with DNA sequences and whose edges represent linkages between successive nodes that are found in the set of sequences that the graph represents.
 Practically, a sequence graph serves to compress many redundant input sequences into a smaller data structure that is still representative of the full set.
-The model is thus useful for representing multiple sequence alignments \cite{hein1989new,Lee_2002}.
-In assembly, it is used to compress the full information in a set of sequencing reads (as in the \emph{string graph}) \cite{Myers_2005}, or fixed-length $k$-mers (as in the \emph{de Bruijn graph} (DBG)) \cite{Pevzner_2001}.
-\todo{JME: should we have a more complete description of these data structures here?}
+They were first used to represent multiple sequence alignments \cite{hein1989new,Lee_2002}.
+We call these graphs \emph{bidirected} when represent both strands of DNA and inversions.
+In assembly, they have been applied represent the full information in a set of sequencing reads (as in the \emph{string graph}) \cite{Myers_2005}, or fixed-length $k$-mers (as in the \emph{de Bruijn graph} (DBG)) \cite{Pevzner_2001}.
 
 \emph{Genome graphs} are sequence graphs used to represent whole genome relationships \cite{Paten_2017}.
 Walks through these graphs represent recombinations of the genomes included in the model.
 Regions of the graph where multiple paths connect a common head and tail node, often referred to as \emph{bubbles} \cite{paten2018superbubbles}, represent variation.
 \emph{Variation graphs} further structure this model by embedding the linear sequences of the pangenome as \emph{paths} \cite{Garrison_2018}.
 Paths provide a stable coordinate system that is unaffected by the manner in which the graph was built, making the model equivalent to a collection of sequences and their mutual alignment.
-\todo[inline]{JME: we should discuss bidrected graphs here, or else remove them from the figure}
+%\todo[inline]{JME: we should discuss bidrected graphs here, or else remove them from the figure}
 
 \subsection{Pangenomic data formats}
 
