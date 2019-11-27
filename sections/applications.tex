@@ -1,33 +1,53 @@
 \section{Applications of pangenomic models}
 
-%\subsection{Error correction}
-%
-%De Bruijn graph based methods have been used for correcting errors in reads.
-%The principle used by these methods is to build an assembly from accurate short reads and use that to correct the reads.
-%Assembly methods used include de Bruijn graphs \cite{Salmela2014LoRDEC, Salmela2016LORMA}, de Bruijn graphs with various cleaning operations \cite{Miclotte2016Jabba, Limasset_2019, Rautiainen_2019b, Marchet_2019}, FM-index representing all de Bruijn graphs \cite{Wang2018FMLRC} and variable order de Bruijn graphs \cite{Morisse2018HGcolor, Morisse2019Consent}.
-%The reads are aligned to the assembly and the path in the graph is extracted as the corrected read.
-%Comparisons of error correction methods \cite{Fu2019ErrorCorrectionSurvey, Zhang2019ErrorCorrectionSurvey} have found de Bruijn graph based methods to outperform read alignment based methods.
+Although precision pangenomic techniques can be applied throughout biology, most recent work has focused on a handful of applications where they can provide substantial benefits.
+Variant calling and genotyping benefit from unbiased observation of alleles.
+This effect is stronger for larger alleles, and so pangenomic methods have become an essential aspect of recently developed structural variant callers and genotypers.
+Assembly methods have often focused on obtaining a single representative haplotype sequence for a genome, but pangenomic approaches promise to support diploid assemblies that faithfully represent both haploytpes of each chromosome.
+Pangenomic models can be used as a prior when correcting errors in long reads, enabling direct and accurate observation of haplotypes even in long reads with low per-base accuracy.
+We consider applications of precision pangenomics to functional genomic studies of DNA-protein interaction and RNA sequencing, which are highly sensitive to the effects of reference bias.
+Pangenomic techniques have seen application to metagenomic settings, where communities of species are considered instead of a single clade or species.
 
 \subsection{Variant calling and genotyping}
 
-\todo[inline]{EG: this section must be reduced dramatically}
+%\todo[inline]{EG: this section must be reduced dramatically}
 
-In the era of resequencing, variant calling emerged as an essential methodology for genome inference.
-The advent of pangenomics promises to improve this methodology by leveraging prior data in the form of known variation.
-The strategies to do so can be coarsely divided into two umbrella approaches.
-First, known variation can inform inference by providing a statistical prior.
-Second, known variation can help applications avoid algorithmic artifacts that frustrate inference.
-%Together, these advantages are helping pangenomics expand the limits of what variation current technology can detect and how accurately it can do so.
-
-In many ways, the spiritual predecessors of pangenomic variant calling are multi-sample calling methods. 
-These were designed to co-call the samples from major population sequencing projects, like the 1000 Genomes Project \cite{1000_2015}, in a single, shared inference process.
-The motivation for doing so mirrors the motivation for pangenomic variant calling: increased statistical power via a shared prior and reduced algorithmic bias.
-However, it is no longer necessary to restrict inference to the samples from one project.
-With increasingly large public databases of variation, pangenomics is bringing the benefits of multi-sample calling to bear even on individual samples.
-
-In pangenomics, it is useful to distinguish between \emph{variant calling} and \emph{genotyping}.
+Typically, \emph{variant calling} and \emph{genotyping} indicate different aspects of a reference-guided genome inference process.
 Genotyping consists of determining whether a previously observed variant is present in a new sample, whereas variant calling involves detecting yet unobserved variation.
-Intuitively, pangenomic methods should provide greater benefit to genotyping, and indeed most existing tools emphasize it over variant calling.
+When our reference system is a linear genome, these two steps are often merged.
+A single process will detect candidate variation and infer a sample genotype at each putatively variable locus \cite{Li_2011,Garrison_2012}.
+
+These methods are often Bayesian, and combine a model for observation and error with a simple \emph{a priori} model of the pattern of variation that we expect to see, typically based on the expected rate of heterozygosity or mutation. % (for instance, based on the rate of mutation).
+%These priors are typically globally fixed parameters related to the expected rate of heterozygosity, and we don't incorporate information about which alleles have been observed before.
+We share information across genomes by considering collections of genomes at the same time in multisample variant calling, phasing, and genotype imputation \cite{1000_2015,browning2011haplotype}.
+However, this joint calling approach is expensive, and not applicable when we only have a few new genomes to reconstruct.
+Furthermore, it does not help our primary interpretation of new sequencing data during read mapping.
+%In standard approaches, prior information about genomic variation is only available through the set of samples under consideration or some external input of candidate alleles and loci.
+%Often, this information is applied after the variant calling and genotyping phase by using panels of existing genomes to statistically infer the haplotypes of a new sample \cite{browning2011haplotype}.
+%However, it is not integrated into the initial alignment steps that we use to organize sequencing data and calculate observational support for different alleles.
+
+Precision pangenomic techniques allow us to share information about genomic variation between samples without considering all genomes at the same time.
+By including variation in our reference system, it can guide our primary alignment and interpretation of sequence data.
+This reduces bias during genotyping, and in principle can reduce the amount of novel sequence that must be considering during variant calling.
+
+%Precision pangenomic techniques allow us to specify the set of candidate alleles directly in the reference system that we use.
+%In principle, if the set of alleles that we consider is large, then this should reduce the cost of finding new variation.
+%However, this aspect has not been explored as readily as 
+
+%Intuitively, pangenomic methods should provide greater benefit to genotyping, and indeed most existing tools emphasize it over variant calling.
+
+%Variant calling and genotyping together describe a genome inference process where a reference system is used to guide the reconstruction of a new genome (or, in the ``joint'' case, a collection of genomes).
+
+%First, known variation can inform inference by providing a statistical prior.
+%Second, known variation can help applications avoid algorithmic artifacts that frustrate inference.
+
+%In many ways, the spiritual predecessors of pangenomic variant calling are multi-sample calling methods. 
+%These were designed to co-call the samples from major population sequencing projects, like the 1000 Genomes Project \cite{1000_2015}, in a single, shared inference process.
+%The motivation for doing so mirrors the motivation for pangenomic variant calling: increased statistical power via a shared prior and reduced algorithmic bias.
+%However, it is no longer necessary to restrict inference to the samples from one project.
+%With increasingly large public databases of variation, pangenomics is bringing the benefits of multi-sample calling to bear even on individual samples.
+
+
 %TODO: i thought i wanted another sentence here, but i can't remember it...
 % - something about the variants where mapping is the most difficult?
 
@@ -172,10 +192,10 @@ High mutation rates drive high diversity in STRs, and the low-complexity sequenc
 %It uses the snarl decomposition \cite{paten2018superbubbles} to identify sites of variation in the graph, and derives haplotypes using read support.
 %It was shown to be much more accurate than linear reference-based approaches.
 
-\subsection{Assembly}
+\subsection{Pangenomic assembly and error correction}
 % Erik
 
-\subsubsection{Phasing bubble chains in single individuals or trios}
+%\subsubsection{Phasing bubble chains in single individuals or trios}
 
 Determining the two genome sequences of diploid organisms per chromosome is important in order to correctly understand allele-specific expression and compound heterozygosity, and in order to carry out many analyses in the genetics of common diseases and in population genetics \cite{tewhey2011importance}. 
 However, current assembly approaches often generate mixed haplotype assembly and, therefore, fail to capture the diploid nature of the organism under study. 
@@ -184,6 +204,15 @@ However, current assembly approaches often generate mixed haplotype assembly and
 The basic idea is to work in the space of assembly graph (without collapses halotypes) to perform phasing. 
 This method was applied to genomes of moderate sizes with low to high heterozygosity rates. 
 Furthermore, we have shown that we can detect and phase structural variants.
+
+%\subsection{Error correction}
+%
+%De Bruijn graph based methods have been used for correcting errors in reads.
+%The principle used by these methods is to build an assembly from accurate short reads and use that to correct the reads.
+%Assembly methods used include de Bruijn graphs \cite{Salmela2014LoRDEC, Salmela2016LORMA}, de Bruijn graphs with various cleaning operations \cite{Miclotte2016Jabba, Limasset_2019, Rautiainen_2019b, Marchet_2019}, FM-index representing all de Bruijn graphs \cite{Wang2018FMLRC} and variable order de Bruijn graphs \cite{Morisse2018HGcolor, Morisse2019Consent}.
+%The reads are aligned to the assembly and the path in the graph is extracted as the corrected read.
+%Comparisons of error correction methods \cite{Fu2019ErrorCorrectionSurvey, Zhang2019ErrorCorrectionSurvey} have found de Bruijn graph based methods to outperform read alignment based methods.
+
 
 \subsection{Transcription factor binding}
 % Glenn
