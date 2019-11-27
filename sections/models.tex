@@ -86,8 +86,13 @@ Such a model directly implies a directed acyclic graph, ordered along the refere
 It has been key to the first wave of precision pangenomic methods.
 Because such a model can't represent information beyond that in the VCF file or multiple sequence alignment, we typically see this pangenome construction approach used in graph genome mappers like \textsc{GenomeMapper} \cite{Schneeberger_2009}, Seven Bridges' \textsc{Graph Genome Pipeline}, and \cite{Rakocevic_2019}, PanVC \cite{Valenzuela_2018}, and \textsc{Gramtools} \cite{Maciuca_2016}.
 The variation graph toolkit, specifically \textsc{VG construct} \cite{Garrison_2018}, can be applied to transform VCF files and reference sequences into genome graphs.
+Some methods, like the journaled string tree \cite{Rahn_2014}, and methods based on elastic degenerate texts \cite{Bernardini_2019} such as \textsc{SOPanG} \cite{Cis_ak_2018}, transform the variant set and reference into a structure optimized for online sequence queries of the pangenome.
 Deciding which variation should be added to a graph is non-trivial, and has encouraged studies of graph utility \cite{Novak_2017a} and algorithms to determine which variation is helpful \cite{Pritt_2018}.
-Some methods, like the journaled string tree \cite{Rahn_2014}, never construct the graph explicitly, instead using the variant and reference to support dynamic queries of the pangenome.\todo{EG: there is another method produced by UCL/kings people recently that should be mentioned here.}
+
+%never construct the graph explicitly, instead using the variant and reference to support dynamic queries of the pangenome.
+%Related methods model the pangenome as an elastic degenerate text, supporting online queries or 
+
+%\todo{EG: there is another method produced by UCL/kings people recently that should be mentioned here.}
 
 
 %A number of methods have been developed around this pangenomic model, but typically they use a specialized or limited version of the model as in internal data structure to drive improvements in read alignment and genome inference.
