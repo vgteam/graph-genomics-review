@@ -87,14 +87,15 @@ This approach was pioneered in the 1000 Genomes Project, which applied \textsc{g
 %\textsc{Graphtyper} expands the scalability and performance of this approach, achieving competitive accuracy in genotyping, 
 %It achieves accuracy competitive with conventional methods with better computational efficiency and benefits from considering known variation 
 
-Another set of pangenomic variant callers are based on colored de Bruijn graphs.
-\textsc{Cortex} first developed this approach \cite{Iqbal_2012}.
-\textsc{Cortex} calls variants based on coverage in bubble structures in a colored de Bruijn graph, which is constructed from multiple read sets and/or reference genomes.
-This approach permits both pangenomic and reference-free variant calling.
+Colored de Bruijn graphs support pangenomic, reference-free variant calling.
+%Another set of pangenomic variant callers are based on colored de Bruijn graphs.
+%\textsc{Cortex} first developed this approach 
+\textsc{Cortex} calls variants based on coverage in bubble structures in a colored de Bruijn graph, which is constructed from multiple read sets and/or reference genomes \cite{Iqbal_2012}.
+%This approach permits both pangenomic and reference-free variant calling.
 %constructs a colored de Bruijn graph which can include data of multiple samples and additional sources of sequence information, like a reference genome or known alleles. 
 %Variants are detected by identifying bubble structures in the graph and  genotyped based on the samples' coverage of allele specific kmers.
 %The approach efficiently handles simultaneous analysis of multiple genomes and enables accurate variant detection in a reference-free manner.
-\textsc{Bubbleparse} extended the \textsc{Cortex}'s model to improve SNP discovery \cite{Leggett_2013}.
+\textsc{Bubbleparse} extends \textsc{Cortex}'s model to improve SNP discovery \cite{Leggett_2013}.
 %Candidate variants are produced by a bubble calling algorithm and a heuristic is presented which uses a classification and ranking system to controls the specificity of reported SNP calls \cite{Leggett_2013}.
 
 %Seven Bridges' \textsc{Graph Genome Pipeline} includes a variant calling module that itself is minimally pangenomic beyond its use of graph-based read mappings.
@@ -160,10 +161,10 @@ This approach permits both pangenomic and reference-free variant calling.
 
 \subsubsection{Genotyping structural variation}
 
-The study of structural variants (SVs)---typically defined as variants affecting at least 50 bp---appears to have more to gain from using genome graphs.
+The study of structural variants (SVs)---typically defined as variants affecting at least 50 bp---has more to gain from using genome graphs.
 SVs are difficult to call with NGS reads because they are large relative to the read length.
 Long read sequencing does not share this difficulty, but this technology remains prohibitively expensive for population-scale studies or routine use.
-This represents an opportunity for pangenomic methods, which can represent SVs naturally represented in genome graphs.
+%This represents an opportunity for pangenomic methods, which can represent SVs naturally represented in genome graphs.
 
 \textsc{Bayestyper} \cite{sibbesen2018accurate} compares the distribution of $k$-mers from sequencing reads to the distribution of $k$-mers along paths in the graph.
 It calls structural variants with high accuracy almost irrespective of the size of the variant.
@@ -179,7 +180,7 @@ The highly polymorphic and medically important human leukocyte antigen (HLA) gen
 \textsc{HLA*LA} \cite{dilthey2019hla}, \textsc{Kourami} \cite{lee2018kourami}, and \textsc{HISAT-genotype} \cite{Kim_2019} have all demonstrated techniques for genotyping HLA genes by aligning NGS reads to a graph encoding various HLA alleles.
 Their results rival gold-standard Sanger sequencing methods in accuracy.
 Short tandem repeats (STRs) have been another target.
-High mutation rates drive high diversity in STRs, and the low-complexity sequence adds further difficulty.
+%High mutation rates drive high diversity in STRs, and the low-complexity sequence adds further difficulty.
 \textsc{ExpansionHunter} \cite{dolzhenko2019expansionhunter} and \textsc{HISAT-genotype} \cite{Kim_2019} used similar methodologies to those employed in HLA to achieve comparable or better accuracy than existing methods for STRs.
 
 % is a SV genotyper with strategy that is similar to Graphtyper's \cite{eggertsson2017graphtyper}.
