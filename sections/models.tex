@@ -306,18 +306,18 @@ By indexing a batch of reads and searching for the complex regions in that index
 
 \subsection{Indexing haplotypes and genomes in variation graphs}
 
-Storing a set of genome embedded in a variation graph can allow us to develop positional system over the graph, which is important for practical use.
-However, recording each sequence in a large pangenome as a series of steps through the graph would require space proportional to the length of all paths, which quickly becomes untenable.
-To store many haplotypes, we must exploit the repetitiveness of the haplotype set.
-This is feasible because haplotypes from individuals of the same species tend to be highly similar.
+%Storing a set of genome embedded in a variation graph can allow us to develop positional system over the graph, which is important for practical use.
+%However, recording each sequence in a large pangenome as a series of steps through the graph would require space proportional to the length of all paths, which quickly becomes untenable.
+%To store many haplotypes, we must exploit the repetitiveness of the haplotype set.
+%This is feasible because haplotypes from individuals of the same species tend to be highly similar.
 %, it is not scalable to do so for every genome or haplotype that we have in a large pangenome.
 
-
+Haplotypes in related individuals are typically highly similar, and thus compressible.
 A series of results lead from a compact haplotype index for biallelic SNPs to a generic haplotype index for complex variation graphs.
 The positional BWT (PBWT) \cite{Durbin_2014} provides an efficient compressed representation of a set of haplotypes over biallelic variable sites.
-It does so by recording a series of permutations of haplotypes over the sites that, when executed, maintain the invariant that the haplotypes are sorted by their prefixes leading up to the site.
+%It does so by recording a series of permutations of haplotypes over the sites that, when executed, maintain the invariant that the haplotypes are sorted by their prefixes leading up to the site. % this is nice but maybe too much detail
 The PBWT, like the BWT, supports efficient haplotype matching queries such as maximal exact match finding.
-Later work \cite{Gagie_2017} shows the PBWT to be equivalent to the wavelet matrix \cite{Claude_2015}, which is to date the most efficient known encoding of strings with large alphabets supporting a variety of important random access queries.
+Later work \cite{Gagie_2017} showed the PBWT to be equivalent to the wavelet matrix \cite{Claude_2015}, which is to date the most efficient known encoding of strings with large alphabets supporting a variety of important random access queries.
 The graph positional BWT (gPBWT) \cite{Novak_2017} extends the PBWT model to haplotype walks embedded in complex sequence graphs.
 The graph BWT (GBWT) \cite{siren2018haplotype} builds on a number of assumptions that tend to hold for sequence variation graphs to improve runtime and memory costs relative to the gPBWT.
 Provided the variation graph on which they are built encodes the full complement of variation in the pangenome, both the gPBWT and GBWT are excellent, and in principle lossless, compressors of genomes.
