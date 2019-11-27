@@ -170,18 +170,17 @@ Long read sequencing does not share this difficulty, but this technology remains
 It calls structural variants with high accuracy almost irrespective of the size of the variant.
 However, it has a high memory footprint, and later analysis has also suggested that its reliance on long exact matches makes it fragile to breakpoint uncertainty \cite{hickey2019genotyping}.
 
-In contrast, \textsc{Paragraph} \cite{chen2019paragraph} and \textsc{VG}'s genotyper \cite{hickey2019genotyping} are both based on aligning reads to graphs.
-The largest difference is that \textsc{Paragraph} maps to a linear reference and then realigns to local graphs (much like \textsc{Graphtyper} \cite{eggertsson2017graphtyper}), whereas VG maps reads directly to a graph.
-Both methods use read coverage to determine the genotype.
-Further, both methods were shown to significantly outperform similar methods based on the linear reference.
+In contrast, \textsc{Paragraph} \cite{chen2019paragraph}, \textsc{GraphTyper2} \cite{eggertsson2019graphtyper2}, and \textsc{VG}'s genotyper \cite{hickey2019genotyping} use genome graphs to genotype SVs.
+The largest difference is that \textsc{Paragraph} and \textsc{GraphTyper2} map to a linear reference locally realign to regional graphs, whereas VG maps reads directly to a whole genome graph.
+Thes methods all use read coverage to determine the genotype, significantly outperforming related reference-based methods.
 
 Some pangenomic methods have sought improved accuracy and efficiency by focusing on specific regions where reference bias makes inference challenging. 
 The highly polymorphic and medically important human leukocyte antigen (HLA) genes have received an especially large amount of attention.
 \textsc{HLA*LA} \cite{dilthey2019hla}, \textsc{Kourami} \cite{lee2018kourami}, and \textsc{HISAT-genotype} \cite{Kim_2019} have all demonstrated techniques for genotyping HLA genes by aligning NGS reads to a graph encoding various HLA alleles.
 Their results rival gold-standard Sanger sequencing methods in accuracy.
-Short tandem repeats (STRs) have been another target.
+%Short tandem repeats (STRs) have been another target.
 %High mutation rates drive high diversity in STRs, and the low-complexity sequence adds further difficulty.
-\textsc{ExpansionHunter} \cite{dolzhenko2019expansionhunter} and \textsc{HISAT-genotype} \cite{Kim_2019} used similar methodologies to those employed in HLA to achieve comparable or better accuracy than existing methods for STRs.
+\textsc{ExpansionHunter} \cite{dolzhenko2019expansionhunter} and \textsc{HISAT-genotype} \cite{Kim_2019} used similar methodologies to achieve comparable or better accuracy than existing methods for short tandem repeats (STRs).
 
 % is a SV genotyper with strategy that is similar to Graphtyper's \cite{eggertsson2017graphtyper}.
 %For each variant, Paragraph constructs a graph of the affected genomic region and realigns reads that are nearby, as determined by mapping to a linear reference.
