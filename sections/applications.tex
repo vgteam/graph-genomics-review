@@ -193,18 +193,29 @@ Their results rival gold-standard Sanger sequencing methods in accuracy.
 %It uses the snarl decomposition \cite{paten2018superbubbles} to identify sites of variation in the graph, and derives haplotypes using read support.
 %It was shown to be much more accurate than linear reference-based approaches.
 
-\subsection{Pangenomic assembly and error correction}
+\subsection{Inferring precise haplotypes from pangenome graphs}
 % Erik
 
 %\subsubsection{Phasing bubble chains in single individuals or trios}
 
-Determining the two genome sequences of diploid organisms per chromosome is important in order to correctly understand allele-specific expression and compound heterozygosity, and in order to carry out many analyses in the genetics of common diseases and in population genetics \cite{tewhey2011importance}. 
-However, current assembly approaches often generate mixed haplotype assembly and, therefore, fail to capture the diploid nature of the organism under study. 
+%Determining the two genome sequences of diploid organisms per chromosome is important in order to correctly understand allele-specific expression and compound heterozygosity, and in order to carry out many analyses in the genetics of common diseases and in population genetics \cite{tewhey2011importance}. 
+%However,
+Current assembly approaches often a result that mixes both haplotypes of a diploid genome together.
+This inaccurate representation has led to the development of diploid assembly methods.
+\textsc{WHdenovo} \cite{garg2019trio, garg2018graph} addresses this by using long reads to infer phase within the pangenomic space of the assembly graph.
+In an alternative approach to haplotype inference, pangenomic error correction methods can be used to clean small errors from long reads, rendering them precise observations of long hapolytpes \cite{Salmela2016LORMA,Rautiainen_2019b}.
+These methods build an assembly from accurate reads (NGS or PacBio circular consesus), to which reads can be aligned.
+The path of the alignment through the graph is taken as the corrected read.
 
-\textsc{WHdenovo} \cite{garg2019trio, garg2018graph} is the first tool that leverages information of short and long-reads to generate happlotype-resolved assembly. 
-The basic idea is to work in the space of assembly graph (without collapses halotypes) to perform phasing. 
-This method was applied to genomes of moderate sizes with low to high heterozygosity rates. 
-Furthermore, we have shown that we can detect and phase structural variants.
+
+%is the first tool that leverages information of short and long-reads to generate happlotype-resolved assembly. 
+
+%generate mixed haplotype assembly and, therefore, fail to capture the diploid nature of the organism under study. 
+
+
+%The basic idea is to work in the space of assembly graph (without collapses halotypes) to perform phasing. 
+%This method was applied to genomes of moderate sizes with low to high heterozygosity rates. 
+%Furthermore, we have shown that we can detect and phase structural variants.
 
 %\subsection{Error correction}
 %
