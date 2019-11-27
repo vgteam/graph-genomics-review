@@ -1,12 +1,14 @@
 \section{Applications of pangenomic models}
 
 Although precision pangenomic techniques can be applied throughout biology, most recent work has focused on a handful of applications where they can provide substantial benefits.
-Variant calling and genotyping benefit from unbiased observation of alleles.
-This effect is stronger for larger alleles, and so pangenomic methods have become an essential aspect of recently developed structural variant callers and genotypers.
-Assembly methods have often focused on obtaining a single representative haplotype sequence for a genome, but pangenomic approaches promise to support diploid assemblies that faithfully represent both haploytpes of each chromosome.
-Pangenomic models can be used as a prior when correcting errors in long reads, enabling direct and accurate observation of haplotypes even in long reads with low per-base accuracy.
-We consider applications of precision pangenomics to functional genomic studies of DNA-protein interaction and RNA sequencing, which are highly sensitive to the effects of reference bias.
-Pangenomic techniques have seen application to metagenomic settings, where communities of species are considered instead of a single clade or species.
+Here, we consider developments in variant calling and genotyping, haplotype inference, functional genomics, and metagenomics.
+
+%Variant calling and genotyping benefit from unbiased observation of alleles.
+%This effect is stronger for larger alleles, and so pangenomic methods have become an essential aspect of recently developed structural variant callers and genotypers.
+%Assembly methods have often focused on obtaining a single representative haplotype sequence for a genome, but pangenomic approaches promise to support diploid assemblies that faithfully represent both haploytpes of each chromosome.
+%Pangenomic models can be used as a prior when correcting errors in long reads, enabling direct and accurate observation of haplotypes even in long reads with low per-base accuracy.
+%We consider applications of precision pangenomics to functional genomic studies of DNA-protein interaction and RNA sequencing, which are highly sensitive to the effects of reference bias.
+%Pangenomic techniques have seen application to metagenomic settings, where communities of species are considered instead of a single clade or species.
 
 \subsection{Variant calling and genotyping}
 
@@ -202,7 +204,7 @@ Their results rival gold-standard Sanger sequencing methods in accuracy.
 %However,
 Current assembly approaches often a result that mixes both haplotypes of a diploid genome together.
 This inaccurate representation has led to the development of diploid assembly methods.
-\textsc{WHdenovo} \cite{garg2019trio, garg2018graph} addresses this by using long reads to infer phase within the pangenomic space of the assembly graph.
+\textsc{WHdenovo} \cite{garg2018graph} addresses this by using long reads to infer phase within the pangenomic space of the assembly graph.
 In an alternative approach to haplotype inference, pangenomic error correction methods can be used to clean small errors from long reads, rendering them precise observations of long hapolytpes \cite{Salmela2016LORMA,Rautiainen_2019b}.
 These methods build an assembly from accurate reads (NGS or PacBio circular consesus), to which reads can be aligned.
 The path of the alignment through the graph is taken as the corrected read.
@@ -225,18 +227,19 @@ The path of the alignment through the graph is taken as the corrected read.
 %The reads are aligned to the assembly and the path in the graph is extracted as the corrected read.
 %Comparisons of error correction methods \cite{Fu2019ErrorCorrectionSurvey, Zhang2019ErrorCorrectionSurvey} have found de Bruijn graph based methods to outperform read alignment based methods.
 
+\subsection{Functional pangenomics}
 
-\subsection{Transcription factor binding}
+%\subsection{Transcription factor binding}
 % Glenn
 
 CHiP-seq data, reads that bind to specific transcription factors, can be mapped back to the reference genome in order to locate binding sites.
-\textsc{Graph Peak Caller} is based on \texttt{vg} and is the first tool to use a genome graph for this process \cite{Grytten_2019}.
+\textsc{Graph Peak Caller} is based on \textsc{VG} and is the first tool to use a genome graph for this process \cite{Grytten_2019}.
 It was shown to find binding sites more enriched for known DNA binding motifs than linear methods on \emph{A. thaliana}.
 It was also applied to human data to discover novel sites for enhancers in the human genome \cite{groza2019personalized}. 
 
-\todo[inline]{Do we need a real epigenomics section about DNA base or histone modification?\\ JME: what about merging this with transcriptomics and callings it "Functional Genomics"?}
+%\todo[inline]{Do we need a real epigenomics section about DNA base or histone modification?\\ JME: what about merging this with transcriptomics and callings it "Functional Genomics"?}
 
-\subsection{Transcriptomics}
+%\subsection{Transcriptomics}
 \label{sec:transcriptomics}
 
 Some transcriptomic analyses are strongly affected by reference bias.
