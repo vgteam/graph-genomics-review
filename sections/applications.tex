@@ -1,7 +1,13 @@
 \section{Applications of pangenomic models}
 
 Although precision pangenomic techniques can be applied throughout biology, most recent work has focused on a handful of applications where they can provide substantial benefits.
-Here, we consider developments in variant calling and genotyping, haplotype inference, functional genomics, and metagenomics.
+%In variant calling and genotyping, reduced reference bias and complete representation of difficult variation in the reference can improve accuracy and 
+%Here, we consider developments in several research areas.
+Reduced reference bias and coherent representations of alleles support large improvements in structural variation detection and can decrease the runtime costs of genotyping.
+They have enabled haplotype reconstruction of quasispecies in metagenomic studies and transcripts in functional genomics, and pangenomic association studies.
+%haplotype inference, functional genomics, and metagenomics.
+%Pangenomic reference systems can improve the accuarcy of allele specific expression assays that are crucial to untangling diverse issues in functional genomics.
+
 
 %Variant calling and genotyping benefit from unbiased observation of alleles.
 %This effect is stronger for larger alleles, and so pangenomic methods have become an essential aspect of recently developed structural variant callers and genotypers.
@@ -21,7 +27,8 @@ A single process will detect candidate variation and infer a sample genotype at 
 
 These methods are often Bayesian, and combine a model for observation and error with a simple \emph{a priori} model of the pattern of variation that we expect to see, typically based on the expected rate of heterozygosity or mutation. % (for instance, based on the rate of mutation).
 %These priors are typically globally fixed parameters related to the expected rate of heterozygosity, and we don't incorporate information about which alleles have been observed before.
-We share information across genomes by considering collections of genomes at the same time in multisample variant calling, phasing, and genotype imputation \cite{1000_2015,browning2011haplotype}.
+%They share information across genomes by considering collections of genomes at the same time in
+By using \emph{multisample} variant calling, genotype phasing, and genotype imputation \cite{1000_2015,browning2011haplotype}, we can share information between samples to improve the accuracy of our reconstruction of genomes from short reads.
 However, this joint calling approach is expensive, and not applicable when we only have a few new genomes to reconstruct.
 Furthermore, it does not help our primary interpretation of new sequencing data during read mapping.
 %In standard approaches, prior information about genomic variation is only available through the set of samples under consideration or some external input of candidate alleles and loci.
@@ -30,7 +37,7 @@ Furthermore, it does not help our primary interpretation of new sequencing data 
 
 Precision pangenomic techniques allow us to share information about genomic variation between samples without considering all genomes at the same time.
 By including variation in our reference system, it can guide our primary alignment and interpretation of sequence data.
-This reduces bias during genotyping, and in principle can reduce the amount of novel sequence that must be considering during variant calling.
+This reduces bias during genotyping, and in principle can reduce the amount of novel sequence that must be considering during genome inference.
 
 %Precision pangenomic techniques allow us to specify the set of candidate alleles directly in the reference system that we use.
 %In principle, if the set of alleles that we consider is large, then this should reduce the cost of finding new variation.
@@ -195,7 +202,7 @@ Their results rival gold-standard Sanger sequencing methods in accuracy.
 %It uses the snarl decomposition \cite{paten2018superbubbles} to identify sites of variation in the graph, and derives haplotypes using read support.
 %It was shown to be much more accurate than linear reference-based approaches.
 
-\subsection{Inferring precise haplotypes from pangenome graphs}
+\subsection{Inferring precise haplotypes from pangenomes and metagenomes}
 % Erik
 
 %\subsubsection{Phasing bubble chains in single individuals or trios}
@@ -208,6 +215,18 @@ This inaccurate representation has led to the development of diploid assembly me
 In an alternative approach to haplotype inference, pangenomic error correction methods can be used to clean small errors from long reads, rendering them precise observations of long hapolytpes \cite{Salmela2016LORMA,Rautiainen_2019b}.
 These methods build an assembly from accurate reads (NGS or PacBio circular consesus), to which reads can be aligned.
 The path of the alignment through the graph is taken as the corrected read.
+
+%\subsection{Metagenomics and quasispecies}
+%\todo{JAS: Alternative, this subsection could also be further reduced and moved to discussion.}
+%Most of the methods mentioned in this review has focused on the analyses of human data, however, the benefits of using graphs as a non-linear pangenomic reference structure have also been demonstrated for other species.
+%This is especially true for bacterial metagenomics and viral quasispecies where the sequencing data consists of a mixture of closely related sequences (e.g. strains).
+%A graph with sequence paths here provides a natural representation of the data and methods have been developed that specifically take advantage of this.
+Several methods have used pangenome graphs to support haplotype reconstruction, but in the context of a mixed population of related genomes sampled from a metagenome or quasispecies mixture.
+%A sequence graph with labeled or colored paths provides a natural representation of a metagenomic or quasispecies pangenome.
+\textsc{Mykrobe} predictor \cite{Bradley2015-kl} and \textsc{GROOT} \cite{Rowe2018-bg} use graph-based structures of bacterial genomes and gene sets to predict antibody resistance in sequencing samples.
+\textsc{Virus-VG} \cite{Baaijens2019-ng} builds a variation graph from assembled viral contigs in order to construct haplotypes and predict associated abundances in viral quasispecies from sequencing reads.
+Their method was later improved in \textsc{VG-Flow} \cite{Baaijens2019-ha} which can scale to much larger genomes, such as bacteria.  
+\textsc{MetaKallisto} \cite{Schaeffer2017-fh} performs taxonomical classification and quantification of metagenomic sequencing data using a database of known sequences represented as colored de Bruijn graphs.
 
 
 %is the first tool that leverages information of short and long-reads to generate happlotype-resolved assembly. 
@@ -306,16 +325,6 @@ When tested in 100 yeast strains, this approach marginally improves on standard 
 %This allows for existing algorithms in \texttt{vg} to also be used for variant-aware mapping of RNA-seq data. 
 %\texttt{vg} supports any type of variation, but its splicing-awareness is limited to only known splice junctions, and it does not support generating supplementary alignments.
 %Thus, reads that span a novel splice junction will only map partially.
-
-\subsection{Metagenomics and quasispecies}
-\todo{JAS: Alternative, this subsection could also be further reduced and moved to discussion.}
-Most of the methods mentioned in this review has focused on the analyses of human data, however, the benefits of using graphs as a non-linear pangenomic reference structure have also been demonstrated for other species.
-This is especially true for bacterial metagenomics and viral quasispecies where the sequencing data consists of a mixture of closely related sequences (e.g. strains).
-A graph with sequence paths here provides a natural representation of the data and methods have been developed that specifically take advantage of this. 
-\textsc{Mykrobe} predictor \cite{Bradley2015-kl} and \textsc{GROOT} \cite{Rowe2018-bg} uses graph-based structures of bacterial genomes and gene sets to predict antibody resistance in sequencing samples.
-\textsc{Virus-VG} \cite{Baaijens2019-ng} builds a variation graph from assembled viral contigs in order to construct haplotypes and predict associated abundances in viral quasispecies from sequencing reads.
-Their method was later improved in \textsc{VG-Flow} \cite{Baaijens2019-ha} which can scale to much larger genomes, such as bacteria.  
-\textsc{MetaKallisto} \cite{Schaeffer2017-fh} performs taxonomical classification and quantification of metagenomic sequencing data using a database of known sequences represented as colored de Bruijn graphs.
 
 %Mykrobe predictor uses reference de Bruijn graphs to estimate antibody resistance from \textit{S. aureus} and \textit{M. Tuberculosis} sequencing data \cite{Bradley2015-kl}.
 %The graphs are constructed from known resistant relevant alleles and genes and compared to a whole-genome de Bruijn graph built from the sample's sequencing reads.
