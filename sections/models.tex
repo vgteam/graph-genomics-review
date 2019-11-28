@@ -233,9 +233,9 @@ Instead of indexing the entire graph, the index may only contain $k$-mers from a
 
 The FM-index \cite{Ferragina_2005} is a text index, based on the Burrows-Wheeler transform (BWT) \cite{Burrows_1994}, that is frequently used with DNA sequences.
 One variant of the FM-index, the RLCSA \cite{Maekinen_2010}, run-length encodes the BWT, allowing it to store and index a collection of similar sequences space-efficiently.
-\citeauthor{Huang_2010} \cite{Huang_2010} observed that if we know a good global alignment of the sequences, we can use that information to make the index both smaller and faster.
-\citeauthor{Na_2016}\ \cite{Na_2016,Na_2018} developed this approach further in their FM-index of alignment.
-While the articles do not mention it, both \citeauthor{Huang_2010}\ and \citeauthor{Na_2016}\ use the graph induced by the alignment as a space-efficient representation of the sequences.
+If we know a good global alignment of the sequences, we can use that information to make the index both smaller and faster \cite{Huang_2010}.
+This approach was developed further in the FM-index of alignment \cite{Na_2016,Na_2018}.
+Both \cite{Huang_2010}\ and \citep{Na_2016}\ use the graph induced by the alignment as a space-efficient representation of the sequences.
 
 \subsection{Indexing acyclic graphs}
 
@@ -278,10 +278,10 @@ These indexes first find partial matches between the query string and the indexe
 In the hypertext index \cite{Thachuk_2013}, each node is a separate phrase.
 Queries mapping to a single node or crossing a single edge can be matched efficiently, while finding mappings to complex graph regions can be slow.
 
-\citeauthor{Bowe_2012} \cite{Bowe_2012} used techniques similar to GCSA for representing de~Bruijn graphs.
+Techniques similar to the GCSA can be used to represent de~Bruijn graphs \cite{Bowe_2012}.
 If the graph transformations used in GCSA construction are stopped after $i$ steps, the resulting graph is equivalent to an order-$2^{i}$ de~Bruijn graph.
 This de~Bruijn graph can be used to approximate the original graph.
-There are no false negatives, but matches longer than $2^{i}$ may be false positives.
+Queries of this index yield no false negatives, but matches longer than $2^{i}$ may be false positives.
 By using this approach, GCSA2 \cite{Siren_2017} attempts to support fast queries in arbitrary graphs.
 %\todo{JAS: Is the above paragraph too complicated for non-expert readers. SH: I had to read it 2 times to get it. Maybe just say that "If GCSA construction is stopped within / at a  transformation step, the resulting graph is equivalent to a de~Bruijn graph". Can we be so "inexact"?}
 % EG: this is pretty precise stuff, so I'm leaving it
