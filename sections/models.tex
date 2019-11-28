@@ -241,7 +241,7 @@ While the articles do not mention it, both \citeauthor{Huang_2010}\ and \citeaut
 
 One class of graph indexing methods supports only acyclic graphs, often represented as directed acyclic graphs (DAGs).
 This constraint can exist either because the acyclicity of the graph provides guarantees that simplify the problem, or because incidental features of the method's software implementation preclude use on cyclic graphs.
-In particular, graphs derived from VCFs tend to represent each contig as an acyclic component.
+%In particular, graphs derived from VCFs tend to represent each contig as an acyclic component.
 %Pangenome graphs built from VCFs represent each contig as a mostly linear run of graph nodes, branching to allow only for substitutions and possibly insertions and deletions.
 %One common class of DAGs, here called \emph{VCF graphs}, 
 %\todo{``VCF graph'' is a placeholder; is there a better term for this shape?}
@@ -269,7 +269,7 @@ It encodes variants as \texttt{(ref|alt1|alt2|\dots)} in the sequence.
 When the search encounters a variant, it must branch to handle each allele separately.
 Both BWBBLE and vBWT trade faster index construction for slower queries.
 However, a combination of IUPAC codes for substitutions, the vBWT approach for other variants, and a $k$-mer index for matching the first 5--10 bases, is faster than either of the originals \cite{Buechler_2019}.
-\todo{JME: I feel like we can probably combine the BWBBLE and vBWT paragraphs, since their approaches are so similar.}
+%\todo{JME: I feel like we can probably combine the BWBBLE and vBWT paragraphs, since their approaches are so similar.}
 
 \subsection{General graphs}
 
