@@ -67,7 +67,7 @@ If the alignments is a complete, gapped alignment, covering small and large vari
 
 % oldschool pan-genomics
 A pangenome can be represented as a collection of sequences.
-Determining which sequences provide a compact represenation of a pangenome is non-trivial, and a number of software systems have been developed to support this process.
+Determining which sequences provide a compact representation of a pangenome is non-trivial, and a number of software systems have been developed to support this process.
 
 \textsc{Panseq} \cite{Laing_2010} finds novel regions, determines the core and accessory genome, finds SNPs within the core pangenome, and then determines a subset of loci useful for molecular fingerprinting.
 \textsc{PGAP} \cite{Zhao_2011} extends \textsc{Panseq}'s approach with modules for evolutionary and functional analysis, and is implemented as a single standalone executable.
@@ -86,7 +86,7 @@ Its detailed graph database model connects the pan-proteome defined by homology 
 Rather than collecting unique sequences that represent a collection of genomes, we can consider small variants between the collection and a reference genome.
 Such a model directly implies a directed acyclic graph, ordered along the reference genome, with bubbles at the sites of variation.
 It has been key to the first wave of precision pangenomic methods.
-Because such a model can't represent information beyond that in the VCF file or multiple sequence alignment, we typically see this pangenome construction approach used in graph genome mappers like \textsc{GenomeMapper} \cite{Schneeberger_2009}, Seven Bridges' \textsc{Graph Genome Pipeline}, and \cite{Rakocevic_2019}, PanVC \cite{Valenzuela_2018}, and \textsc{Gramtools} \cite{Maciuca_2016}.
+Because such a model can't represent information beyond that in the VCF file or multiple sequence alignment, we typically see this pangenome construction approach used in graph genome mappers like \textsc{GenomeMapper} \cite{Schneeberger_2009}, Seven Bridges' \textsc{Graph Genome Pipeline}, and \cite{Rakocevic_2019}, \textsc{PanVC} \cite{Valenzuela_2018}, and \textsc{Gramtools} \cite{Maciuca_2016}.
 The variation graph toolkit, specifically \textsc{VG construct} \cite{Garrison_2018}, can be applied to transform VCF files and reference sequences into genome graphs.
 Some methods, like the journaled string tree \cite{Rahn_2014}, and methods based on elastic degenerate texts \cite{Bernardini_2019} such as \textsc{SOPanG} \cite{Cis_ak_2018}, transform the variant set and reference into a structure optimized for online sequence queries of the pangenome.
 Deciding which variation should be added to a graph is non-trivial, and has encouraged studies of graph utility \cite{Novak_2017a} and algorithms to determine which variation is helpful \cite{Pritt_2018}.
@@ -127,7 +127,7 @@ De Bruijn graph-based assemblers can be given a pangenomic quality through the a
 Each color provides a mapping between a specific biosample and a subset of the graph.
 %JME: I think we can remove some of the detail about variant calling here since its covered again in the variant calling section
 \textsc{Cortex} first demonstrated that colored DBGs could perform population scale analyses with an efficient graph implementation \cite{Iqbal_2012}.
-Recent improvements to colored DBG construction, such as Bifrost \cite{holley2019bifrost}, allow the construction of colored DBGs from very large sequence sets (the authors build a pangenome of 118,000 \emph{Salmonella} genomes), and further support efficient update of these pangenomic models.
+Recent improvements to colored DBG construction, such as \textsc{Bifrost} \cite{holley2019bifrost}, allow the construction of colored DBGs from very large sequence sets (the authors build a pangenome of 118,000 \emph{Salmonella} genomes), and further support efficient update of these pangenomic models.
 The feature which makes these methods efficient, the fixed $k$ on which they are based, also limits their resolution of repetitive genomic features.
 It is not feasible to build them from noisy third-generation sequencing reads.
 Addressing these limitations, several methods embed linking information within the DBG that can be used to reconstruct embedded haplotypes or reads \cite{Bolger_2017,Turner_2018}.
@@ -135,7 +135,7 @@ Addressing these limitations, several methods embed linking information within t
 A number of methods use compacted DBG\footnote{Compacted here means that chains of $k$-mers which contain no internal furcations are merged into a single node in the graph representation.} construction to elaborate pangenome graphs.
 \textsc{SplitMEM} \cite{Marcus_2014} uses a suffix tree with suffix skips to derive the set of maximal exact matches $\geq k$ between a set of genomes.
 Improving on this result in both time and space efficiency, \cite{Baier_2015} demonstrated two similar pangenome graph induction algorithms based on succinct representations of the suffix tree and the Burrows--Wheeler transform (BWT) \cite{Burrows_1994}.
-\textsc{TwoPaCo} \cite{Minkin_2016} applies a probabilistic data structure to narrow the set of candidate verticies in the compacted de Bruijn graph of a set of genomes, supporting the efficient generation of a pangenome graph from larger genomes than previous methods.
+\textsc{TwoPaCo} \cite{Minkin_2016} applies a probabilistic data structure to narrow the set of candidate vertexes in the compacted de Bruijn graph of a set of genomes, supporting the efficient generation of a pangenome graph from larger genomes than previous methods.
 %Thus far, no implementations of methods like these which record each genome in the graph have matched the scalability of colored DBGs.
 
 \subsection{Alignment-based sequence graphs}
@@ -154,9 +154,9 @@ The multiple sequence/graph aligner (\textsc{VG msga}) \cite{Novak_2017a,Garriso
 %It has found use where the number of sequences is small, or sequences are short, such as in viral pangenomic studies \cite{Baaijens2019-ng}
 
 Not all researchers have focused on generic graphs, with several arguing that complex structures are either not relevant to many kinds of analyses or computationally intractable. % to consider in a primary model of whole genome alignment.
-\textsc{REVEAL} \cite{linthorst2015scalable} builds a pangenom graph from a syntenic set of maximal exact unique matches of decreasing size between a pair of sequences (or graphs), and later adds inversions detected by alignment of paths through bubbles in this graph.
+\textsc{REVEAL} \cite{linthorst2015scalable} builds a pangenome graph from a syntenic set of maximal exact unique matches of decreasing size between a pair of sequences (or graphs), and later adds inversions detected by alignment of paths through bubbles in this graph.
 \textsc{NovoGraph} \cite{Biederstedt2018} follows a reference-guided approach, breaking a set of genomes into syntenic alignable blocks and deriving a multiple sequence alignment for each, and yielding a VCF file as its output.
-Similarly, \textsc{seq-seq-pan} \cite{Jandrasits_2018} employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the its input geomes.
+Similarly, \textsc{seq-seq-pan} \cite{Jandrasits_2018} employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the its input genomes.
 \textsc{GenGraph} \cite{Ambler_2019} realigns previously identified co-linear blocks yielding a genome graph from an MSA.
 
 Recent, unpublished methods explore two new alternatives to alignment-based pangenome construction.
@@ -250,25 +250,25 @@ This constraint can exist either because the acyclicity of the graph provides gu
 Its indexing was also relatively simple.
 \textsc{GenomeMapper} uses a simple hash-based $k$-mer index, with $k \le 13$ to limit memory usage.
 
-GCSA \cite{Siren_2014} was the first attempt to generalize the BWT for graphs.
+\textsc{GCSA} \cite{Siren_2014} was the first attempt to generalize the BWT for graphs.
 %It either takes a prebuilt DAG or generates one from a multiple alignment of sequences.
 It applies a number of graph transformations that preserve the graph's sequence space while creating an unambiguous ordering for nodes.
 When the graph's complexity is low, these transformations are reasonably fast and do not increase the size of the graph significantly.
 However, at a certain threshold of variant density the transformed graph quickly becomes too large to handle.
 %\todo{JME: threshold of what? variant density?}
 
-BWBBLE \cite{Huang_2013} is a BWT-based representation for VCF-based pangenome graphs.
+\textsc{BWBBLE} \cite{Huang_2013} is a BWT-based representation for VCF-based pangenome graphs.
 Simple substitutions are encoded in the sequence using IUPAC codes, and the sequence is indexed using a normal FM-index.
 Because each base can be encoded using 8 different characters, the search branches at every base to cover all possible characters which admit the base searched.
 In practice, most branches quickly run out of results and can be pruned from the search.
-BWBBLE represents insertions and deletions with extra sequences, including a given amount of context around the variant.
+\textsc{BWBBLE} represents insertions and deletions with extra sequences, including a given amount of context around the variant.
 The length of this context is an effective upper bound for query length.
 
-The vBWT \cite{Maciuca_2016} took another approach to using the BWT for indexing VCF-based pangenome graphs.
+The \textsc{vBWT} \cite{Maciuca_2016} took another approach to using the BWT for indexing VCF-based pangenome graphs.
 It encodes variants as \texttt{(ref|alt1|alt2|\dots)} in the sequence.
 When the search encounters a variant, it must branch to handle each allele separately.
-Both BWBBLE and vBWT trade faster index construction for slower queries.
-However, a combination of IUPAC codes for substitutions, the vBWT approach for other variants, and a $k$-mer index for matching the first 5--10 bases, is faster than either of the originals \cite{Buechler_2019}.
+Both \textsc{BWBBLE} and \textsc{vBWT} trade faster index construction for slower queries.
+However, a combination of IUPAC codes for substitutions, the \textsc{vBWT} approach for other variants, and a $k$-mer index for matching the first 5--10 bases, is faster than either of the originals \cite{Buechler_2019}.
 %\todo{JME: I feel like we can probably combine the BWBBLE and vBWT paragraphs, since their approaches are so similar.}
 
 \subsection{General graphs}
@@ -278,15 +278,15 @@ These indexes first find partial matches between the query string and the indexe
 In the hypertext index \cite{Thachuk_2013}, each node is a separate phrase.
 Queries mapping to a single node or crossing a single edge can be matched efficiently, while finding mappings to complex graph regions can be slow.
 
-Techniques similar to the GCSA can be used to represent de~Bruijn graphs \cite{Bowe_2012}.
-If the graph transformations used in GCSA construction are stopped after $i$ steps, the resulting graph is equivalent to an order-$2^{i}$ de~Bruijn graph.
+Techniques similar to the \textsc{GCSA} can be used to represent de~Bruijn graphs \cite{Bowe_2012}.
+If the graph transformations used in \textsc{GCSA} construction are stopped after $i$ steps, the resulting graph is equivalent to an order-$2^{i}$ de~Bruijn graph.
 This de~Bruijn graph can be used to approximate the original graph.
 Queries of this index yield no false negatives, but matches longer than $2^{i}$ may be false positives.
-By using this approach, GCSA2 \cite{Siren_2017} attempts to support fast queries in arbitrary graphs.
+By using this approach, \textsc{GCSA2} \cite{Siren_2017} attempts to support fast queries in arbitrary graphs.
 %\todo{JAS: Is the above paragraph too complicated for non-expert readers. SH: I had to read it 2 times to get it. Maybe just say that "If GCSA construction is stopped within / at a  transformation step, the resulting graph is equivalent to a de~Bruijn graph". Can we be so "inexact"?}
 % EG: this is pretty precise stuff, so I'm leaving it
 
-GCSA2 faces the same issues with complex graphs as GCSA.
+\textsc{GCSA2} faces the same issues with complex graphs as \textsc{GCSA}.
 In practice, most graphs must be simplified before they can be indexed.
 Typical simplifications include removing high-degree nodes and complex regions from the graph and replacing them with the reference sequence.
 If a collection of haplotypes is available, the removed regions can be replaced with new subgraphs that contain separate paths for each distinct local haplotype \cite{Siren_2019}.
@@ -295,15 +295,15 @@ This way, the index contains all $k$-mers from the haplotypes, while usually mis
 \subsection{Indexing graphs using sequences}
 
 Instead of attempting to index the entire graph, it is often sufficient to index only selected paths in it.
-CHOP \cite{Mokveld_2018} takes the paths corresponding to haplotypes and breaks them into smaller pieces.
+\textsc{CHOP} \cite{Mokveld_2018} takes the paths corresponding to haplotypes and breaks them into smaller pieces.
 The distinct pieces form an artificial linear reference, which can be used with any read aligner.
 The process guarantees that any substring of the haplotypes of length $k$ is also a substring of one of the pieces.
-As with BWBBLE, $k$ represents an effective upper bound for query length.
+As with \textsc{BWBBLE}, $k$ represents an effective upper bound for query length.
 
-The PSI \cite{Ghaffaari_2019} follows a similar approach with artificial paths.
-Instead of using haplotypes, PSI uses a greedy algorithm to find a set of paths that covers as many $k$~bp windows in the graph as possible.
+The \textsc{PSI} \cite{Ghaffaari_2019} follows a similar approach with artificial paths.
+Instead of using haplotypes, \textsc{PSI} uses a greedy algorithm to find a set of paths that covers as many $k$~bp windows in the graph as possible.
 %An index using these paths alone already works well in practice.
-When a fully sensitive index is needed, PSI can reverse the role of the query strings and the graph.
+When a fully sensitive index is needed, \textsc{PSI} can reverse the role of the query strings and the graph.
 While complex graph regions may contain an excessive number of $k$-mers, the reads mapping to them only contain a limited number of $k$-mers.
 By indexing a batch of reads and searching for the complex regions in that index, all mappings of the query strings to the graph can be found with reasonable resources.
 
@@ -317,14 +317,14 @@ By indexing a batch of reads and searching for the complex regions in that index
 
 Haplotypes in related individuals are typically highly similar, and thus compressible.
 A series of results lead from a compact haplotype index for biallelic SNPs to a generic haplotype index for complex variation graphs.
-The positional BWT (PBWT) \cite{Durbin_2014} provides an efficient compressed representation of a set of haplotypes over biallelic variable sites.
+The positional BWT (\textsc{PBWT}) \cite{Durbin_2014} provides an efficient compressed representation of a set of haplotypes over biallelic variable sites.
 %It does so by recording a series of permutations of haplotypes over the sites that, when executed, maintain the invariant that the haplotypes are sorted by their prefixes leading up to the site. % this is nice but maybe too much detail
-The PBWT, like the BWT, supports efficient haplotype matching queries such as maximal exact match finding.
+The \textsc{PBWT}, like the BWT, supports efficient haplotype matching queries such as maximal exact match finding.
 Later work \cite{Gagie_2017} showed the PBWT to be equivalent to the wavelet matrix \cite{Claude_2015}, which is to date the most efficient known encoding of strings with large alphabets supporting a variety of important random access queries.
-The graph positional BWT (gPBWT) \cite{Novak_2017} extends the PBWT model to haplotype walks embedded in complex sequence graphs.
-The graph BWT (GBWT) \cite{siren2018haplotype} builds on a number of assumptions that tend to hold for sequence variation graphs to improve runtime and memory costs relative to the gPBWT.
-Provided the variation graph on which they are built encodes the full complement of variation in the pangenome, both the gPBWT and GBWT are excellent, and in principle lossless, compressors of genomes.
-A GBWT for the 5008 haplotypes in the 1000 Genomes Project required 14.6 GB, or $\approx$1 bit per 1 kbp of encoded sequence.
+The graph positional BWT (\textsc{gPBWT}) \cite{Novak_2017} extends the PBWT model to haplotype walks embedded in complex sequence graphs.
+The graph BWT (\textsc{GBWT}) \cite{siren2018haplotype} builds on a number of assumptions that tend to hold for sequence variation graphs to improve runtime and memory costs relative to the \textsc{gPBWT}.
+Provided the variation graph on which they are built encodes the full complement of variation in the pangenome, both the \textsc{gPBWT} and \textsc{GBWT} are excellent, and in principle lossless, compressors of genomes.
+A \textsc{GBWT} for the 5008 haplotypes in the 1000 Genomes Project required 14.6 GB, or $\approx$1 bit per 1 kbp of encoded sequence.
 
 
 
