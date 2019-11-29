@@ -3,7 +3,7 @@
 
 A \emph{pangenomic model} (figure \ref{fig:models}) is a data structure that represents the genomic sequences of a population, a species, a clade, or even a metagenome \cite{computational2016computational}.
 The model serves as a central coordinating entity to describe the collection of sequences and genomes in the pangenome.
-%It may be indexed to allow for fast access to attributes of interest, such as to enable the matching of new sequences into it, or the extraction of genomes that that it was built from.
+%It may be indexed to allow for fast access to attributes of interest, such as to enable the matching of new sequences into it, or the extraction of genomes that it was built from.
 Pangenomic models may take many forms, including collections of unaligned sequences or learned sequence models, but in this review we will focus mostly on graphical ones.
 %We provide a visual summary of these models and their use in figure \ref{fig:models}.
 %These support a discrete and precise representation of sequences and variation, and are a natural generalization of reference genome systems that have seen wide use in genomics.
@@ -156,7 +156,7 @@ The multiple sequence/graph aligner (\textsc{VG msga}) \cite{Novak_2017a,Garriso
 Not all researchers have focused on generic graphs, with several arguing that complex structures are either not relevant to many kinds of analyses or computationally intractable. % to consider in a primary model of whole genome alignment.
 \textsc{REVEAL} \cite{linthorst2015scalable} builds a pangenome graph from a syntenic set of maximal exact unique matches of decreasing size between a pair of sequences (or graphs), and later adds inversions detected by alignment of paths through bubbles in this graph.
 \textsc{NovoGraph} \cite{Biederstedt2018} follows a reference-guided approach, breaking a set of genomes into syntenic alignable blocks and deriving a multiple sequence alignment for each, and yielding a VCF file as its output.
-Similarly, \textsc{seq-seq-pan} \cite{Jandrasits_2018} employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the its input genomes.
+Similarly, \textsc{seq-seq-pan} \cite{Jandrasits_2018} employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the input genomes.
 \textsc{GenGraph} \cite{Ambler_2019} realigns previously identified co-linear blocks yielding a genome graph from an MSA.
 
 Recent, unpublished methods explore two new alternatives to alignment-based pangenome construction.
