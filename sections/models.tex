@@ -13,8 +13,8 @@ Pangenomic models may take many forms, including collections of unaligned sequen
 Our starting point is a \emph{sequence graph} \cite{hein1989new} whose nodes are labeled\footnote{Such a graph can also be edge-labeled, with DNA sequences attached to its edges.} with DNA sequences and whose edges represent linkages between successive nodes that are found in the set of sequences that the graph represents.
 Practically, a sequence graph serves to compress many redundant input sequences into a smaller data structure that is still representative of the full set.
 They were first used to represent multiple sequence alignments \cite{hein1989new,Lee_2002}.
-We call these graphs \emph{bidirected} when represent both strands of DNA and inversions.
-In assembly, they have been applied represent the full information in a set of sequencing reads (as in the \emph{string graph}) \cite{Myers_2005}, or fixed-length $k$-mers (as in the \emph{de Bruijn graph} (DBG)) \cite{Pevzner_2001}.
+We call these graphs \emph{bidirected} when they represent both strands of DNA and inversions.
+In assembly, they have been applied to represent the full information in a set of sequencing reads (as in the \emph{string graph}) \cite{Myers_2005}, or fixed-length $k$-mers (as in the \emph{de Bruijn graph} (DBG)) \cite{Pevzner_2001}.
 
 \emph{Genome graphs} are sequence graphs used to represent whole genome relationships \cite{Paten_2017}.
 Walks through these graphs represent recombinations of the genomes included in the model.
@@ -61,7 +61,7 @@ A pangenome may simply be a collection of sequences, in which case construction 
 Or, it may include information about the alignment of sequences or genomes within it.
 This alignment could be compressed into a set of variants found against a set of reference sequences.
 If this alignment is based on $k$-mers, then it implies a de Bruijn graph.
-If the alignments is a complete, gapped alignment, covering small and large variation, then the pangenome model can be thought of as a whole genome alignment.
+If it is a complete, gapped alignment, covering small and large variation, then the pangenome model can be thought of as a whole genome alignment.
 
 \subsection{Collecting sequences}
 
@@ -127,7 +127,7 @@ De Bruijn graph-based assemblers can be given a pangenomic quality through the a
 Each color provides a mapping between a specific biosample and a subset of the graph.
 %JME: I think we can remove some of the detail about variant calling here since its covered again in the variant calling section
 \textsc{Cortex} first demonstrated that colored DBGs could perform population scale analyses with an efficient graph implementation \cite{Iqbal_2012}.
-Recent improvements to colored DBG construction, such as \textsc{Bifrost} \cite{holley2019bifrost}, allow the construction of colored DBGs from very large sequence sets (the authors build a pangenome of 118,000 \emph{Salmonella} genomes), and further support efficient update of these pangenomic models.
+Recent improvements to colored DBG construction, such as \textsc{Bifrost} \cite{holley2019bifrost}, allow the construction of colored DBGs from very large sequence sets (the authors build a pangenome of 118,000 \emph{Salmonella} genomes), and further support efficient updates of these pangenomic models.
 The feature which makes these methods efficient, the fixed $k$ on which they are based, also limits their resolution of repetitive genomic features.
 It is not feasible to build them from noisy third-generation sequencing reads.
 Addressing these limitations, several methods embed linking information within the DBG that can be used to reconstruct embedded haplotypes or reads \cite{Bolger_2017,Turner_2018}.
@@ -146,7 +146,7 @@ They are the most precise form of pangenome model, but this precision can also m
 Alignment-based pangenome structures form the basis of a number of pangenomic approaches.
 They have found use in the construction of acyclic multiple sequence alignments.
 The partial order aligner \textsc{POA} \cite{Lee_2002,Grasso_2004} uses an acyclic, directed sequence graph model to build multiple sequence alignments.
-\textsc{ProgressiveCactus} \cite{Paten_2011} produces whole genome alignments that can be rendered as a sequence graph.
+\textsc{ProgressiveCactus} \cite{Armstrong_2019} produces whole genome alignments that can be rendered as sequence graphs.
 %(which yielded superb results in evalution during the Alignathon competition \cite{earl2014alignathon}),
 \textsc{SibeliaZ} \cite{Minkin_2019} finds collinear blocks within \textsc{TwoPaCo}'s compacted DBG and applies \textsc{POA} to each to yield a whole genome alignment graph.
 The multiple sequence/graph aligner (\textsc{VG msga}) \cite{Novak_2017a,Garrison_2018,Garrison_2019} which generalizes the progressive approach of \textsc{POA} to work on generic variation graphs, including cycles and inversions.
@@ -187,7 +187,7 @@ To scale to large pangenome sizes, it represents the alignments in disk-backed i
 
 %One of the most important uses of conventional reference genomes is to provide a positional system for genomic analyses.
 %Researchers report many genomic features and annotations relative to positions on a reference genomes: variants, genes, binding sites, epigenetic profiles, homologies, and more.
-Reference genome sequences provide a coordinating system to catalog and exchange information about genes, protein binding sites, epigenetic profiles, variants, and homologies.
+Reference genome sequences provide a coordinate system to catalog and exchange information about genes, protein binding sites, epigenetic profiles, variants, and homologies.
 In linear references, genomic coordinates are easily interpretable, and they unambiguously indicate both the layout of the sequence and the distance between bases, but this is not the case when these coordinates are embedded within a graph \cite{Rand_2017}.
 
 It is possible to use reference coordinates in a graphical pangenome by embedding reference sequences inside the graph and labeling graph nodes with their relative positions in these paths \cite{Garrison_2018,Garrison_2019}.
