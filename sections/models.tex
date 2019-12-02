@@ -87,7 +87,7 @@ Its detailed graph database model connects the pan-proteome defined by homology 
 Rather than collecting unique sequences that represent a collection of genomes, we can consider small variants between the collection and a reference genome.
 Such a model directly implies a directed acyclic graph, ordered along the reference genome, with bubbles at the sites of variation.
 It has been key to the first wave of precision pangenomic methods.
-Because such a model can't represent information beyond that in the VCF file or multiple sequence alignment, we typically see this pangenome construction approach used in graph genome mappers like \textsc{GenomeMapper} \cite{Schneeberger_2009}, Seven Bridges' \textsc{Graph Genome Pipeline}, and \cite{Rakocevic_2019}, \textsc{PanVC} \cite{Valenzuela_2018}, and \textsc{Gramtools} \cite{Maciuca_2016}.
+This pangenome construction approach is used in diverse graph genome read mappers, including \textsc{GenomeMapper} \cite{Schneeberger_2009}, Seven Bridges' \textsc{Graph Genome Pipeline}, and \cite{Rakocevic_2019}, \textsc{PanVC} \cite{Valenzuela_2018}, and \textsc{Gramtools} \cite{Maciuca_2016}.
 The variation graph toolkit, specifically \textsc{VG construct} \cite{Garrison_2018}, can be applied to transform VCF files and reference sequences into genome graphs.
 Some methods, like the journaled string tree \cite{Rahn_2014}, and methods based on elastic degenerate texts \cite{Bernardini_2019} such as \textsc{SOPanG} \cite{Cis_ak_2018}, transform the variant set and reference into a structure optimized for online sequence queries of the pangenome.
 Deciding which variation should be added to a graph is non-trivial, and has encouraged studies of graph utility \cite{Novak_2017a} and algorithms to determine which variation is helpful \cite{Pritt_2018}.
@@ -150,7 +150,7 @@ The partial order aligner \textsc{POA} \cite{Lee_2002,Grasso_2004} uses an acycl
 \textsc{ProgressiveCactus} \cite{Armstrong_2019} produces whole genome alignments that can be rendered as sequence graphs.
 %(which yielded superb results in evalution during the Alignathon competition \cite{earl2014alignathon}),
 \textsc{SibeliaZ} \cite{Minkin_2019} finds collinear blocks within \textsc{TwoPaCo}'s compacted DBG and applies \textsc{POA} to each to yield a whole genome alignment graph.
-The multiple sequence/graph aligner (\textsc{VG msga}) \cite{Novak_2017a,Garrison_2018,Garrison_2019} which generalizes the progressive approach of \textsc{POA} to work on generic variation graphs, including cycles and inversions.
+The multiple sequence/graph aligner (\textsc{VG msga}) \cite{Novak_2017a,Garrison_2018,Garrison_2019} generalizes the progressive approach of \textsc{POA} to build generic variation graphs that include cycles and inversions.
 %Although it requires linear time in the number of sequences, it suffers from high memory and runtime for large sequences due to the expense of vg's indexing and alignment algorithms.
 %It has found use where the number of sequences is small, or sequences are short, such as in viral pangenomic studies \cite{Baaijens2019-ng}
 
@@ -199,7 +199,7 @@ Also, particular graph instantiations may induce ambiguity in reference position
 For instance, a copy number variant that is collapsed in the graph will have multiple reference path coordinates inside of it.
 
 These limitations have driven the development of complete coordinate systems for genome graphs.
-One solution is to build a hierarchy of graph components, based on a starting reference sequence, adding a new name and coordinate range for each non-reference sequence that is included \cite{Rand_2017}\footnote{minigraph uses a similar model}.
+One solution is to build a hierarchy of graph components, based on a starting reference sequence, adding a new name and coordinate range for each non-reference sequence that is included \cite{Rand_2017}\footnote{\textsc{minigraph} uses a similar model}.
 %Some, like \citeauthor{Rand_2017} \citep{Rand_2017},  propose some coordinate systems tailored for the GRCh38 alternative contigs that provide some (but not all) of the positive properties associated with linear coordinates.
 Another technique is to build positional systems based solely on the topology in the graph \cite{paten2018superbubbles}.
 Genomic variation creates a system of nested bubble structures that can be used to spatially organize graph elements.
@@ -215,6 +215,8 @@ Similar decompositions of the graph topology have been used in assembly-based va
 As pangenome graphs become large, providing random access to their topology, sequences, and embedded haplotypes becomes non-trivial.
 Succinct data structures and careful encoding of these data are required to reliably fit large graphs into the main memory of commodity computing systems.
 These data structures act as self indexes of the graph, providing random access to the elements of the graph in minimal space.
+Naive implementations of sequence and structural indexes of the graph can incur significant runtime and memory costs.
+Particular index models lie at the core of the highest-performing graph based visualization (\S \ref{sec:viz}), read mapping (\S \ref{sec:graphmapping}), and variant calling systems (\S \ref{sec:variantcalling}).
 
 %The set of sequences represented by a genome graph is larger than the set of sequences attached to its nodes.
 %With linear references, \emph{text indexes} are used to map query strings to their occurrences in the indexed text.
