@@ -180,7 +180,7 @@ It calls structural variants with high accuracy almost irrespective of the size 
 However, it has a high memory footprint, and later analysis has also suggested that its reliance on long exact matches makes it fragile to breakpoint uncertainty \cite{hickey2019genotyping}.
 
 In contrast, \textsc{Paragraph} \cite{chen2019paragraph}, \textsc{GraphTyper2} \cite{eggertsson2019graphtyper2}, and \textsc{VG}'s genotyper \cite{hickey2019genotyping} use genome graphs to genotype SVs.
-The largest difference is that \textsc{Paragraph} and \textsc{GraphTyper2} map to a linear reference locally realign to regional graphs, whereas VG maps reads directly to a whole genome graph.
+The largest difference is that \textsc{Paragraph} and \textsc{GraphTyper2} first map to a linear reference, then locally realign to regional graphs, whereas VG maps reads directly to a whole genome graph.
 These methods all use read coverage to determine the genotype, significantly outperforming related reference-based methods.
 
 Some pangenomic methods have sought improved accuracy and efficiency by focusing on specific regions where reference bias makes inference challenging. 
@@ -209,7 +209,7 @@ Their results rival gold-standard Sanger sequencing methods in accuracy.
 
 %Determining the two genome sequences of diploid organisms per chromosome is important in order to correctly understand allele-specific expression and compound heterozygosity, and in order to carry out many analyses in the genetics of common diseases and in population genetics \cite{tewhey2011importance}. 
 %However,
-Current assembly approaches often a result that mixes both haplotypes of a diploid genome together.
+Current assembly approaches often produce a result that mixes both haplotypes of a diploid genome together.
 This inaccurate representation has led to the development of diploid assembly methods.
 \textsc{WHdenovo} \cite{garg2018graph} addresses this by using long reads to infer phase within the pangenomic space of the assembly graph.
 In an alternative approach to haplotype inference, pangenomic error correction methods can be used to clean small errors from long reads, rendering them precise observations of long haplotypes \cite{Salmela2016LORMA,Rautiainen_2019b}.
@@ -250,8 +250,8 @@ Their method was later improved in \textsc{VG-Flow} \cite{Baaijens2019-ha} which
 \label{sec:functionalgenomics}
 
 %Genomic function manifests itself first in processes that lead to the expression of genomic information.
-The effect of reference bias on analyses of allele-specific protein binding and transcription have led to ample interest in pangenomic techniques.
-It may also affect our ability to associate genome with phenotype in association mapping.
+The effects of reference bias on analyses of allele-specific protein binding and transcription have led to ample interest in pangenomic techniques.
+Reference bias may also affect our ability to associate genome with phenotype in association mapping.
 Here, we consider ways in which pangenomic models can improve the accuracy of such assays into genome function.
 %Much of this work focuses on RNA sequencing (RNA-seq) analyses, but 
 
@@ -260,7 +260,7 @@ Here, we consider ways in which pangenomic models can improve the accuracy of su
 CHiP-seq data is mapped back to the reference genome in order to locate protein binding sites.
 \textsc{Graph Peak Caller} is based on \textsc{VG} and is the first tool to use a genome graph for this process \cite{Grytten_2019}.
 It was shown to find binding sites more enriched for known DNA binding motifs than linear methods on \emph{A. thaliana}.
-It was also applied to human data to discover novel sites for enhancers in the human genome \cite{groza2019personalized}.
+It was also applied to human data to discover novel sites for enhancers \cite{groza2019personalized}.
 
 \subsubsection{Transcriptomics}
 
