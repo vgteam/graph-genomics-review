@@ -1,17 +1,29 @@
 \section{Introduction}
 
 A \emph{pangenome} models the full set of genomic elements in a given species or clade.
-Pangenomics thus stands in contrast to standard genomics, which focuses on a particular consensus model of the genome.
+Pangenomics thus stands in contrast to reference-based genomic approaches which relate data to a particular consensus model of the genome (figure \ref{fig:models}).
 %by emphasizing the sum total of available genomic information over a particular consensus model of the genome.
-By working with a pangenome during bioinformatic analyses, researchers can mitigate bias towards any specific genome or haploid genome model that might occur during diverse stages of data processing.
+%Using a pangenome as a reference system for bioinformatic analyses
+%These \emph{reference} genome models can bias
+Genomes that are reconstructed with the aid of a reference genome can appear more similar to the reference than they actually are.
+Pangenomic reference systems can reduce this bias by enabling the direct relationship of new genome to all those represented in the pangenome.
+%Where resequencing analyses are many-to-one, pangenomic equivalents are many-to-many.
+
+%When used to support bioinformatic analyses, pangenome models can 
+
+%By working with a pangenome during bioinformatic analyses, researchers can mitigate bias towards any specific genome or haploid genome model that might occur during diverse stages of data processing.
 %, analyse also minor alleles inevitably missing from such linear models, and incorporate information about genomic variation directly into their study.
 %Pangenomic reference systems thus e single canonical version of the genome of a given species, but a widely-represenative collection of sequences.
 
-This concept has been essential to microbiology, where genomic plasticity and diversity have made a pangenomic perspective indispensable \cite{Vernikos2015}.
+Pangenomics has been essential to microbiology, where genomic plasticity and diversity have made an inclusive, unbiased approach indispensable \cite{Vernikos2015}, but as sequencing and assembly costs have reduced has also seen applications to eukaryotic genomes \cite{cao2011whole,gao2019tomato,Ou_2018}.
 Usually, these analyses focus on the presence or absence of genes from given strains and the determination of a core (commonly present) and accessory (frequently absent) pangenome \cite{page2015roary}.
-Pangenomic techniques have also been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,Ou_2018}.
-In recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{sudmant2015integrated,Hehir-Kwa2016-hb,chaisson2018multi,Audano_2019}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}. %, fostering general interest in pangenomics.
+The pangenome is typically presented as a collection of unique gene sequences or contigs, without relationship between them or information about allelic variation.
+This prevents the precise addressing of each base pair in the model, and makes it only approximately representative of the genomes from which the pangenome was built.
+%The pangenome is typically presented as a collection of gene sequences \cite{
 
+%Pangenomic techniques have also been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,Ou_2018}.
+
+In recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{sudmant2015integrated,Hehir-Kwa2016-hb,chaisson2018multi,Audano_2019}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}. %, fostering general interest in pangenomics.
 These observations have generated wide interest in extending bioinformatic operations to use a pangenomic reference model \cite{computational2016computational}.
 But today, most ``high-throughput'' analyses of large genomes still depend on comparison to a single reference genome.
 This expedient and conservative approach has its merits, but will become untenable with the development of true pangenomic references for humans \cite{Church2015-vt} and other model organisms.
@@ -23,11 +35,10 @@ These precise pangenomic methods support the interrogation of collections of gen
 They envision pangenomic analyses based on the full complement of DNA in the individuals under analysis, without limits to the type or scale of variation that is considered.
 %and aim to support downstream inference over variants of all types and scales.
 %, including small variation such as SNPs and indels in the same context as large structural variants gene gain or loss.
+Solutions to this problem are varied, but they often rely on graph data structures that compress a collection of genomes while representing the exact base-pair level relationships between them.
+Implementing these techniques for gigabase-scale pangenomes has required significant effort in the development of new data models and algorithms. %, which we survey here.
+%In this review, we survey precision pangenomic methods, with an emphasis on those based on graphical models of the genome.
 
-Scaling such techniques to operate on eukaryotic pangenomes has required significant effort in the development of new data models and algorithms.
-Solutions to this problem are varied, but they often rely on graph data structures that both compress a collection of genomes and express relationships between them.
-In this review, we survey precision pangenomic methods, with an emphasis on those based on graphical models of the genome.
-%Mounting results suggest that such models provide a strong basis for the next phase of genome studies.
 
 %Not all methods expose this data structure as a coherent reference system.
 %They may instead use it internally to improve performance of a standard bioinformatic operation.
@@ -53,8 +64,8 @@ Although efficient and conceptually simple, resequencing has a significant limit
 The relationships between genomes are only visible for those sequences that are similar enough to the reference genome to be alignable (figure \ref{fig:models}).
 %Significant variation between a new genome and the reference genome may be rendered invisible, or apparently less frequent, by the reference bias inherent in alignment.
 This effect is known as \emph{reference bias}.
-It is certainly strongest for structural variation or sequences that are absent from the reference system \cite{sudmant2015integrated}, but it can be relevant even for SNPs, which cause problems in alleles specific expression (ASE) quantification \cite{Castel2015-ef} and in the analysis of ancient DNA \cite{zhou2017antcaller}.
-Given that this bias shapes the methods that we use to establish models of the truth \cite{zook2014integrating}, it will be difficult to evaluate without paradigmatic change in our analysis techniques.
+It is certainly strongest for structural variation or sequences that are absent from the reference system \cite{sudmant2015integrated}, but it can be relevant even for SNPs, which causes problems in allele specific expression (ASE) quantification \cite{Castel2015-ef} and in the analysis of ancient DNA \cite{zhou2017antcaller}.
+Given that this bias shapes the methods that we use to establish models of the truth \cite{zook2014integrating}, it is even difficult to evaluate without paradigmatic change in our analysis techniques.
 %JME: This sentence seems basically redundant with the one two sentences back. I see that you're citing pangenomic methods instead of traditional ones, but you seem to be making basically the same point. 
 %Recent studies have applied variation-aware sequence alignment methods to show that this bias affects even the detection of small variation \cite{eggertsson2017graphtyper,Garrison_2018,Kim_2019}, and that these methods can be used to mitigate its effect on the study of ancient DNA \cite{martiniano2019removing} and RNA sequencing data \cite{Miao2018-ps,Liu_2018}.
 
