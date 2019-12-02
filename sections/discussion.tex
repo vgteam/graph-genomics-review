@@ -6,30 +6,35 @@ New techniques are being developed and explored to utilize this powerful prior i
 
 Often, these methods rely on graph-based representations of pangenomes which capture both sequence of and variation between represented genomes.
 These methods typically provide the highest performance and accuracy when working with pangenome models.
-The consistency of this trend, and the long history of these structures in bioinformatics, suggests that they are likely to remain important.
+They have been shown to eliminate reference bias at known variant sites, and allow the direct comparison of new data to large pangenomes.
+%The consistency of this trend, and the long history of these structures in bioinformatics, suggests that they are likely to remain important.
 
 However, it is not clear that graphical pangenome models will themselves replace linear reference systems.
-None of the methods which we have reviewed makes a strong case that the reference system itself should become a graph.
+Few of the methods which we have reviewed makes a strong case that the reference system itself should become a graph.
 For instance, only a handful of mapping and variant calling methods (primarily those based on variation graphs) even produce alignments or genotype calls in the context of the graph, with the majority reporting them against a linear reference sequence.
 In combining sequences with their alignments, graphical pangenomes confuse the traditional concepts of genome position and annotation which are essential for standard research practice.
 To date, there is no widely-accepted mechanism to generalize such concepts to graphs.
 
 We speculate that the status quo of genome positions on linear sequences may continue long into the future, even if graphical pangenome models become essential to many kinds of analysis.
 On their own, pangenome graphs do not represent any directly measurable aspect of a biological system, and thus their construction and design is guided more by application than any kind of ground truth.
-A particular alignment represented in a pangenome graph is a specific interpretation of the given sequence data.
+%A particular alignment represented in a pangenome graph is a specific interpretation of the given sequence data.
 In this view, pangenome graphs are technical artifacts important for analysis, but may not provide a stable foundation for many ``legacy'' techniques.
+However, pangenome graphs can allow us to record the direct relationship between many linear reference systems.
+Thus, although their topology may not become part of the reference, these graphs allow us to harmonize many different useful linear consensus models of the genome.
 
-Linear sequence models provide straightforward ways of thinking about positions, and are completely compatible with graphical models which embed them, suggesting that we may return to this basis even when working with graphical interpretations of pangenomes.
-%They remain stable and immutable regardless of any specific alignment that we use to relate them.
-%We may need to be able to relate multiple such interpretations during a particular analysis.
-%Mechanisms that allow us to support and relate multiple such interpretations will provide greater flexibility when used to support our inqueries 
-%A useful pangenome  simply a collection 
-A collection of verifiably contiguous sequences found in the set of individuals under study is sufficient to support any of the pangenomic methods we have covered in this review.
-%Although, due to high sequencing and analysis costs, this result has rarely been fully realized, it is the logical aim of pangenome surveys.
-The manner in which we combine these sequences into a single compressed object that embeds their likely evolutionary relationship, heterozygosity, and ambiguity is highly dependent on our downstream applications.
+%Linear sequence models provide straightforward ways of thinking about positions, and are completely compatible with graphical models which embed them, suggesting that we may return to this basis even when working with graphical interpretations of pangenomes.
+%A collection of verifiably contiguous sequences found in the set of individuals under study is sufficient to support many of the pangenomic methods we have covered in this review.
+%The manner in which we combine these sequences into a single compressed object is highly dependent on our downstream applications.
+%It is, however, key that
+%Although they exist primarily as technical artifacts,
+
 
 Precision pangenomic methods, regardless of the specifics of their representation of the pangenome, aim to provide accurate and unbiased access to this collection of sequences with minimal resource costs.
 These methods stand to become essential to genome science as coherent and efficient means to interface with ever larger, and more complete collections of genomes.
+They provide a coherent framework for thinking about the plurality of sequences in a pangenome.
+%They point to a future in which many reference systems are harmoniously, and simultaneously considered at the level of basic bioinformatic analyses.
+
+
 
 %Beyond the scope of current research lie methods that address the pangenome itself, the development of 
 
