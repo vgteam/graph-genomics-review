@@ -213,9 +213,9 @@ Similar decompositions of the graph topology have been used in assembly-based va
 
 %\todo{JAS: Is a bit more introduction needed explaining what an index can be used for?}
 As pangenome graphs become large, providing random access to their topology, sequences, and embedded haplotypes becomes non-trivial.
-Succinct data structures and careful encoding of these data are required to reliably fit large graphs into the main memory of commodity computing systems.
-These data structures act as self indexes of the graph, providing random access to the elements of the graph in minimal space.
 Naive implementations of sequence and structural indexes of the graph can incur significant runtime and memory costs.
+Succinct data structures and careful encoding of these data are thus required to reliably fit large graphs into the main memory of commodity computing systems.
+These data structures act as self indexes of the graph, providing random access to elements and features of the graph in minimal space.
 Particular index models lie at the core of the highest-performing graph based visualization (\S \ref{sec:viz}), read mapping (\S \ref{sec:graphmapping}), and variant calling systems (\S \ref{sec:variantcalling}).
 
 %The set of sequences represented by a genome graph is larger than the set of sequences attached to its nodes.
