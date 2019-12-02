@@ -90,7 +90,7 @@ Interactively visualizing human-genome-scale, human-pangenome-detail graphs cohe
 %As noted above, genomic sequence data often can only be interpreted in the context of other sequences. 
 Sequence comparison is at the core of many genomic analyses, and sequence alignment is the essential method for doing so. 
 Classic algorithms like Smith-Waterman \cite{Smith_1981} do not directly apply to genome graphs.
-However, straightforward generalizations to the recurrence relations that drive the scoring and traceback routines allow its generalization to acyclic graphs, first popularized in the partial order aligner \textsc{POA} \cite{Lee_2002}.
+However, the recurrence relations that drive their scoring and traceback routines can be extended to allow the alignment of sequences to acyclic sequence graphs, as popularized by the partial order aligner \textsc{POA} \cite{Lee_2002}.
 Further generalizations support the alignment of sequences graphs to sequence graphs \cite{Grasso_2004}, sequences to cyclic graphs \cite{Navarro_2000}, and even cyclic sequence graphs to cyclic sequence graphs \cite{Myers_1989, Amir_1997}. % hein1989new, ?
 It is notable that many of these findings have been independently rediscovered or refined by contemporary researchers \cite{Antipov_2015, Rautiainen_2017, Jain_2019a,kural2014methods}.
 Some earlier algorithms require restricted scoring functions to achieve efficiency \cite{Rautiainen_2017}, but recent contributions have used less restricted functions that produce more biologically meaningful alignments in some contexts \cite{Jain_2019a}.
@@ -183,7 +183,7 @@ The majority of these tools emphasize mapping short-read \emph{next-generation s
 %Most likely, the motivation for doing so is the same as why NGS remains the standard for conventional resequencing experiments; the price point currently favors it. 
 %In this sense, pangenomic graph mappers essentially represent an incremental technical improvement over previous pipelines, albeit a very important one. 
 To our knowledge, \textsc{GraphAligner} and \textsc{V-MAP} are the only graph mapping tools designed long read sequencing data \cite{Rautiainen_2019b, Vaddadi_2019}.
-While \textsc{V-MAP} also supports NGS reads, but \textsc{GraphAligner}'s seeding strategy limits it to long reads.
+While \textsc{V-MAP} also supports NGS reads, \textsc{GraphAligner}'s seeding strategy limits it to long reads.
 \textsc{VG} also supports long-read alignment \cite{Garrison_2018}, but this is based on a hierarchical approach that applies the alignment algorithm for short reads to chunks of long reads \cite{Garrison_2019}.
 The approach is accurate but nearly an order of magnitude slower than \textsc{GraphAligner} \cite{Rautiainen_2019b}.
 
@@ -215,7 +215,7 @@ Most graph mappers employ graph-based alignment algorithms.
 The exceptions are \textsc{GenomeMapper}, which aligns to all paths out from a seed, and \textsc{HISAT2}.
 The \textsc{HISAT2} alignment algorithm relies on a complex set of heuristics that depend heavily on its exact match index.
 This makes it exceptionally fast, although it also can hurt alignment quality around indels. 
-\textsc{VG}, and \textsc{V-MAP} both employ some version of partial order alignment \cite{Garrison_2019, Vaddadi_2019}.
+\textsc{VG} and \textsc{V-MAP} both employ some version of partial order alignment \cite{Garrison_2019, Vaddadi_2019}.
 Seven Bridges first searches for a near-exact match using an exponential depth-first search, applying partial order alignment if this fails \cite{Rakocevic_2019}.
 
 Due to the recent development of these methods, there have been few independent comparative studies of their performance and accuracy.

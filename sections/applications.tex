@@ -90,7 +90,7 @@ NGS read lengths are sufficient to span their entirety, and the associated varia
 However, reference bias in mapping can be a source of small variant calling error, particularly for indels. %, and pangenome models provide an opportunity to mitigate these biases.
 
 One strategy consists of realigning reads to graphs of known variation after mapping to a linear reference.
-This approach was pioneered in the 1000 Genomes Project, which applied \textsc{glia} to establish genotype likelihoods for indels and complex alleles \cite{1000_2015}.
+This approach was pioneered in the 1000 Genomes Project, which applied \textsc{Glia} to establish genotype likelihoods for indels and complex alleles \cite{1000_2015}.
 \textsc{GraphTyper} refines this approach to achieve competitive accuracy in genotyping with very low computational costs, and demonstrates improved accuracy at variation \cite{eggertsson2017graphtyper}.
 
 
@@ -180,9 +180,9 @@ Long read sequencing does not share this difficulty, but this technology remains
 It calls structural variants with high accuracy almost irrespective of the size of the variant.
 However, it has a high memory footprint, and later analysis has also suggested that its reliance on long exact matches makes it fragile to breakpoint uncertainty \cite{hickey2019genotyping}.
 
-In contrast, \textsc{Paragraph} \cite{chen2019paragraph}, \textsc{GraphTyper2} \cite{eggertsson2019graphtyper2}, and \textsc{VG}'s genotyper \cite{hickey2019genotyping} use genome graphs to genotype SVs.
+In contrast, \textsc{Paragraph} \cite{chen2019paragraph}, \textsc{GraphTyper2} \cite{eggertsson2019graphtyper2}, and \textsc{VG call} \cite{hickey2019genotyping} use genome graphs to genotype SVs.
 The largest difference is that \textsc{Paragraph} and \textsc{GraphTyper2} first map to a linear reference, then locally realign to regional graphs, whereas VG maps reads directly to a whole genome graph.
-These methods all use read coverage to determine the genotype, significantly outperforming related reference-based methods.
+These methods all use read coverage to determine the genotype, and significantly outperform competing reference-based methods.
 
 Some pangenomic methods have sought improved accuracy and efficiency by focusing on specific regions where reference bias makes inference challenging. 
 The highly polymorphic and medically important human leukocyte antigen (HLA) genes have received an especially large amount of attention.
@@ -225,9 +225,9 @@ The path of the alignment through the graph is taken as the corrected read.
 Several methods have used pangenome graphs to support haplotype reconstruction, but in the context of a mixed population of related genomes sampled from a metagenome or quasispecies mixture.
 %A sequence graph with labeled or colored paths provides a natural representation of a metagenomic or quasispecies pangenome.
 \textsc{Mykrobe} predictor \cite{Bradley2015-kl} and \textsc{GROOT} \cite{Rowe2018-bg} use graph-based structures of bacterial genomes and gene sets to predict antibody resistance in sequencing samples.
-\textsc{Virus-VG} \cite{Baaijens2019-ng} builds a variation graph from assembled viral contigs in order to construct haplotypes and predict associated abundances in viral quasispecies from sequencing reads.
-Their method was later improved in \textsc{VG-Flow} \cite{Baaijens2019-ha} which can scale to much larger genomes, such as bacteria.  
 \textsc{MetaKallisto} \cite{Schaeffer2017-fh} performs taxonomic classification and quantification of metagenomic sequencing data using a database of known sequences represented as colored de Bruijn graphs.
+\textsc{Virus-VG} \cite{Baaijens2019-ng} builds a variation graph from assembled viral contigs in order to construct haplotypes and predict associated abundances in viral quasispecies from sequencing reads.
+This method was later improved in \textsc{VG-Flow} \cite{Baaijens2019-ha} which can scale to much larger genomes, such as bacteria.  
 
 
 %is the first tool that leverages information of short and long-reads to generate happlotype-resolved assembly. 
@@ -282,10 +282,10 @@ Variation-aware analysis of RNA-seq data is also important for accurately analyz
 \subsubsection{Pangenomic association studies}
 
 Pangenome-wide association studies (PWAS) generalize the genome-wide association (GWAS) concept to pangenomes.
-This new area has primarily focused on traditional pangenome definitions from microbiology \cite{Brynildsrud_2016}.
-Recent work focuses more specifically PWAS in pangenome graphs.
+This new area has primarily used traditional pangenome definitions from microbiology \cite{Brynildsrud_2016}.
+Recent work applies PWAS specifically to pangenome graphs.
 In the frequented region (FR) technique, a syntenic region finding algorithm similar to those used in whole genome alignment (\S \ref{sec:constructionWGA}) detects regions of a compacted DBG that are shared between many individuals \cite{cleary2018exploring}, and these are employed as features in PWAS \cite{Manuweera_2019}.
-When tested in 100 yeast strains, this approach marginally improves on standard GWAS techniques, but for some phenotypes provides a dramatic improvement in performance.
+When tested in 100 yeast strains, this approach marginally improves on standard GWAS techniques, but for some phenotypes provides a dramatic improvement in performance. %, presumably due to reference bias against alleles important to these phenotypes.
 
 %connecting to the precision pangenomic models discussed in section \ref{sec:models}.
 
