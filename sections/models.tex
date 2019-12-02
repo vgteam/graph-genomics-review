@@ -153,7 +153,7 @@ The multiple sequence/graph aligner (\textsc{VG msga}) \cite{Novak_2017a,Garriso
 %Although it requires linear time in the number of sequences, it suffers from high memory and runtime for large sequences due to the expense of vg's indexing and alignment algorithms.
 %It has found use where the number of sequences is small, or sequences are short, such as in viral pangenomic studies \cite{Baaijens2019-ng}
 
-Not all researchers have focused on generic graphs, with several arguing that complex structures are either not relevant to many kinds of analyses or computationally intractable. % to consider in a primary model of whole genome alignment.
+Not all researchers have focused on generic graphs, with several arguing that complex structures are either computationally intractable or not relevant to important practical analyses.
 \textsc{REVEAL} \cite{linthorst2015scalable} builds a pangenome graph from a syntenic set of maximal exact unique matches of decreasing size between a pair of sequences (or graphs), and later adds inversions detected by alignment of paths through bubbles in this graph.
 \textsc{NovoGraph} \cite{Biederstedt2018} follows a reference-guided approach, breaking a set of genomes into syntenic alignable blocks and deriving a multiple sequence alignment for each, and yielding a VCF file as its output.
 Similarly, \textsc{seq-seq-pan} \cite{Jandrasits_2018} employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the input genomes.
