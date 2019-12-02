@@ -24,8 +24,9 @@ Either option is challenging, as pangenome graphs are often \emph{nonplanar}, re
 Force-directed layout, an optimization-based graph layout method, is a popular approach in the second category, but displaying annotations in this layout is challenging.
 
 Visualization tools be categorized by the kinds of graphs they are intended to display, in addition to whether they can linearize a graph.
-Many tools, including the popular and venerable \textsc{Bandage} \citep{Wick_2015} (Figure~\ref{fig:visualization}A) and competitor \textsc{GfaViz} \cite{Gonnella_2018} (Figure~\ref{fig:visualization}B), are designed for interpreting assembly graphs. 
-These tools tend to focus on displaying the overall, rather than base-level, structure of the graph, and do not always understand the graph as being pangenomic and representing multiple individuals.
+Many tools, including \textsc{Bandage} \citep{Wick_2015} (Figure~\ref{fig:visualization}A) and \textsc{GfaViz} \cite{Gonnella_2018} (Figure~\ref{fig:visualization}B), are designed for interpreting assembly graphs. 
+These tools tend to focus on displaying the overall, rather than base-level, structure of the graph, and have no visual features to reflect the pangenomic aspect of the graph.
+%always understand the graph as being pangenomic and representing multiple individuals.
 
 Tools initially designed for variation graph visualization, on the other hand, tend to focus more on base-level structure and pangenomic relationships.
 For example, \textsc{Sequence Tube Map} \cite{Beyer_2019} (Figure~\ref{fig:visualization}E) displays precise base-scale variation, haplotypes, and short read mapping locations, using a visual language inspired by transit system maps.
@@ -40,7 +41,7 @@ For example, \textsc{Sequence Tube Map} \cite{Beyer_2019} (Figure~\ref{fig:visua
 
 There is a difference in scale when moving from an assembly or scaffold graph to a comprehensive variation graph of a species pangenome, and this scale difference also separates different visualization tools.
 %The 1000 Genomes Project dataset contains 88 million known human variants \citep{1000_2015}, which induce a comprehensive variation graph of tens to hundreds of millions of elements spanning gigabases of sequence.
-High-level assembly-graph tools like \textsc{Assembly Graph Browser} (\textsc{AGB}) \citep{Mikheenko_2019} (Figure~\ref{fig:visualization}D) struggle to show fine details in the graph, while low-level variation graph tools like \textsc{vg view} \cite{Garrison_2018} and \textsc{Sequence Tube Map}, cannot scale to large graphs.
+High-level assembly-graph tools like \textsc{Assembly Graph Browser} (\textsc{AGB}) \citep{Mikheenko_2019} (Figure~\ref{fig:visualization}D) struggle to show fine details in the graph, while low-level variation graph tools like \textsc{VG view} \cite{Garrison_2018} and \textsc{Sequence Tube Map}, cannot scale to large graphs.
 %While tools like SGTK \cite{Kunyavskaya_2018} and AGB \cite{Mikheenko_2019} have been demonstrated on graphs with tens of thousands of entities
 %a much larger graph than those that SGTK and AGB have been shown to work with.
 %a density over the 3 billion base human genome of about 34 bases per variant, and
@@ -58,9 +59,9 @@ Designed as a ``multi-scale'' graph browser, it presents both a \textsc{Sequence
 %\texttt{vg viz} can render graphs of arbitrary size and complexity in linear time by sorting the sequence-bearing nodes of the graph into a one-dimensional layout \citep{Garrison_2019}. 
 %The tool is designed around a base-level visual representation of the graph, and optimized for comparing long embedded paths in the graph, on the basis of which nodes they do or do not visit. 
 %Another particularly scalable tool,
-\textsc{odgi viz}\footnote{\url{https://github.com/vgteam/odgi}}, uses binning and direct rendering to a raster image to generate visualizations representing gigabase scale pangenomes. % in linear time.
+\textsc{ODGI viz}\footnote{\url{https://github.com/vgteam/odgi}}, uses binning and direct rendering to a raster image to generate visualizations representing gigabase scale pangenomes. % in linear time.
 %This makes it possible to render the overall structure of gigabase pangenomes in a single image of manageable resolution.
-The approach is a rasterized version of the linear layout technique of \textsc{vg viz} \citep{Garrison_2019} (Figure~\ref{fig:visualization}F). %, and shares that tool's distinctive visual language.
+The approach is a rasterized version of the linear layout technique of \textsc{VG viz} \citep{Garrison_2019} (Figure~\ref{fig:visualization}F). %, and shares that tool's distinctive visual language.
 
 %See  for examples of some notable visualization methods and Table~\ref{table:Visualization_Features} for a feature comparison of all available tools.
 
