@@ -271,7 +271,7 @@ ASE analysis estimates the expression levels of genes or transcripts on each all
 A mapping bias in favor of one of the alleles can therefore create illusory differences in expression between the alleles.
 Using variation information during mapping can help ameliorate this and improve estimates of ASE \cite{Castel2015-ef,Miao2018-ps}.
 
-The simplest approach to using variation data in mapping involves creating a personalized diploid genome or transcriptome, which is then used as the reference for a standard linear mapping method \cite{Rozowsky_2011,Raghupathy2018-sd}.
+The simplest approach to using variation data in mapping involves creating a personalized diploid genome or transcriptome, which is then used as the reference for a standard linear mapping method \cite{Raghupathy2018-sd}.
 %Methods using this approach have been shown to reduce reference bias and improve estimation of ASE, relative to traditional single reference genome methods, but they are generally limited by requiring phased haplotypes of either the whole genome or the individual genes for the individuals under study.
 Methods using this approach have been shown to reduce reference bias, but they require diploid reconstruction of the genome in question.
 Variant-aware mappers like \textsc{GSNAP} \cite{Wu2010-hv}, \textsc{iMapSplice} \cite{Liu_2018}, \textsc{ASElux} \cite{Miao2018-ps}, and \textsc{HISAT2} \cite{Kim_2019} remove this necessity, and have been shown to reduce reference bias at known SNVs during mapping \cite{Castel2015-ef,Liu_2018}.
