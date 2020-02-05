@@ -38,8 +38,13 @@ Furthermore, it does not help our primary interpretation of new sequencing data 
 %However, it is not integrated into the initial alignment steps that we use to organize sequencing data and calculate observational support for different alleles.
 
 %Precision pangenomic techniques allow us to share information about genomic variation between samples without considering all genomes at the same time.
-By including variation in our reference system, it can guide our primary alignment and interpretation of sequence data.
-This reduces bias during genotyping, and in principle can reduce the amount of novel sequence that must be considering during genome inference.
+
+%By including variation in our reference system, it can guide our primary alignment and interpretation of sequence data.
+Alignment to any allele in a pangenome reference graph is as efficient as alignment to the reference allele in a linear reference sequence.
+Including known genetic variation in our pangenomic reference system can thus reduce bias towards the reference allele when genotyping heterozygous variants (Figure~\ref{fig:allelebalance}).
+This effect is strongest for alleles that are highly divergent from the reference, suggesting that the impact of these approaches on variant calling and genotyping will be strongest for large indels and structural variants.
+
+%In principle, this can reduce the amount of novel sequence that must be considering during genome inference.
 
 %Precision pangenomic techniques allow us to specify the set of candidate alleles directly in the reference system that we use.
 %In principle, if the set of alleles that we consider is large, then this should reduce the cost of finding new variation.
