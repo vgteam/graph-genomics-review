@@ -10,17 +10,23 @@ Pangenomic models may take many forms, including collections of unaligned sequen
 
 \subsection{Graphical models}
 
-Our starting point is a \emph{sequence graph} \cite{hein1989new} whose nodes are labeled\footnote{Such a graph can also be edge-labeled, with DNA sequences attached to its edges.} with DNA sequences and whose edges represent linkages between successive nodes that are found in the set of sequences that the graph represents.
-Practically, a sequence graph serves to compress many redundant input sequences into a smaller data structure that is still representative of the full set.
-They were first used to represent multiple sequence alignments \cite{hein1989new,Lee_2002}.
-We call these graphs \emph{bidirected} when they represent both strands of DNA and inversions.
+%Our starting point is a \emph{sequence graph} \cite{hein1989new} whose nodes are labeled\footnote{Such a graph can also be edge-labeled, with DNA sequences attached to its edges.} with DNA sequences and whose edges represent linkages between successive nodes that are found in the set of sequences that the graph represents.
+%Practically, a sequence graph serves to compress many redundant input sequences into a smaller data structure that is still representative of the full set.
+The \emph{sequence graph} serves to compress many redundant input sequences into a smaller data structure that is still representative of the full set \cite{hein1989new}.
+Sequence graphs may have their nodes or edges labeled with DNA sequences, but for simplicitly we will focus on the node-labeled case.
+In a node-labeled sequence graph, edges indicate when concatenations of the nodes they connect occur in the sequences modeled by the graph.
+Walks through a sequence graph thus include the set of sequences from which it was built.
+We call them \emph{bidirected} when they represent both strands of DNA and inversions between them.
+Sequence graphs were first used to represent multiple sequence alignments \cite{hein1989new,Lee_2002}.
 In assembly, they have been applied to represent the full information in a set of sequencing reads (as in the \emph{string graph}) \cite{Myers_2005}, or fixed-length $k$-mers (as in the \emph{de Bruijn graph} (DBG)) \cite{Pevzner_2001}.
 
 \emph{Genome graphs} are sequence graphs used to represent whole genome relationships \cite{Paten_2017}.
 Walks through these graphs represent recombinations of the genomes included in the model.
 Regions of the graph where multiple paths connect a common head and tail node, often referred to as \emph{bubbles} \cite{paten2018superbubbles}, represent variation.
 \emph{Variation graphs} further structure this model by embedding the linear sequences of the pangenome as \emph{paths} \cite{Garrison_2018}\footnote{\emph{Variation graphs} are similar to \emph{variant graphs} used in textual research to model a collection of revisions of the same text \cite{schmidt2009data}}.
-Paths provide a stable coordinate system that is unaffected by the manner in which the graph was built, making the model equivalent to a collection of sequences and their mutual alignment.
+Paths provide a stable coordinate system that is unaffected by the manner in which the graph was built, thus supporting the coordination of positions, annotations, and alignments between variation graphs and linear reference genomes.
+
+%supporting relation to other reference systems and rendering  making the model equivalent to a collection of sequences and their mutual alignment. %, and allowing relation of data in the model to other graphs and reference genomes.
 
 %\todo[inline]{JME: we should discuss bidrected graphs here, or else remove them from the figure}
 
@@ -56,8 +62,9 @@ If it is a complete, gapped alignment, covering small and large variation, then 
 
 % oldschool pan-genomics
 A pangenome can be represented as a collection of sequences.
-Determining which sequences provide a compact representation of a pangenome is non-trivial, and a number of software systems have been developed to support this process.
-
+%The problem of selecting and relating sequences in this collection has driven the development of
+Several approaches support the construction, annotation, and interrogation of these pangenomic sequence collections. %selected so as to provide a compact and complete representation of the pangenome.
+%Determining which sequences provide a compact representation of a pangenome is non-trivial, and a number of software systems have been developed to support this process.
 \textsc{Panseq} \cite{Laing_2010} finds novel regions, determines the core and accessory genome, finds SNPs within the core pangenome, and then determines a subset of loci useful for molecular fingerprinting.
 \textsc{PGAP} \cite{Zhao_2011} extends \textsc{Panseq}'s approach with modules for evolutionary and functional analysis, and is implemented as a single standalone executable.
 % pangenome using a collection of sequences model
@@ -131,7 +138,7 @@ Improving on this result in both time and space efficiency, \cite{Baier_2015} de
 \label{sec:constructionWGA}
 
 Sequence graphs \cite{hein1989new} can be understood as representations of the mutual alignment of a set of sequences.
-They are the most precise form of pangenome model, but this precision can also make their implementation demanding and execution costly.
+%They are the most precise form of pangenome model, but this precision can also make their implementation demanding and execution costly.
 Alignment-based pangenome structures form the basis of a number of pangenomic approaches.
 They have found use in the construction of acyclic multiple sequence alignments.
 The partial order aligner \textsc{POA} \cite{Lee_2002,Grasso_2004} uses an acyclic, directed sequence graph model to build multiple sequence alignments.
@@ -142,7 +149,7 @@ The multiple sequence/graph aligner (\textsc{VG msga}) \cite{Novak_2017a,Garriso
 %Although it requires linear time in the number of sequences, it suffers from high memory and runtime for large sequences due to the expense of vg's indexing and alignment algorithms.
 %It has found use where the number of sequences is small, or sequences are short, such as in viral pangenomic studies \cite{Baaijens2019-ng}
 
-Not all researchers have focused on generic graphs, with several arguing that complex structures are either computationally intractable or not relevant to important practical analyses.
+Not all researchers have focused on generic graphs, with several arguing that completely generic models are either computationally intractable or not relevant to important practical analyses.
 \textsc{REVEAL} \cite{linthorst2015scalable} builds a pangenome graph from a syntenic set of maximal exact unique matches of decreasing size between a pair of sequences (or graphs), and later adds inversions detected by alignment of paths through bubbles in this graph.
 \textsc{NovoGraph} \cite{Biederstedt2018} follows a reference-guided approach, breaking a set of genomes into syntenic alignable blocks and deriving a multiple sequence alignment for each, and yielding a VCF file as its output.
 Similarly, \textsc{seq-seq-pan} \cite{Jandrasits_2018} employs existing whole genome alignment methods to find a set of locally collinear blocks, in which it compacts into a sequence graph that respects the synteny of the input genomes.
@@ -152,9 +159,14 @@ Recent, unpublished methods explore two new alternatives to alignment-based pang
 \textsc{minigraph}\footnote{\url{https://github.com/lh3/minigraph}} extends the \textsc{minimap2} \cite{Li_2018} alignment chaining model to work on graphs.
 It applies this alignment model to progressively build out a pangenome graph from a series of genomes that contains large ($>$250bp) sequences that were not previously seen in other genomes.
 The resulting pangenome does not contain all input sequences and variation between them, but a representative subset and large structural variants.
-In contrast, \textsc{seqwish}\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019} is a simplistic lossless graph inducer which generates the variation graph implied by a collection of sequences and alignments between them.
-Its graphs contain all kinds of variation represented in alignments, both small SNPs and indels and large structural variation, and precisely represent the full set of input sequences.
-To scale to large pangenome sizes, it represents the alignments in disk-backed implicit interval trees\footnote{See \url{https://github.com/lh3/cgranges} and \url{https://github.com/mlin/iitii}}.
+In contrast, \textsc{seqwish}\footnote{\url{https://github.com/ekg/seqwish}} \cite{Garrison_2019} generates the full variation graph implied by a collection of sequences and alignments between them.
+%The graphs it generates contain all kinds of variation represented in the input alignments, including both small variants like SNPs and indels and large structural variation and precisely represent the full set of input sequences.
+The paths embedded in its output graph precisely and completely reconstruct the input sequences, while the topology of the graph describes all variants represented in the input alignments.
+%and contain all kinds of variation represented in the input alignments.
+%The input sequences are projected into paths embedded in the resulting variation graph.
+%The output represents all kinds of variation, both small and large, described by the input alignments.
+
+%To scale to large pangenome sizes, it represents the alignments in disk-backed implicit interval trees\footnote{See \url{https://github.com/lh3/cgranges} and \url{https://github.com/mlin/iitii}}.
 %The resulting graph depends only on the input alignment set and sequences, allowing external configuration of the graph via changes in the way the alignments are generated or filtered.
 
 %It maps a set of sequences and alignments between them to the variation graph implied by the 
