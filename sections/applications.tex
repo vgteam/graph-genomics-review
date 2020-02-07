@@ -4,8 +4,8 @@
 Although graphical pangenomic techniques can be applied throughout biology, most recent work has focused on a handful of applications where they can provide substantial benefits.
 %In variant calling and genotyping, reduced reference bias and complete representation of difficult variation in the reference can improve accuracy and 
 %Here, we consider developments in several research areas.
-Reduced reference bias and coherent representations of alleles support large improvements in structural variation detection and can decrease the runtime costs of genotyping.
-They have enabled haplotype reconstruction of quasispecies in metagenomic studies and transcripts in functional genomics, and pangenomic association studies.
+Reduced reference bias and coherent representations of alleles yields significant improvements in structural variation detection and can decrease the runtime costs of genotyping.
+They have enabled haplotype reconstruction of quasispecies in metagenomic studies and transcripts in functional genomics, and supported pangenomic association studies.
 %haplotype inference, functional genomics, and metagenomics.
 %Pangenomic reference systems can improve the accuarcy of allele specific expression assays that are crucial to untangling diverse issues in functional genomics.
 
@@ -97,7 +97,9 @@ However, reference bias in mapping can be a source of small variant calling erro
 
 One strategy consists of realigning reads to graphs of known variation after mapping to a linear reference.
 This approach was pioneered in the 1000 Genomes Project, which applied \textsc{Glia} to establish genotype likelihoods for indels and complex alleles \cite{1000_2015}.
-\textsc{GraphTyper} refines this approach to achieve competitive accuracy in genotyping with very low computational costs, and demonstrates improved accuracy at variation \cite{eggertsson2017graphtyper}.
+% TODO reword
+\textsc{GraphTyper} refines this approach to achieve competitive accuracy in joint genotyping large cohorts with very low computational costs, providing improved genotyping performance at known variable sites described in its graph \cite{eggertsson2017graphtyper}.
+%, and it authors apply it to demonstrate that graph-aware genotyping results in higher accuracy at known variable sites 
 
 
 %\textsc{Graphtyper} expands the scalability and performance of this approach, achieving competitive accuracy in genotyping, 
