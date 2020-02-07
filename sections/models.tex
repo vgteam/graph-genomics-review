@@ -13,7 +13,7 @@ Pangenomic models may take many forms, including collections of unaligned sequen
 %Our starting point is a \emph{sequence graph} \cite{hein1989new} whose nodes are labeled\footnote{Such a graph can also be edge-labeled, with DNA sequences attached to its edges.} with DNA sequences and whose edges represent linkages between successive nodes that are found in the set of sequences that the graph represents.
 %Practically, a sequence graph serves to compress many redundant input sequences into a smaller data structure that is still representative of the full set.
 The \emph{sequence graph} serves to compress many redundant input sequences into a smaller data structure that is still representative of the full set \cite{hein1989new}.
-Sequence graphs may have their nodes or edges labeled with DNA sequences, but for simplicitly we will focus on the node-labeled case.
+Sequence graphs may have their nodes or edges labeled with DNA sequences, but for simplicity we will focus on the node-labeled case.
 In a node-labeled sequence graph, edges indicate when concatenations of the nodes they connect occur in the sequences modeled by the graph.
 Walks through a sequence graph thus include the set of sequences from which it was built.
 We call them \emph{bidirected} when they represent both strands of DNA and inversions between them.
@@ -70,7 +70,7 @@ Several approaches support the construction, annotation, and interrogation of th
 % pangenome using a collection of sequences model
 Recent work has focused on scaling these techniques to ever larger genomes.
 \textsc{PanTools} \cite{Sheikhizadeh_Anari_2018} detects and annotates homology groups in large collections of large genomes using a $k$-mer based approach.
-Its detailed graph database model connects the pan-proteome defined by homology groups to genomic annotations and sequences.
+Its detailed graph database model connects the panproteome defined by homology groups to genomic annotations and sequences.
 \textsc{HUPAN} \citep{Duan_2019} extends the sequence collection model to human and large eukaryotic genomes, taking assembled genomes as input and finding non-reference sequences within them by comparison to a reference genome.
 %Despite the availability of these toolkits, it appears that many published pangenomes are established with ad-hoc methods to determine and annotate novel sequences.
 
@@ -213,7 +213,7 @@ Similar decompositions of the graph topology have been used in assembly-based va
 \label{sec:indexing}
 
 %\todo{JAS: Is a bit more introduction needed explaining what an index can be used for?}
-Index data structures for pangenome graphs support efficient ranom access to elements and features of the graph. %, which is essential for their use.
+Index data structures for pangenome graphs support efficient random access to elements and features of the graph. %, which is essential for their use.
 Attention must be given to ensure that these index structures do not require significant overheads relative to the information content of the graph.
 %As pangenome graphs become large, providing random access to their topology, sequences, and embedded haplotypes becomes non-trivial.
 Naive implementations of sequence and structural indexes of the graph can incur significant runtime and memory costs, which can become problematic as graph sizes increase.
