@@ -17,19 +17,19 @@
   \caption{
     \label{fig:models}
     Pangenomic models.
-    \emph{Left panel}:
-    (top left) In reference based genomic analyses, all genomes ($A \ldots D$) are compared to each other via their relationship to the reference genome $R$.
-    (top right) In a pangenomic setting, we attempt to model direct relationships between all the genomes in our analysis, of which a particular reference $R$ is chosen arbitrarily.
-    (middle left) When extending our analysis with a new genome, $\Delta$, we add it to the genomic model by comparing it to reference $R$.
-    (middle right) In contrast, adding a new genome to a pangenomic analysis compares it directly with all other genomes in the model.
-    (bottom left) Regions of some genomes are unalignable against the reference, and cannot be represented in a list of variants.
-    (bottom right) A graphical model of the genomes allows direct all-to-all comparison, capturing all of their sequence relationships.
-    \emph{Right panel}:
-    (top left) A collection of sequences representing a pangenome.
-    (top right) Multiple sequence alignment of the sequences captures their mutual relationships.
-    (middle top) In a de Bruijn graph, sequences are represented without bias, but variants may correspond to larger graph structures.
-    (middle bottom) An acyclic sequence graph is equivalent to the multiple sequence alignment.
-    (bottom) A generic sequence graph can represent a structural variant (in orange, right) compactly, using edges between the forward and reverse strands of the graph to indicate the presence of an inversion.
+    \underline{\emph{Left panel}}:
+    \textit{top left}: In reference based genomic analyses, all genomes ($A \ldots D$) are compared to each other via their relationship to the reference genome $R$.
+    \textit{top right}: In a pangenomic setting, we attempt to model direct relationships between all the genomes in our analysis, of which a particular reference $R$ is chosen arbitrarily.
+    \textit{middle left}: When extending our analysis with a new genome, $\Delta$, we add it to the genomic model by comparing it to reference $R$.
+    \textit{middle right}: In contrast, adding a new genome to a pangenomic analysis compares it directly with all other genomes in the model.
+    \textit{bottom left}: Regions of some genomes are unalignable against the reference, and cannot be represented in a list of variants.
+    \textit{bottom right}: A graphical model of the genomes allows direct all-to-all comparison, capturing all of their sequence relationships.
+    \underline{\emph{Right panel}}:
+    \textit{top left}: A collection of sequences representing a pangenome.
+    \textit{top right}: Multiple sequence alignment of the sequences captures their mutual relationships.
+    \textit{middle top}: In a de Bruijn graph, sequences are represented without bias, but variants may correspond to larger graph structures.
+    \textit{middle bottom}: An acyclic sequence graph is equivalent to the multiple sequence alignment.
+    \textit{bottom}: A generic sequence graph can represent a structural variant (in orange, right) compactly, using edges between the forward and reverse strands of the graph to indicate the presence of an inversion.
   }
 \end{figure}
 
@@ -45,6 +45,7 @@
       \emph{Bottom middle}: A fragment of \textsc{VG viz}'s linearized rendering, showing base-level detail.
       \emph{Bottom}: The same fragment rendered with the Sequence Tube Map \cite{Beyer_2019}.
       Dashed lines show correspondence between the visualizations.
+      Path colors are assigned independently by each method.
     } \label{fig:visualization}
   \end{minipage}
 \end{figure}
