@@ -102,7 +102,7 @@ This has been extensively explored in variation graph based tools.
 However, several problems remain.
 The embedded coordinate systems may be incomplete, in that they may not fully cover the graph.
 Also, particular graph instantiations may induce ambiguity in reference positions.
-For instance, a copy number variant that is collapsed in the graph will have multiple reference path coordinates inside of it.
+For instance, a copy number variant that is collapsed in the graph will contain multiple overlapping reference path coordinate ranges.
 
 These limitations have driven the development of complete coordinate systems for genome graphs.
 One solution is to build a hierarchy of graph components, based on a starting reference sequence, adding a new name and coordinate range for each non-reference sequence that is included \cite{Rand_2017}\footnote{\textsc{minigraph} uses a similar model}.
