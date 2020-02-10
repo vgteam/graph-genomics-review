@@ -3,45 +3,18 @@
 
 A \emph{pangenome} models the full set of genomic elements in a given species or clade.
 Pangenomics thus stands in contrast to reference-based genomic approaches which relate sequences to a particular consensus model of the genome (figure \ref{fig:models}).
-%by emphasizing the sum total of available genomic information over a particular consensus model of the genome.
-%Using a pangenome as a reference system for bioinformatic analyses
-%These \emph{reference} genome models can bias
 Genomes that are reconstructed with the aid of a reference genome can appear more similar to the reference than they actually are.
 Pangenomic reference systems can reduce this bias by enabling the direct relationship of new genome to all those represented in the pangenome.
-%Where resequencing analyses are many-to-one, pangenomic equivalents are many-to-many.
-
-%When used to support bioinformatic analyses, pangenome models can 
-
-%By working with a pangenome during bioinformatic analyses, researchers can mitigate bias towards any specific genome or haploid genome model that might occur during diverse stages of data processing.
-%, analyse also minor alleles inevitably missing from such linear models, and incorporate information about genomic variation directly into their study.
-%Pangenomic reference systems thus e single canonical version of the genome of a given species, but a widely-represenative collection of sequences.
-
 
 Pangenomics has been important to microbiology, where genomic plasticity and diversity has made it indispensable \cite{Vernikos2015}, and it has increasingly seen application to eukaryotic genomes \cite{cao2011whole,gao2019tomato,Ou_2018}.
 Standard pangenomic analyses focus on the presence or absence of genes from given strains and the determination of a core (commonly present) and accessory (frequently absent) pangenome \cite{page2015roary}.
 However, they have tended to pay less attention to variation between these sequences, and they do not typically attempt to provide a precise model relating many genomes to each other at the base level.
 
-%Sequencing techniques 
-%In these studies, less attention is been given to small variation between genomes, or to the representation of full genomes and their precise sequence relationships.
-
-%These units are easily observable with short read sequencing technologies.
-%These approaches often do not consider small variation, or to the representation of full genomes and their precise sequence relationships.
-%The pangenome is typically presented as a collection of unique gene sequences or contigs.
-%Less importance is given to precise alignments between these contigs, haplotypes, and allelic variation within them.
-%This prevents the precise addressing of each base pair in the model, and makes it only approximately representative of the genomes from which the pangenome was built.
-%The pangenome is typically presented as a collection of gene sequences \cite{
-
-%Pangenomic techniques have also been applied outside of microbiology, such as in species contexts where genomes are small and often homozygous \cite{cao2011whole}, or in the publication or analysis of collections of novel sequences from a single species \cite{gao2019tomato,Ou_2018}.
-
 In contrast, most ``high-throughput'' analyses of large genomes depend on comparison to a single reference genome.
 However, in recent years, reduced sequencing and \emph{de novo} assembly costs have supported the discovery of significant levels of large-scale genomic variation in many eukaryotic species, including humans \cite{sudmant2015integrated,Hehir-Kwa2016-hb,chaisson2018multi,Audano_2019}, arabidopsis \cite{alonso2016arabidopsis}, brewer's yeast \cite{yue2017contrasting}, and the fruit fly \cite{chakraborty2018hidden}.
 These observations have generated wide interest in extending bioinformatic operations to use a pangenomic reference model \cite{computational2016computational}.
-%This expedient and conservative approach has its merits,
-%Using a single reference genome will become untenable with the development of
 The availability of true pangenomic references for humans \cite{Church2015-vt} and other model organisms will increasingly render the use of a single reference genome suboptimal.
 However, using pangenomes effectively requires the development of new bioinformatic methods capable of constructing, querying, and operating on them.
-%the genomics community still lacks standard, efficient approaches that generalize current genome inference methods to work on pangenomes.
-%To be a true replacement for resequencing, methods based on reference pangenomes must provide precise resolution of variants of all scales. %, and they must support efficient pangenomic generalizations of many standard bioinformatic approaches.
 
 In this review, we consider a emerging class of bioinformatic methods that let us consider genetic diversity at every stage of analysis.
 We focus primarily on those methods which achieve this result by replacing linear reference genome system with a graphical, pangenomic one.
@@ -52,66 +25,29 @@ We then survey index data structures that allow us to interact with them efficie
 These index structures allow us to interrogate, visualize, and relate new information to pangenomes, such as in the process of read alignment (\S \ref{sec:relating}), yielding results in a variety of new data formats (\S \ref{sec:formats}).
 Finally, we examine a number of downstream applications of these models (\S \ref{sec:applications}), and reflect on the future impact of these methods on genomics (\S \ref{sec:discussion}).
 
-%Implementing these techniques for gigabase-scale pangenomes has required significant effort in the development of new data models and algorithms. %, which we survey here.
-%In this review, we survey precision pangenomic methods, with an emphasis on those based on graphical models of the genome.
-
-
-%Not all methods expose this data structure as a coherent reference system.
-%They may instead use it internally to improve performance of a standard bioinformatic operation.
-%Even different graph-based pangenomic models are not necessarily equivalent and may have distinct strengths and weaknesses in terms of representing certain kinds of genomic variation.
-
-%Although these limitations have appeared necessary to scale precision pangenomics to eukaryotic genomes, new algorithms and approaches for the construction and interrogation of pangenome graphs demonstrate that generic models can be scalable.
-%These results imply the possibility of simplifying and even expediting many bioinformatic analyses through the use of pangenomic reference systems and algorithms.
-
 \section{Resequencing reconsidered}
 \label{sec:resequencing}
 
-%\subsection{Resequencing scales genome inference}
-
-%Genomics research depends on our ability to see the relationships between genomes.
 Biological research frequently depends on our ability to infer the sequence level relationships between genomes.
 In an earlier era, when many sequencing studies focused on small regions or single genes, it was often feasible to relate all relevant sequences to each other.
 Although limited in scope, these analyses were effectively pangenomic.
 They were based on many-to-many relationships between sequences, typically derived by multiple sequence alignment (MSA).
-%When sequencing data was expensive, it was sensible to 
 Precise MSA methods are expensive, with popular algorithms scaling cubically with the number of input sequences \cite{notredame2000t}.
-It is infeasible to apply such computationally demanding methods to the data scales obtained with modern high-throughput sequencing. % \cite{schuster2008next}. %, and furthermore, doing so would require increased sequencing costs.
+It is infeasible to apply such computationally demanding methods to the data scales obtained with modern high-throughput sequencing.
 Instead, high-quality genome assemblies and high-throughput sequencing have encouraged \emph{resequencing} methodologies, wherein reads from each sample are aligned to a single reference genome \cite{stratton2008genome}.
 This approach is practical and scalable.
 State of the art resequencing pipelines can jointly analyze tens of thousands of genomes \cite{Poplin_2017} at a cost per genome that is only a small fraction of the total sequencing cost.
 
-%But, it is biased, in that the reference genome sequence affects what can be observed in resequenced genomes.
-%Resequenced genomes are not related to each other indirectly, through their relationship to the reference genome (figure \ref{fig:models}).
-
-%but only by relating each genome to a single common reference sequence.
-
-%\subsection{Resequencing implies reference bias}
-
 Although efficient and conceptually simple, resequencing has a significant limitation.
 Precise genomic relationships are only visible for those sequences that are similar enough to the reference genome to be alignable (figure \ref{fig:models}).
-%Significant variation between a new genome and the reference genome may be rendered invisible, or apparently less frequent, by the reference bias inherent in alignment.
 This effect is known as \emph{reference bias}.
 It is strongest for structural variation or sequences that are absent from the reference system \cite{sudmant2015integrated}, but it can be relevant even for SNPs, which causes problems in allele specific expression (ASE) quantification \cite{Castel2015-ef} and in the analysis of ancient DNA \cite{zhou2017antcaller}.
 Given that this bias shapes the methods that we use to establish models of the truth \cite{zook2014integrating}, it is even difficult to evaluate without paradigmatic change in our analysis techniques.
-%JME: This sentence seems basically redundant with the one two sentences back. I see that you're citing pangenomic methods instead of traditional ones, but you seem to be making basically the same point. 
-%Recent studies have applied variation-aware sequence alignment methods to show that this bias affects even the detection of small variation \cite{eggertsson2017graphtyper,Garrison_2018,Kim_2019}, and that these methods can be used to mitigate its effect on the study of ancient DNA \cite{martiniano2019removing} and RNA sequencing data \cite{Miao2018-ps,Liu_2018}.
-
-%\subsection{Human pangenomics}
 
 Estimates based on short read sequencing data have placed the human pangenome at between 1\% \cite{li2010building} and 10\% \cite{sherman2019assembly} larger than the GRCh38 human reference assembly.
 Others have demonstrated up to several Mbp of sequence are present in each new individual and not in the reference \cite{Hehir-Kwa2016-hb,Audano_2019}.
-%Although these estimates vary based on the author's definition of what constitutes novel sequence or allelic variation, we should expect them to rise as we consider larger cohorts of humans and improve our ability to ascertain variants in repeat-rich genomic regions.
-%We expect to gain greater insight into the extent, placement and significance of novel sequences when they are discovered in
 We expect that whole genome telomere-to-telomere assemblies based on long single-molecule sequencing will provide greater insight into the extent, placement, and significance of these novel sequences \cite{miga2019telomere,Langley_2019}.
 Even if we know of their existence, the reference bias inherent in resequencing will continue to limit the ability of researchers to relate new sequences to these regions.
 Resequencing methods that use a pangenomic reference system should not be subject to this limitation.
-
-%Efficiently relating new sequences to such rich data resources will require the application of new kinds of resequencing and new models for bioinformatic analysis that support the inference of sensitive all-to-all relationships between large collections of large genomes.
-%The genomics community is today working to determine what kinds of data models will allow researchers to fully exploit pangenomic data from humans and other species.
-%Much attention has been given to the type of data structure which
-
-%In addition to allowing the use of pangenomes in genome inference, the decreasing cost of whole genome assembly suggests that a new problem will arise in comparing whole genomes to each other.
-%This issue of whole genome alignment or comparison suggests an end to the dominance of resequencing based tools, and implies the need for greater focus on methods that can efficiently process and report on whole assemblies.
-
 
 
