@@ -9,4 +9,4 @@ main.bbl: bib/references.bib
 	bibtex main </dev/null
 
 clean:
-	rm -f main.aux main.toc main.pdf main.log main.bbl
+	rm -f main.aux main.toc main.pdf main.log main.bbl main.blg main.out
