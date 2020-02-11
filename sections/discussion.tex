@@ -7,124 +7,30 @@ To make full use of genome assemblies, we must relate them to each other.
 And, to maximize their value, we must make it possible to use the prior information contained in them to guide subsequent genomic analyses.
 
 These goals drive us to work with the pangenome implied by a collection of whole genome assemblies.
-%But what form should this pangenome take?
 Pangenomes can be modeled as simple collections of DNA sequences, but this can obscure variation between genomes that is essential to unlocking insight into biology.
 Increasingly, researchers have explored pangenome graphs which represent both sequences and variation between them.
 These methods are flexible.
 In representing the mutual alignment of many genomes, a graphical pangenome can contain, and relate between many linear reference systems.
 They are also scalable.
-Recently-developed methods support the compact storage and query of collections of tens of thousands of genomes. % relative to a shared pangenome graph reference system.
+Recently-developed methods support the compact storage and query of collections of tens of thousands of genomes.
 And, they can improve alignment and genotyping accuracy in the context of known variation.
-%Methods for genotyping and alignment based on pangenome graphs demonstrate improved performance over ones based on linear reference genomes.
-%As expected, these benefits are most pronounced in the context of known variation.
 
 However, adding variation to the reference system is not without potential drawbacks.
 Model construction, indexing, and alignment steps typically require more time for pangenome graphs than linear reference genomes.
 Additional information can increase ambiguity, and care must be taken to build models that improve utility by including relevant variation.
-%These methods carry a conceptual burden for users.
-%There are significant conceptual costs associated with the use of pangenome graphs.
 Working with a graphical reference system necessitates knowledge of graph-theoretic concepts that may be unfamiliar to many biologists.
-%While researchers have shown that pangenome graphs can be used to maintain multiple coordinate systems, it is unclear if this flexibily is a benefit, and it may be a source of confusion for users.
 Users also must consider that, pangenome graphs are not observable in the same sense that a given genome is.
-%This can make it harder to establish a standard ground truth.
-%They do not represent any directly measurable aspect of a biological system.
 Their construction is often guided more by application than a clear ground truth.
 
 Due to these issues, some argue that it is likely that linear genomic models will remain important into the future \cite{Sherman_2020}.
 Our survey does not disagree with this possibilty.
 Many of the works we have considered forsee a future in which reference systems are graphical, but only a handful (primarily those based on variation graphs) produce alignments or genotype calls in the context of a pangenome graph.
 Linear or hierarchical coordinate systems for the pangenome may be preferred by the genomics community.
-If so, these reference systems are likely to proliferate as we explore the pangenome of humans and other species. %, driven by the rapidly-decreasing cost of genome assembly.
-%The advances driving down the cost of genome assembly will make them easy to produce.
-%Institutional, nationalistic, indutrial, and other motivations will ensure that
+If so, these reference systems are likely to proliferate as we explore the pangenome of humans and other species.
 
 Of course, a future full of many reference genomes is essentially a pangenomic one.
-Whether or not the consensus of the community drives the development of standardized pangenomic reference models, the proliferation of whole genome sequences will only increase the importance of the methods that we have considered here.
+Whether or not the community fosters the development of standardized pangenomic reference models, the proliferation of whole genome sequences will only increase the importance of the methods that we have considered here.
 Pangenome graphs provide a distributed framework which we can use to bring many reference systems into the same analytical context.
 We can use them to build reference models optimized for particular research or clinical settings, potentially mixing public and private sources of data, without sacrificing our ability to relate our findings to standard reference models.
 Provided their continued improvement, graphical pangenomic methods will be well-suited to the pluralistic, decentralized attributes of a future in which genomes are easily sequenced and assembled.
-
-% of genome research in  of genome research.
-
-%Given these features,
-%These approaches may thus lie at the heart of a 
-%
-%This distributed quality will allow us to build pangenomic models that are optimal for a particular
-%Graphical pangenomic techniques 
-
-%Whether or not they become objects of reference themselves, pangenome graphs will certainly provide a mechanism to manage the menagerie of genomes 
-
-
-
-%In this view, pangenome graphs are technical artifacts important for analysis, but may not provide a stable foundation for many ``legacy'' techniques.
-%However, pangenome graphs can allow us to record the direct relationship between many linear reference systems.
-%Thus, although their topology may not become part of the reference, these graphs allow us to harmonize diverse useful linear consensus models of the genome.
-
-%Graphical pangenomic methods, regardless of the specifics of their representation of the pangenome, aim to provide accurate and unbiased access to this collection of sequences with minimal resource costs.
-%These methods provide a coherent framework for thinking about the plurality of sequences in a pangenome.
-%They resolve fundamental problems in genomic analysis that will become ever more severe as we consider increasing numbers of fully-resolved whole genome sequences in the course of biological research.
-
-
-%Methods for alignment and variant calling demonstrate that, although they often require computational costs relative to methods based on linear reference genomes, graphical pangenomic reference systems can support highly-efficient, variant-aware genome inference methods.
-
-%Working with graphical models will always be more complex than working with linear ones.
-%Users must learn the nuances of 
-
-%Work on alignment and variant calling using pangenome graphs demonstrates that 
-%Pangenome graphs allowing new levels of compression and efficiency when working with population-scale.
-
-
-
-%A pangenomic reference system can be augmented and extended as needed, in a distributed fashion, without breaking backwards compatibilty with linear reference genomes.
-
-
-%This technological change pushes genomics from a phase in which a single reference genome structures analyses to one in which we 
-%In response to these needs, researchers have begun to develop methods that allow us to work with the pangenome
-%Responding to these needs, researchers have begun to consider pangenomic approaches.
-%A pangenome collects all of the unique DNA sequences in a given species.
-
-%A collection of assembled genomes from the same species or clade can be understood as a sample of the pangenome.
-%
-%Pangenomic approaches, which focus on the aggregate genomic information in a given species or clade
-
-%Drawing on concepts developed over the past decade in the study of 
-%Researchers in genomics have thus begun to consider how to apply concepts from 
-
-%Pangenomic methods, which  the genomes of organisms in an entire species or clade
-
-
-%This phase in the history of genomics leads to a new set of problems that have traditionally been important to the study of rapidly-evolving organisms with small genomes.
-%Resolution of the genome assembly problem does not conclude
-%Although genome assembly may become progressively easier, the problem of using these assem
-%As genome assembly becomes easier, the problem of relating assemblies to each other will increase in difficulty and importance.
-%e must develop new techniques to relate genome assemblies to each other.
-%We hope to reuse them as prior information to guide subsequent genomic analyses.
-
-%As sequencing costs continue to decrease, 
-%a major problem in genomics and human genetics 
-
-%The term \emph{pangenome} has previously implied the study of gene families within a given species or clade.
-%Technological change, in the form of improved sequencing and assembly algorithms, allows us to build pangenomes that represent collections of genomes.
-%Analytical methods capable of using these complete pangenome models let us study the precise evolutionary relationships between whole genomes.
-
-%New techniques are being developed to utilize this powerful prior information about genomic variability in a given species or clade.
-%Often, these methods rely on graph-based representations of pangenomes which capture both the sequence of and variation between represented genomes.
-%These methods demonstrate improved performance and accuracy when working with pangenome models relative to standard genomic ones.
-%They have been shown to eliminate reference bias at known variant sites, and allow the direct comparison of new data to large pangenomes.
-
-%However, it is not clear that graphical pangenome models will themselves replace linear reference systems.
-%Few of the methods which we have reviewed makes a strong case that the reference system itself should become a graph.
-%Only a handful of mapping and variant calling methods (primarily those based on variation graphs) even produce alignments or genotype calls in the context of the graph, with the majority reporting them against a linear reference sequence.
-%In combining sequences with their alignments, graphical pangenomes confuse the traditional concepts of genome position and annotation which are essential for standard research practice.
-%To date, there is no widely-accepted mechanism to generalize such concepts to graphs.
-
-%We speculate that the status quo of genome positions on linear sequences may continue long into the future, even if graphical pangenome models become essential to many kinds of analysis.
-%On their own, pangenome graphs do not represent any directly measurable aspect of a biological system, and thus their construction and design is guided more by application than any kind of ground truth.
-%In this view, pangenome graphs are technical artifacts important for analysis, but may not provide a stable foundation for many ``legacy'' techniques.
-%However, pangenome graphs can allow us to record the direct relationship between many linear reference systems.
-%Thus, although their topology may not become part of the reference, these graphs allow us to harmonize diverse useful linear consensus models of the genome.
-
-%Graphical pangenomic methods, regardless of the specifics of their representation of the pangenome, aim to provide accurate and unbiased access to this collection of sequences with minimal resource costs.
-%These methods provide a coherent framework for thinking about the plurality of sequences in a pangenome.
-%They resolve fundamental problems in genomic analysis that will become ever more severe as we consider increasing numbers of fully-resolved whole genome sequences in the course of biological research.
 
