@@ -1,10 +1,10 @@
-# notes
+# Pangenome graphs
 
-First check in - monday
+A review paper for Annual Reviews in Genomics and Human Genetics.
 
-First draft - Thursday 
+[The final submitted version of the paper has been rendered and is provided in this repo.](https://github.com/vgteam/graph-genomics-review/raw/master/Pangenome_graphs_AR-bacf0aa.pdf)
 
-Each large section ~1500 words, with discussion somewhat smaller.
+## notes
 
 Work on github (Erik to make structure), use .bib for citations, use one line per sentence, first draft doesn’t have to compile.
 
